@@ -1,0 +1,54 @@
+@import url(http://fonts.googleapis.com/css?family=Inconsolata|Rosario:400,700);
+
+body {
+/*    background: #123 !important;*/
+    font-family: 'Rosario', sans-serif;
+}
+
+code, .code {
+    font-family: 'Inconsolata', 'Droid Sans Mono', 'Courier New', monospace;
+}
+
+.slides h1 {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.slides > article.level-2:not(#agenda) {
+    padding-top: 450px;
+}
+
+.slides > article#agenda h2 {
+    position: relative;
+    bottom: auto;
+}
+
+.slides > article > h3,
+.slides > article > h4 {
+    font-size: 45px;
+    line-height: 1.5em;
+
+    padding: 0;
+    margin: 0;
+    padding-right: 40px;
+
+    font-weight: 600;
+
+    letter-spacing: -1px;
+
+    color: rgb(51, 51, 51);
+}
+
+.slides > article > h1,
+.slides > article:not(#agenda) > h2 {
+    border-bottom: 1px #656 solid;
+}
+
+.slides > article.level-1 > p {
+    text-align: center;
+}
+
+table.context-table td {
+    border: none;
+    text-align: center;
+    padding: 30px 0px;
+}
