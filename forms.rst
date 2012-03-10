@@ -266,7 +266,7 @@ More GranularOutput
    {{ field.label_tag }}: {{ field }}
    {{ field.errors }}
    {% endfor %}
-   {{ field.non_form_errors }}
+   {{ field.non_field_errors }}
 
 Additional rendering properties:
 
