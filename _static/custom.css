@@ -1,26 +1,65 @@
 @import url(http://fonts.googleapis.com/css?family=Inconsolata|Rosario:400,700);
 
+/* General styling */
+
 body {
 /*    background: #123 !important;*/
     font-family: 'Rosario', sans-serif;
 }
 
-code, .code {
+code, .code, pre {
     font-family: 'Inconsolata', 'Droid Sans Mono', 'Courier New', monospace;
+    font-size: 26px;
+    line-height: 1.125em;
+    white-space: pre-wrap;
+    margin-right: -35px;
+    padding-right: 0;
 }
 
-.slides h1 {
-    background: rgba(0, 0, 0, 0.3);
+.slides > article {
+  background: url(eb_logo.gif) 710px 620px no-repeat;
+  background-color: white;
 }
 
-.slides > article.level-2:not(#agenda) {
+/* Title Slide */
+
+.slides > article.level-1 {
+    padding-top: 200px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.slides > article > h1 {
+    color: #222;
+    font-size:72px;
+    margin-top: 250px;
+    background: rgba(255, 255, 255, 0.65);
+    line-height: 1.5em;
+    padding-left: 30px;
+}
+
+.slides > article.level-1 > p {
+    color: #333;
+    background: rgba(255, 255, 255, 0.65);
+    text-align: right;
+    margin-top: 0px;
+    padding-right: 20px;
+    padding-left: 60px;
+    padding-bottom: 0.5em;
+}
+
+/* Section Slide Styling */
+
+.slides > article.level-2 {
     padding-top: 450px;
 }
 
-.slides > article#agenda h2 {
+.slides > article > h2 {
     position: relative;
     bottom: auto;
 }
+
+/* Interior Slide Styling */
 
 .slides > article > h3,
 .slides > article > h4 {
@@ -35,20 +74,31 @@ code, .code {
 
     letter-spacing: -1px;
 
-    color: rgb(51, 51, 51);
+    color: rgb(70, 214, 189);
 }
 
-.slides > article > h1,
-.slides > article:not(#agenda) > h2 {
-    border-bottom: 1px #656 solid;
+.slides > article > h2 {
+    border-bottom: 1px #f16924 solid;
+    width: 100%;
+    color: rgb(0, 162, 165);
 }
 
-.slides > article.level-1 > p {
-    text-align: center;
+table.context-table {
+    border: none;
 }
 
 table.context-table td {
     border: none;
     text-align: center;
     padding: 30px 0px;
+}
+
+table.context-table tr.row-odd {
+    background: #ffbc32;
+}
+
+article#cc-chooser > h2,
+article#event-creation > h2,
+article#danger h2 {
+    display: none;
 }

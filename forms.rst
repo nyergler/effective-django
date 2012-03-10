@@ -1,10 +1,34 @@
+.. testsetup::
+
+   import sys, os
+   sys.path.append(os.getcwd())
+   os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+
+
 ======================
 Effective Django Forms
 ======================
 
-Nathan R. Yergler
-PyCON 2012 // 10 March 2012
+.. slides::
 
+   .. figure:: /_static/building.jpg
+      :class: fill
+
+      CC BY-NC-SA http://www.flickr.com/photos/t_lawrie/278932896/
+
+   Nathan R. Yergler //
+   PyCon 2012 //
+   10 March 2012
+
+   nathan@eventbrite.com // @nyergler
+
+   Danger
+   ======
+
+   .. figure:: /_static/diving.jpg
+      :class: fill
+
+      CC BY-NC-SA http://www.flickr.com/photos/lwr/134769010/
 
 Form Basics
 ===========
@@ -23,53 +47,44 @@ Forms in Context
    |       **Models**        |     Data and business logic     |
    +-------------------------+---------------------------------+
 
-Why use Forms?
---------------
+.. Why use Forms?
+.. --------------
 
-- Data type coercion
-- Validation
-- Consistent HTML output
+.. - Data type coercion
+.. - Validation
+.. - Consistent HTML output
 
 Defining Forms
 --------------
 
-Forms are composed of fields, which have a widget::
+Forms are composed of fields, which have a widget.
 
+.. testcode::
+
+  from django.utils.translation import gettext_lazy as _
   from django import forms
 
   class ContactForm(forms.Form):
 
-      name = forms.CharField(
-          _("Your Name"),
+      name = forms.CharField(label=_("Your Name"),
           max_length=255,
           widget=forms.TextInput,
       )
 
-      email = forms.EmailField(
-          _("Email address"),
-      )
-
-Django provides you with a default widget if you don't specify one.
+      email = forms.EmailField(label=_("Email address"))
 
 Instantiating a Form
 --------------------
 
-.. container:: build
+Unbound forms don't have data associated with them, but they can
+be rendered::
 
-   .. container:: unbound
+  form = ContactForm()
 
-      Unbound forms don't have data associated with them, but they can
-      be rendered.
+Bound forms have specific data associated, which can be
+validated::
 
-      >>> form = ContactForm()
-
-   .. container:: bound
-
-      Bound forms have specific data associated, which can be
-      validated.
-
-      >>> form = ContactForm(data=request.POST, files=request.FILES)
-
+  form = ContactForm(data=request.POST, files=request.FILES)
 
 Accessing Fields
 ----------------
@@ -83,13 +98,15 @@ Two ways to access fields on a Form instance
 Initial Data
 ------------
 
-::
+.. testcode::
 
    form = ContactForm(
        initial={
            'name': 'First and Last Name',
        },
    )
+
+.. doctest::
 
    >>> form['name'].value()
    'First and Last Name'
@@ -106,10 +123,9 @@ Validating the Form
    blockdiag {
       // Set labels to nodes.
       A [label = "Field Validation"];
-      B [label = "Field Cleaning"];
-      C [label = "Form Cleaning"];
+      C [label = "Form Validation"];
 
-      A -> B -> C;
+      A -> C;
    }
 
 - Only bound forms can be validated
@@ -117,35 +133,55 @@ Validating the Form
 - Validated, cleaned data is stored in ``form.cleaned_data``
 - Calling ``form.full_clean()`` performs the full cycle
 
-Field Validators
+Field Validation
 ----------------
 
+.. blockdiag::
+
+   blockdiag {
+      // Set labels to nodes.
+      A [label = "for each Field"];
+
+      B [label = "Field.clean"];
+      C [label = "Field.to_python"];
+      D [label = "Field validators"];
+
+      F [label = ".clean_fieldname()"];
+
+      A -> B;
+      B -> C;
+      C -> D;
+
+      A -> F;
+   }
+
+- Three phases for Fields: To Python, Validation, and Cleaning
+- If validation raises an Error, cleaning is skipped
 - Validators are callables that can raise a ``ValidationError``
 - Django includes generic ones for some common tasks
-- Can be shared between Models and Forms
 - Examples: URL, Min/Max Value, Min/Max Length, URL, Regex, email
 
-.clean_*()
-----------
+Field Cleaning
+--------------
 
 - ``.clean_fieldname()`` method is called after validators
 - Input has already been converted to Python objects
 - Methods can raise ``ValidationErrors``
 - Methods *must* return the cleaned value
 
-.clean_name()
--------------
+``.clean_email()``
+------------------
 
-::
+.. testcode::
 
   class ContactForm(forms.Form):
       name = forms.CharField(
-          _("Name"),
+          label=_("Name"),
           max_length=255,
       )
 
       email = forms.EmailField(
-          _("Email address"),
+          label=_("Email address"),
       )
 
       def clean_email(self):
@@ -157,14 +193,36 @@ Field Validators
 
           return self.cleaned_data.get('email', '')
 
-.clean()
---------
+Form Validation
+---------------
 
-- Performs cross-field validation
+- ``.clean()`` performs cross-field validation
+- Called even if errors were raised by Fields
 - *Must* return the cleaned data dictionary
 - ``ValidationErrors`` raised by ``.clean()`` will be grouped in
   ``form.non_field_errors()`` by default.
-- XXX Example
+
+``.clean()`` example
+--------------------
+
+.. testcode::
+
+  class ContactForm(forms.Form):
+      name = forms.CharField(
+          label=_("Name"),
+          max_length=255,
+      )
+
+      email = forms.EmailField(label=_("Email address"))
+      confirm_email = forms.EmailField(label=_("Confirm"))
+
+      def clean(self):
+          if (self.cleaned_data.get('email') !=
+              self.cleaned_data.get('confirm_email')):
+
+              raise ValidationError("Email addresses do not match.")
+
+          return self.cleaned_data
 
 Initial != Default Data
 -----------------------
@@ -176,6 +234,19 @@ Initial != Default Data
 
     self.cleaned_data.get('name', 'default')
 
+Passing Extra Information
+-------------------------
+
+- Sometimes you need extra information in a form
+- Pass as a keyword argument, and pop in __init__
+
+.. testcode::
+
+   class MyForm(forms.Form):
+       def __init__(self, *args, **kwargs):
+           self._user = kwargs.pop('user')
+           super(MyForm, self).__init__(*args, **kwargs)
+
 Tracking Changes
 ----------------
 
@@ -184,9 +255,10 @@ Tracking Changes
 - ``form.changed_fields``
 - Fields can render a hidden input with the initial value, as well::
 
-    changed = DateField(show_hidden_initial=True)
+    >>> changed_date = forms.DateField(show_hidden_initial=True)
+    >>> print form['changed_date']
+    '<input type="text" name="changed_date" id="id_changed_date" /><input type="hidden" name="initial-changed_date" id="initial-id_changed_date" />'
 
-    XXX Html Output example
 
 Testing
 =======
@@ -194,22 +266,24 @@ Testing
 Testing Forms
 -------------
 
-- Forms: Raw input -> Validation Python objects
+- Remember what Forms are for
 - Testing strategies
 
  * Initial states
  * Field Validation
- * Final state of cleaned_data
+ * Final state of ``cleaned_data``
 
 Unit Tests
 ----------
 
-::
+.. testcode::
+
+   import unittest
 
    class FormTests(unittest.TestCase):
        def test_validation(self):
            form_data = {
-               ‘name’: ‘X’ * 300,
+               'name': 'X' * 300,
            }
 
            form = ContactForm(data=form_data)
@@ -218,16 +292,16 @@ Unit Tests
 Test Data
 ---------
 
-::
+.. testcode::
 
    from rebar.testing import flatten_to_dict
 
    form_data = flatten_to_dict(ContactForm())
    form_data.update({
-           ‘name’: ‘X’ * 300,
+           'name': 'X' * 300,
        })
    form = ContactForm(data=form_data)
-   self.assertFalse(form.is_valid())
+   assert(not form.is_valid())
 
 
 Rendering Forms
@@ -236,29 +310,42 @@ Rendering Forms
 Idiomatic Form Usage
 --------------------
 
-::
+.. testcode::
 
-   from django.views.generic.edit import ProcessFormView
+   from django.views.generic.edit import FormMixin, ProcessFormView
 
-   class ContactView(ProcessFormView):
-       form = ContactForm
-       success_url = ‘/contact/sent’
+   class ContactView(FormMixin, ProcessFormView):
+       form_class = ContactForm
+       success_url = '/contact/sent'
+
+       def form_valid(self, form):
+           # do something -- save, send, etc
+           pass
+
+       def form_invalid(self, form):
+           # do something -- log the error, etc -- if needed
+           pass
 
 Form Output
 -----------
 
-XXX Output example
+Three primary "whole-form" output modes:
+
+- ``form.as_p()``, ``form.as_ul()``, ``form.as_table()``
 
 ::
 
-   {{ form.as_p }}
+  <tr><th><label for="id_name">Name:</label></th>
+    <td><input id="id_name" type="text" name="name" maxlength="255" /></td></tr>
+  <tr><th><label for="id_email">Email:</label></th>
+    <td><input id="id_email" type="text" name="email" maxlength="Email address" /></td></tr>
+  <tr><th><label for="id_confirm_email">Confirm email:</label></th>
+    <td><input id="id_confirm_email" type="text" name="confirm_email" maxlength="Confirm" /></td></tr>
 
-   {{ form.as_ul }}
 
-   {{ form.as_table }}
 
-More GranularOutput
--------------------
+Controlling Form Output
+-----------------------
 
 ::
 
@@ -270,10 +357,10 @@ More GranularOutput
 
 Additional rendering properties:
 
-- field.label
-- field.label_tag
-- field.html_id
-- field.help_text
+- ``field.label``
+- ``field.label_tag``
+- ``field.html_id``
+- ``field.help_text``
 
 Customizing Rendering
 ---------------------
@@ -281,32 +368,32 @@ Customizing Rendering
 You can specify additional attributes for widgets as part of the form
 definition.
 
-::
+.. testcode::
 
    class ContactForm(forms.Form):
        name = forms.CharField(
            max_length=255,
            widget=forms.Textarea(
-               attrs={‘class’: ‘custom’},
+               attrs={'class': 'custom'},
            ),
        )
 
 You can also specify form-wide CSS classes to add for error and
 required states.
 
-::
+.. testcode::
 
    class ContactForm(forms.Form):
-       error_css_class = ‘error’
-       required_css_class = ‘required’
+       error_css_class = 'error'
+       required_css_class = 'required'
 
 
 Customizing Error Messages
 --------------------------
 
-- Built in validators have default error messages
+Built in validators have default error messages
 
-::
+.. doctest::
 
    >>> generic = forms.CharField()
    >>> generic.clean('')
@@ -314,9 +401,9 @@ Customizing Error Messages
      ...
    ValidationError: [u'This field is required.']
 
-- ``error_messages`` parameter lets you customize those messages
+``error_messages`` lets you customize those messages
 
-::
+.. doctest::
 
    >>> name = forms.CharField(
    ...   error_messages={'required': 'Please enter your name'})
@@ -330,13 +417,14 @@ Error Class
 
 - ``ValidationErrors`` raised are wrapped in a class
 - This class controls HTML formatting
-- By default, ErrorList is used: outputs as ``<ul>``
-- Specify the error_class parameter to override
+- By default, ``ErrorList`` is used: outputs as ``<ul>``
+- Specify the ``error_class`` kwarg when constructing the form to
+  override
 
 Error Class
 -----------
 
-::
+.. testcode::
 
    from django.forms.util import ErrorList
 
@@ -345,8 +433,8 @@ Error Class
            return self.as_paragraphs()
 
        def as_paragraphs(self):
-           return “<p>%s</p>” % (
-               “,”.join(e for e in self.errors)
+           return "<p>%s</p>" % (
+               ",".join(e for e in self.errors)
            )
 
    form = ContactForm(data=form_data, error_class=ParagraphErrorList)
@@ -354,14 +442,24 @@ Error Class
 Multiple Forms
 --------------
 
-- Avoid potential name collisions with prefix
-- Adds the prefix to HTML name and ID
+Avoid potential name collisions with ``prefix``:
 
-::
+.. testcode::
 
-   contact_form = ContactForm(prefix=‘contact’)
+   contact_form = ContactForm(prefix='contact')
 
-XXX HTML example
+Adds the prefix to HTML name and ID::
+
+   <tr><th><label for="id_contact-name">Name:</label></th>
+     <td><input id="id_contact-name" type="text" name="contact-name"
+          maxlength="255" /></td></tr>
+   <tr><th><label for="id_contact-email">Email:</label></th>
+     <td><input id="id_contact-email" type="text" name="contact-email"
+          maxlength="Email address" /></td></tr>
+   <tr><th><label for="id_contact-confirm_email">Confirm
+        email:</label></th>
+     <td><input id="id_contact-confirm_email" type="text"
+          name="contact-confirm_email" maxlength="Confirm" /></td></tr>
 
 Forms for Models
 ================
@@ -373,6 +471,8 @@ Model Forms
 - Validation includes Model validators by default
 - Supports creating and editing instances
 - Key differences from Forms:
+
+  - A field for the Primary Key (usually ``id``)
   - ``.save()`` method
   - ``.instance`` property
 
@@ -381,20 +481,55 @@ Model Forms
 
 ::
 
+   from django.db import models
+   from django import forms
+
    class Contact(models.Model):
-       name = models.CharField(
-           max_length=255)
+       name = models.CharField(max_length=100)
        email = models.EmailField()
        notes = models.TextField()
 
-   class ContactForm(ModelForm):
+   class ContactForm(forms.ModelForm):
        class Meta:
-           model=Contact
+           model = Contact
+
+Limiting Fields
+---------------
+
+- You don't need to expose all the fields in your form
+- You can either specify fields to expose, or fields to exclude
+
+::
+
+      class ContactForm(forms.ModelForm):
+
+          class Meta:
+              model = Contact
+              fields = ('name', 'email',)
+
+
+
+      class ContactForm(forms.ModelForm):
+
+          class Meta:
+              model = Contact
+              exclude = ('notes',)
 
 Overriding Fields
 -----------------
 
-XXX
+- Django will generate fields and widgets based on the model
+- These can be overridden, as well
+
+::
+
+      class ContactForm(forms.ModelForm):
+
+          name = forms.CharField(widget=forms.TextInput)
+
+          class Meta:
+              model = Contact
+
 
 Instantiating Model Forms
 -------------------------
@@ -415,11 +550,10 @@ ModelForm.is_valid()
    blockdiag {
       // Set labels to nodes.
       A [label = "Field Validation"];
-      B [label = "Field Cleaning"];
-      C [label = "Form Cleaning"];
+      C [label = "Form Validation"];
       D [label = "_post_clean()"];
 
-      A -> B -> C -> D;
+      A -> C -> D;
    }
 
 - Model Forms have an additional method, ``_post_clean()``
@@ -434,41 +568,39 @@ Testing
    class ModelFormTests(unittest.TestCase):
        def test_validation(self):
            form_data = {
-               ‘name’: ‘Test Name’,
+               'name': 'Test Name',
            }
 
            form = ContactForm(data=form_data)
            self.assert_(form.is_valid())
-           self.assertEqual(
-               form.instance.name,
-               ‘Test Name’
-           )
+           self.assertEqual(form.instance.name, 'Test Name')
 
            form.save()
 
            self.assertEqual(
                Contact.objects.get(id=form.instance.id).name,
-               ‘Test Name’
+               'Test Name'
            )
 
 
-Formsets
-========
+Form Sets
+=========
 
 Form Sets
 ---------
 
 - Handles multiple copies of the same form
 - Adds a unique prefix to each form::
+
     form-1-name
 
-- Support for creation and deletion
-- Basic ordering support
+- Support for insertion, deletion, and ordering
+
 
 Defining Form Sets
 ------------------
 
-::
+.. testcode::
 
    from django.forms import formsets
 
@@ -477,6 +609,12 @@ Defining Form Sets
    )
 
    formset = ContactFormSet(data=request.POST)
+
+Factory kwargs:
+
+- ``can_delete``
+- ``extra``
+- ``max_num``
 
 Using Form Sets
 ---------------
@@ -487,7 +625,7 @@ Using Form Sets
    {% formset %}
    </form>
 
-Or more granular output::
+Or more control over output::
 
    <form action=”.” method=”POST”>
    {% formset.management_form %}
@@ -502,9 +640,9 @@ Management Form
 - ``formset.management_form`` provides fields for tracking the member
   forms
 
-  - TOTAL_FORMS
-  - INITIAL_FORMS
-  - MAX_NUM_FORMS
+  - ``TOTAL_FORMS``
+  - ``INITIAL_FORMS``
+  - ``MAX_NUM_FORMS``
 
 - Management form data **must** be present to validate a Form Set
 
@@ -531,17 +669,19 @@ formset.is_valid()
 FormSet.clean()
 ---------------
 
-::
+.. testcode::
 
-   class BaseContactFormSet(formsets.FormSet):
+   from django.forms import formsets
+
+   class BaseContactFormSet(formsets.BaseFormSet):
        def clean(self):
            names = []
            for form in self.forms:
-               if form.cleaned_data.get(‘name’) in names:
+               if form.cleaned_data.get('name') in names:
                    raise ValidationError()
-               names.append(form.cleaned_data.get(‘name’))
+               names.append(form.cleaned_data.get('name'))
 
-   ContactFormSet = formset_factory(
+   ContactFormSet = formsets.formset_factory(
        ContactForm,
        formset=BaseContactFormSet
    )
@@ -554,12 +694,12 @@ Insertion
 - You can add more by creating a new form and incrementing
   ``TOTAL_FORM_COUNT``
 - ``formset.empty_form`` provides an empty copy of the form with
-  ``__empty__`` as the index
+  ``__prefix__`` as the index
 
-Insertion HTML
---------------
+.. Insertion HTML
+.. --------------
 
-XXX
+.. XXX
 
 Deletion
 --------
@@ -598,15 +738,17 @@ Testing
 - Helpers to generate test form data:
 
   - ``flatten_to_dict`` works with FormSets just like Forms
-  - ``empty_dict`` takes a FormSet and index, returns a dict of data
-    for an empty form::
+  - ``empty_form_data`` takes a FormSet and index, returns a dict of data
+    for an empty form:
 
-      XXX is this true?
+.. testcode::
+
+      from rebar.testing import flatten_to_dict, empty_form_data
 
       formset = ContactFormSet()
       form_data = flatten_to_dict(formset)
       form_data.update(
-          empty_form(formset, len(formset))
+          empty_form_data(formset, len(formset))
       )
 
 
@@ -619,35 +761,45 @@ Model Form Sets
 - If ``can_delete`` is ``True``, ``.save()`` also deletes the models
   flagged for deletion
 
-Advanced
-========
-
-Passing Extra Information
--------------------------
-
-- Sometimes you need extra information in a form
-- Pass as a keyword argument, and pop in __init__
-
-::
-
-   class MyForm(Form):
-       def __init__(self, *args, **kwargs):
-           self.user = kwargs.pop(‘user’)
-           super(MyForm, self).__init__(*args, **kwargs)
+Advanced & Miscellaneous Detritus
+=================================
 
 Localizing Fields
 -----------------
 
-- Django’s i18n/l10n framework supports localized input formats
+- Django's i18n/l10n framework supports localized input formats
 - For example: 10,00 vs. 10.00
 
-::
+Enable in ``settings.py``::
 
-   USE_I18N = True
    USE_L10N = True
-   localize=True
+   USE_THOUSAND_SEPARATOR = True # optional
 
-- XXX Example / Verify
+Localizing Fields Example
+-------------------------
+
+And then use the ``localize`` kwarg
+
+.. testsetup:: l10n
+
+   from django.conf import settings
+   settings.USE_L10N = True
+
+.. doctest:: l10n
+
+  >>> from django import forms
+  >>> class DateForm(forms.Form):
+  ...     pycon_ends = forms.DateField(localize=True)
+
+  >>> DateForm({'pycon_ends': '3/15/2012'}).is_valid()
+  True
+  >>> DateForm({'pycon_ends': '15/3/2012'}).is_valid()
+  False
+
+  >>> from django.utils import translation
+  >>> translation.activate('en_GB')
+  >>> DateForm({'pycon_ends':'15/3/2012'}).is_valid()
+  True
 
 Dynamic Forms
 -------------
@@ -657,17 +809,11 @@ Dynamic Forms
 - After ``__init__`` finishes, you can manipulate ``form.fields``
   without impacting other instances
 
-Form Groups
------------
-
-
-XXX
-
 
 State Validators
 ----------------
 
-- Validation isn’t necessarily all or nothing
+- Validation isn't necessarily all or nothing
 - State Validators define validation for specific states, on top of
   basic validation
 - Your application can take action based on whether the form is valid,
@@ -677,17 +823,19 @@ State Validators
 State Validators
 ----------------
 
-::
+.. testcode::
+
+   from django import forms
+   from rebar.validators import StateValidator, StateValidatorFormMixin
 
    class PublishValidator(StateValidator):
        validators = {
-           ‘title’: lambda x: bool(x),
+           'title': lambda x: bool(x),
         }
 
-   class EventForm(StateValidatorFormMixin,
-       Form):
+   class EventForm(StateValidatorFormMixin, forms.Form):
        state_validators = {
-           ‘publish’: PublishValidator,
+           'publish': PublishValidator,
        }
        title = forms.CharField(required=False)
 
@@ -699,7 +847,7 @@ State Validators
    >>> form = EventForm(data={})
    >>> form.is_valid()
    True
-   >>> form.is_valid(‘publish’)
+   >>> form.is_valid('publish')
    False
    >>> form.errors('publish')
    {'title': 'This field is required'}
@@ -708,4 +856,4 @@ State Validators
 The End
 =======
 
-http://effectivedjango.com/forms
+http://yergler.net/2012/pycon-forms
