@@ -42,9 +42,9 @@ clean:
 	-rm -rf $(BUILDDIR)/*
 
 html:
-	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
+	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/
 	@echo
-	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
+	@echo "Build finished. The HTML pages are in $(BUILDDIR)/."
 
 dirhtml:
 	$(SPHINXBUILD) -b dirhtml $(ALLSPHINXOPTS) $(BUILDDIR)/dirhtml
@@ -153,5 +153,7 @@ doctest:
 	      "results in $(BUILDDIR)/doctest/output.txt."
 
 slides:
-	$(SPHINXBUILD) -b html5slides $(ALLSPHINXOPTS) $(BUILDDIR)/slides
+	$(SPHINXBUILD) -b slides $(ALLSPHINXOPTS) $(BUILDDIR)/slides
 	@echo "Build finished. The HTML slides are in $(BUILDDIR)/slides."
+
+html+slides: html slides

@@ -96,6 +96,13 @@ pygments_style = 'sphinx'
 slide_theme = 'slides'
 slide_theme_options = {'custom_css':'custom.css'}
 
+slide_link_html_to_slides = True
+slide_link_html_sections_to_slides = True
+slide_relative_path = "./slides/"
+
+slide_link_to_html = True
+slide_html_relative_path = "../"
+
 # -- Options for HTML output ---------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
