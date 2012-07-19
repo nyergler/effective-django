@@ -16,11 +16,6 @@ code, .code, pre {
     padding-right: 0;
 }
 
-.slides > article {
-  background: url(eb_logo.gif) 710px 620px no-repeat;
-  background-color: white;
-}
-
 /* Title Slide */
 
 .slides > article.level-1 {

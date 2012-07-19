@@ -9,27 +9,6 @@
 Effective Django Forms
 ======================
 
-.. slides::
-
-   .. figure:: /_static/building.jpg
-      :class: fill
-
-      CC BY-NC-SA http://www.flickr.com/photos/t_lawrie/278932896/
-
-   Nathan R. Yergler //
-   PyCon 2012 //
-   10 March 2012
-
-   nathan@eventbrite.com // @nyergler
-
-   Danger
-   ======
-
-   .. figure:: /_static/diving.jpg
-      :class: fill
-
-      CC BY-NC-SA http://www.flickr.com/photos/lwr/134769010/
-
 Form Basics
 ===========
 
@@ -851,9 +830,3 @@ State Validators
    False
    >>> form.errors('publish')
    {'title': 'This field is required'}
-
-
-The End
-=======
-
-http://yergler.net/2012/pycon-forms
