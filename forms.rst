@@ -1,10 +1,3 @@
-.. testsetup::
-
-   import sys, os
-   sys.path.append(os.getcwd())
-   os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
-
-
 ======================
 Effective Django Forms
 ======================
@@ -586,6 +579,16 @@ Defining Form Sets
    ContactFormSet = formsets.formset_factory(
        ContactForm,
    )
+
+.. testcode::
+   :hide:
+
+   request = request_factory.post(
+       '/',
+       rebar.testing.flatten_to_dict(ContactFormSet()),
+   )
+
+.. testcode::
 
    formset = ContactFormSet(data=request.POST)
 

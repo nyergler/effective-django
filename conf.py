@@ -256,3 +256,22 @@ texinfo_documents = [
 
 # How to display URL addresses: 'footnote', 'no', or 'inline'.
 #texinfo_show_urls = 'footnote'
+
+# -- DocTest Configuration ------------------------------------------------------
+
+trim_doctest_flags = True
+doctest_global_setup = """
+
+# setup the Django settings config
+import sys, os
+sys.path.append(os.getcwd())
+os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+
+# import commonly needed items
+import rebar.testing
+
+# create a Request Factory
+from django.test.client import RequestFactory
+request_factory = RequestFactory()
+
+"""
