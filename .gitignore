@@ -4,3 +4,5 @@
 /develop-eggs
 /parts
 /.installed.cfg
+/_serekh
+*.pyc

@@ -45,14 +45,14 @@ code, .code, pre {
 
 /* Section Slide Styling */
 
-.slides > article.level-2 {
-    padding-top: 450px;
-}
+/* .slides > article.level-2 { */
+/*     padding-top: 450px; */
+/* } */
 
-.slides > article > h2 {
-    position: relative;
-    bottom: auto;
-}
+/* .slides > article > h2 { */
+/*     position: relative; */
+/*     bottom: auto; */
+/* } */
 
 /* Interior Slide Styling */
 
@@ -89,7 +89,7 @@ table.context-table td {
 }
 
 table.context-table tr.row-odd {
-    background: #ffbc32;
+    background: #cdcdcd;
 }
 
 article#cc-chooser > h2,

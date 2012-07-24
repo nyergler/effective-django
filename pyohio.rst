@@ -30,12 +30,6 @@
 
 .. slides::
 
-   TL;DR
-   =====
-
-   * Cohesion Rules
-   * Look under the hood
-
    Effective?
    ==========
 
@@ -59,7 +53,7 @@
    .. XXX
 
 Everything In Its Right Place
-=============================
+-----------------------------
 
 .. Table::
    :class: context-table
@@ -79,9 +73,9 @@ Contents
    :maxdepth: 1
 
    gettingstarted.rst
-   testing.rst
-   middleware.rst
    views.rst
+   middleware.rst
+   testing.rst
 
    ORM <orm.rst>
 

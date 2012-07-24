@@ -93,7 +93,7 @@ pygments_style = 'sphinx'
 
 # -- Options for HTML 5 Slide output -------------------------------------------
 
-slide_theme = 'slides'
+slide_theme = 'single-level'
 slide_theme_options = {'custom_css':'custom.css'}
 
 slide_link_html_to_slides = True
