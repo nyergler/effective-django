@@ -1,16 +1,6 @@
 .. slideconf::
    :theme: single-level
 
-.. Next Steps
-.. ==========
-
-.. Further Reading
-.. ---------------
-
-.. * Testing Django Applications
-.. * DjangoCon US Videos
-.. * JKM's Scaling Django talk @ OSCON
-
 Thank You!
 ==========
 
@@ -19,12 +9,13 @@ Thank You!
    nathan@yergler.net
 
    http://effectivedjango.com/
+   http://github.com/nyergler/effectivedjango
 
 .. notslides::
 
    Thanks for reading this far. If you have feedback, comments, or
    suggestions, please feel free to email them to me:
-   nathan@yergler.net. Or find me on identi.ca or Twitter as
+   nathan@yergler.net. Or find me on `identi.ca`_ or `Twitter`_ as
    @nyergler.
 
    Thanks to `PyCon`_ and `PyOhio`_ for allowing me to speak about these
@@ -33,6 +24,13 @@ Thank You!
    place to work.
 
 
+Further Reading
+===============
+
+* Django Doesn't Scale, by Jacob Kaplan Moss
+
 .. _PyCon: http://us.pycon.org/2012
 .. _PyOhio: http://pyohio.org/
 .. _Eventbrite: http://www.eventbrite.com
+.. _`identi.ca`: http://identi.ca/nyergler
+.. _Twitter: http://twitter.com/nyergler

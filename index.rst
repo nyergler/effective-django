@@ -11,9 +11,15 @@
    of "batteries" included, and makes it easy to get up and going. But
    all of the power means you can write low quality code that still
    seems to work. *Effective Django* development means building
-   applications that are testable, maintainable, and scalable -- not
-   only in terms of traffic or load, but in terms of being able to add
-   developers to projects.
+   applications that are testable, maintainable, and scalable.
+
+   Testable, Maintainable, and Scalable all build upon one another. An
+   application that is testable (and has tests) will be more
+   maintainable. Developers will be able to make changes with
+   confidence, without worrying that they don't understand the
+   behavior of the code. And an application which is maintainable will
+   be scalable, not only in terms of traffic or load, but in terms of
+   being able to add developers to projects.
 
    Part of being able to effectively use Django is understanding
    what's available to you, and what the restrictions are. Frameworks
@@ -24,9 +30,12 @@
    you. Whether you're trying to stretch in a way the framework didn't
    imagine, or you're just trying to diagnose a mysterious bug, you
    have to look inside the black box and gain a deeper
-   understanding. After reading *Effective Django* you should have an
-   understanding of how Django's pieces fit together, and where you'd
-   begin to look.
+   understanding.
+
+   After reading *Effective Django* you should have an understanding
+   of how Django's pieces fit together, how to use them to build
+   maintainable and scalable applications, and where you'd begin to
+   look when you need to stretch beyond the standard confines of Django.
 
 .. slides::
 
@@ -39,11 +48,6 @@
 
    Nathan Yergler // nathan@yergler.net // @nyergler
 
-   TL;DR
-   =====
-
-   * Cohesion Rules
-   * Look under the hood
 
    What do you mean, "Effective"?
    ==============================

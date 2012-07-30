@@ -1,6 +1,6 @@
-==================
-First things First
-==================
+===============
+Getting Started
+===============
 
 Your Application Environment
 ============================
