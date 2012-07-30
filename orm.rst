@@ -304,9 +304,3 @@ Django's ``get_or_create`` when running at scale
 
 .. _`django-dirtyfields`: http://pypi.python.org/pypi/django-dirtyfields/
 .. _`factory boy`: http://pypi.python.org/pypi/factory_boy
-
-
-Next
-====
-
-:doc:`forms`

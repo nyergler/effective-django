@@ -72,10 +72,6 @@ Running Tests
 * Easy to replace the test runner with something like ``nose`` if you
   so desire
 
-Next
-====
-
-:doc:`middleware`
 
 Further Reading
 ===============

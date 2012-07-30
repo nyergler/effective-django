@@ -156,8 +156,3 @@ Example
    * No actual view logic
    * Subclasses ``object``, not ``View``
    * Calls ``super`` on overridden methods
-
-Next
-====
-
-:doc:`orm`

@@ -95,8 +95,3 @@ WSGI Middleware
 * The two have similar functions, but are **not** the same
 
 .. _WSGI: http://wsgi.org
-
-Next
-====
-
-:doc:`views`
