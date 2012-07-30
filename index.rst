@@ -30,36 +30,30 @@
 
 .. slides::
 
+   .. figure:: /_static/building.jpg
+      :class: fill
+
+      CC BY-NC-SA http://www.flickr.com/photos/t_lawrie/278932896/
+
+   http://effectivedjango.com
+
+   Nathan Yergler // nathan@yergler.net // @nyergler
+
    TL;DR
    =====
 
    * Cohesion Rules
    * Look under the hood
 
-   Effective?
-   ==========
+   What do you mean, "Effective"?
+   ==============================
 
    * Testable
    * Maintainable
    * Scalable
 
-   .. Testable
-   .. ========
-
-   .. Fly what you test, test what you fly.
-
-   .. Scalable
-   .. ========
-
-   .. Overhead kills performance, as well as productivity.
-
-   .. Maintainable
-   .. ============
-
-   .. XXX
-
-Everything In Its Right Place
-=============================
+A Mental Model
+==============
 
 .. Table::
    :class: context-table
@@ -82,8 +76,11 @@ Contents
    testing.rst
    middleware.rst
    views.rst
-
-   ORM <orm.rst>
-
+   Databases & Models <orm.rst>
    Forms <forms.rst>
    conclusion.rst
+
+
+You can find the source to these documents on `github`_.
+
+.. _`github`: http://github.com/nyergler/effective-django

@@ -833,14 +833,3 @@ State Validators
    False
    >>> form.errors('publish')
    {'title': 'This field is required'}
-
-
-
-Thank You!
-==========
-
-.. slides::
-
-   nathan@yergler.net
-
-   http://effectivedjango.com/

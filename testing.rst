@@ -8,14 +8,14 @@
 Testing Django
 ==============
 
-* There are Unit Tests and there are integration tests, Each has its
-  purpose
-* Tests should not rely on external services
-* Tests should be *fast*
-* Django bundles ``unittest2`` as ``django.utils.unittest``
+* There are Unit Tests and there are Integration tests
+* Unit Tests should not rely on external services
+* Unit Tests should be *fast*
 
 Writing a Unit Test
 ===================
+
+* Django bundles ``unittest2`` as ``django.utils.unittest``
 
 ::
 

@@ -38,7 +38,7 @@ Using a Template
 
   from django.views.generic import TemplateView
 
-  class ContactList(View):
+  class ContactList(TemplateView):
 
       template_name = 'index.html' # or define get_template_names()
 
