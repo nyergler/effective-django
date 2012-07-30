@@ -77,6 +77,7 @@ Contents
    :maxdepth: 1
 
    gettingstarted.rst
+   views.rst
    testing.rst
    middleware.rst
    Databases & Models <orm.rst>
