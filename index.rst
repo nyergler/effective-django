@@ -79,8 +79,8 @@ Contents
    gettingstarted.rst
    testing.rst
    middleware.rst
-   views.rst
    Databases & Models <orm.rst>
+   classbasedviews.rst
    Forms <forms.rst>
    conclusion.rst
 
