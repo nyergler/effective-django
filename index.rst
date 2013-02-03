@@ -5,6 +5,18 @@
  Effective Django
 ==================
 
+.. note::
+
+   These documents are a combination of the notes and examples
+   developed for talks prepared for PyCon 2012, PyOhio 2012, and PyCon
+   2013, and for Eventbrite web engineering. I'm still working on
+   fleshing them out into a single document, but I hope you find them
+   useful.
+
+   Feedback, suggestions, and questions may be sent to
+   nathan+ed@yergler.net. You can find (and fork) the source on
+   `github <http://github.com/nyergler/effective-django>`_.
+
 .. notslides::
 
    Django is a popular, powerful web framework for Python. It has lots
