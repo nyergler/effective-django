@@ -1,3 +1,6 @@
+.. tut::
+   :path: ./src
+
 .. slideconf::
    :theme: single-level
 

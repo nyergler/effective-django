@@ -31,6 +31,7 @@ extensions = [
     'sphinxcontrib.blockdiag',
     'sphinxcontrib.googleanalytics',
     'hieroglyph',
+    'tut.sphinx',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
