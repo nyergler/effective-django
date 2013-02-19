@@ -1,0 +1,296 @@
+Writing Views
+=============
+
+* Views take an HTTP Request and return a Response
+
+  .. blockdiag::
+
+     blockdiag {
+        // Set labels to nodes.
+        A [label = "User"];
+        C [label = "View"];
+
+        A -> C [label = "Request"];
+        C -> A [label = "Response"];
+     }
+
+* The can also take parameters: from the URL, or from the Request
+
+
+Django 1.3 introduced class based views, which is what we'll be
+focusing on here. Class based views, or CBVs, can eliminate a lot of
+boilerplate from your views, especially for things like an edit view
+where you want to take different action on a ``GET`` vs ``POST``. They
+give you a lot of power to compose functionality from pieces. The
+downside is that this power comes with some added complexity.
+
+Listing Contacts
+----------------
+
+We'll start with a view that presents a list of contacts in the
+database.
+
+The basic view implementation is shockingly brief.
+
+::
+
+  from django.views.generic import ListView
+
+  from contacts.models import Contact
+
+
+  class ListContactView(ListView):
+
+      model = Contact
+
+The ListView_ that we subclass from is itself composed of several
+mixins that provide some behavior, and that composition gives us a lot
+of power without a lot of code. In this case we set ``model =
+Contact``, which says that this view is going to list *all* the
+Contacts in our database. We'll see TK:later how you can limit the
+view to a subset.
+
+.. Mapping URLs
+.. ------------
+
+.. * Django **URLconfs** define how to map requests to Python code
+.. * **URLconfs** are Python modules
+.. * In that module there are a few important names:
+
+..   * ``urlpatterns``
+..   * ``handler403``
+..   * ``handler404``
+..   * ``handler500``
+
+.. * As your project grows, the URL conf can begin to import lots and
+..   lots of things.
+.. * If one of those imports fails, your project will stop working in a
+..   slightly mysterious manner.
+
+Defining URLs
+~~~~~~~~~~~~~
+
+``contactmgr/urls.py``::
+
+  from django.conf.urls import patterns, include, url
+
+  import contacts.views
+
+
+  urlpatterns = patterns('',
+      url(r'^$', contacts.views.ListContactView.as_view(),
+          name='contacts-list',),
+
+  )
+
+.. notslides::
+
+   * Use of the ``url()`` function is not strictly required, but I
+     like it: when you start adding more information to the URL
+     pattern, it lets you use named parameters, making everything more
+     clear.
+   * The first parameter is a regular expression. Note the trailing
+     ``$``; why might that be important?
+   * The second parameter is the view callable. It can either be the
+     actual callable (imported manually), or a string describing
+     it. If it's a string, Django will try to import the module (up to
+     the final dot, ``contacts.views`` in this case), and then call
+     the final part (``index`` in this case).
+   * Note that when we're using a class based view, we *must* use the
+     real object here, and not the string notation. That's because we
+     have to call the class method ``as_view()``, which returns a
+     wrapper around our class that Django's URL dispatch can call.
+   * Giving a URL pattern a name allows you to do a reverse lookup
+   * Useful when linking from one View to another, or redirecting
+   * Allows you to manage your URL structure solely in the URL Conf
+
+
+Creating the Template
+~~~~~~~~~~~~~~~~~~~~~
+
+Now that we've defined a URL for our list view, we can try it out.
+Django includes a server suitable for development purposes that you
+can use to easily test your project::
+
+  $ python manage.py runserver
+  Validating models...
+
+  0 errors found
+  Django version 1.4.3, using settings 'contactmgr.settings'
+  Development server is running at http://127.0.0.1:8000/
+  Quit the server with CONTROL-C.
+
+If you visit the ``http://localhost:8000/`` in your browser, though,
+you'll see an error: ``TemplateDoesNotExist``.
+
+.. image::
+   /_static/tutorial/TemplateDoesNotExist.png
+
+Most of Django's generic views (such as ``ListView`` which we're
+using) have a predefined template name that they expect to find. We
+can see in this error message that this view was expecting to find
+``contact_list.html``, which is derives from the model name. Let's go
+and create that.
+
+By default Django will look for templates in applications, as well as
+in directories you specify in ``settings.TEMPLATE_DIRS``.
+
+In our ``contacts`` app, create the directory structure
+``templates/contacts``; we'll put our ``contact_list.html`` there. If
+you put a simple "Hello, world" template there and restart your
+server, you'll see the message displayed.
+
+That may seem like an extra layer of directories there (``contacts``),
+but in this case it makes a little bit of sense: Django is attempting
+to do things in a "generic" fashion. We can override that, if we want,
+by adding the ``template_name`` attribute to our view::
+
+  class ListContactView(ListView):
+
+      template_name = 'contact_list.html'
+      model = Contact
+
+Now we can just create ``contact_list.html`` in the
+``contacts/templates/`` directory.
+
+::
+
+  <h1>Contacts</h1>
+
+  <ul>
+    {% for contact in object_list %}
+      <li>{{ contact }}</li>
+    {% endfor %}
+  </ul>
+
+Opening the page in the browser, we should see one contact there, the
+one we added earlier through the interactive shell.
+
+Create
+------
+
+Adding information to the database through the interactive shell is
+going to get old fast, so let's create a view for adding a new
+contact.
+
+Just like the list view, we'll use one of Django's generic views. In
+``views.py``, we can add the new view::
+
+  class CreateContactView(CreateView):
+
+      model = Contact
+      template_name = 'edit_contact.html'
+
+      def get_success_url(self):
+          return reverse('contacts-list')
+
+TK: reverse, get_success_url
+
+The template is slightly more involved than the list template, but not
+much. Our ``edit_contact.html`` will look something like this.
+
+::
+
+  <h1>Add Contact</h1>
+
+  <form action="." method="POST">
+    {% csrf_token %}
+    <ul>
+      {{ form.as_ul }}
+    </ul>
+    <input type="submit" value="Save" />
+  </form>
+
+  <a href="{% url contacts-list %}">back to list</a>
+
+A few things to note:
+
+- The ``form`` in the context is the `Django Form`_ for our model.
+  Since we didn't specify one, Django made one for us. How thoughtful.
+- If the just do ``{{ form }}`` we'll get a table; adding ``.as_ul``
+  formats the inputs for an unordered list. Try ``.as_p`` instead to
+  see what you get.
+- When we output the form, it only includes our fields, not the
+  surrounding ``<form>`` tag or the submit button, so we have to add
+  those.
+- TK:csrftoken
+- TK:action
+- We're using the ``url`` template tag to generate the link back to
+  the contact list. Note that ``contacts-list`` is the name of our
+  view from the URL configuration. By using ``url`` instead of an
+  explicit path, we don't have to worry about a link breaking.
+
+Finally, let's configure the URL by adding the following line to our
+``urls.py`` file::
+
+    url(r'^new$', contacts.views.CreateContactView.as_view(),
+        name='contacts-new',),
+
+You can go to ``http://localhost:8000/new`` to create new contacts
+
+.. sidebar:: Context Variables in Class Based Views
+
+   The collection of values available to a template when it's rendered
+   is referred to as the Context. The Context is a combination of
+   information supplied by the view and information from `context
+   processors`_.
+
+   When you're using built in generic views, it's not obvious what
+   values are available to the context. With some practice you'll
+   discover they're pretty consistent -- ``form``, ``object``, and
+   ``object_list`` are often used -- but that doesn't help when you're
+   just starting off. XXX
+
+   In class based views, the ``get_context_data()`` method is used to
+   add information to the context. If you override this method, you
+   usually want to accept ``**kwargs``, and call the super class.
+
+Testing Your Views
+------------------
+
+So far our views have been pretty minimal: they've leverage Django's
+generic views, and contain very little of our own code or logic. One
+perspective is that this is how it should be: a view takes a request,
+and returns a response, delegating the issue of validating input to
+forms, and business logic to model methods. This is a perspective that
+I subscribe to. The less logic contained in views, the better.
+
+However, there is code in views that should be tested, either by unit
+tests or integration tests. The distinction is important: unit tests
+are focused on testing a single unit of functionality. Whey you're
+writing a unit test, the assumption is that everything else has its
+own tests, and is working properly. Integration tests attempt to test
+the system from end to end, so you can ensure that the points of
+integration are functioning properly. Most complex systems have both.
+
+Django 1.4 added additional support for integration tests, so we'll
+write a couple here.
+
+"Live Server" Tests
++++++++++++++++++++
+
+Django 1.4 adds a new ``TestCase`` base class, the
+``LiveServerTestCase``. This is very much what it sounds like: a test
+case that runs against a live server. By default Django will start the
+development server for you when it runs these tests, but they can also
+be run against another server. *Selenium* is a package commonly used
+for writing tests that drive a web browser, and that's what we'll use
+for our integration tests.
+
+::
+
+  $ pip install selenium
+
+Our initial test is going to be pretty simple, because our project is
+simple right now: it'll just make sure we can get the list page.
+
+
+
+Update
+------
+
+Delete
+------
+
+Review
+------
