@@ -1,3 +1,6 @@
+.. tut::
+   :path: /src
+
 Writing Views
 =============
 
@@ -24,6 +27,8 @@ where you want to take different action on a ``GET`` vs ``POST``. They
 give you a lot of power to compose functionality from pieces. The
 downside is that this power comes with some added complexity.
 
+.. checkpoint:: contact_list_view
+
 Listing Contacts
 ----------------
 
@@ -32,16 +37,9 @@ database.
 
 The basic view implementation is shockingly brief.
 
-::
-
-  from django.views.generic import ListView
-
-  from contacts.models import Contact
-
-
-  class ListContactView(ListView):
-
-      model = Contact
+.. literalinclude:: /src/contacts/views.py
+   :language: python
+   :end-before: template_name
 
 The ListView_ that we subclass from is itself composed of several
 mixins that provide some behavior, and that composition gives us a lot
@@ -70,18 +68,9 @@ view to a subset.
 Defining URLs
 ~~~~~~~~~~~~~
 
-``contactmgr/urls.py``::
+.. literalinclude:: /src/addressbook/urls.py
+   :language: python
 
-  from django.conf.urls import patterns, include, url
-
-  import contacts.views
-
-
-  urlpatterns = patterns('',
-      url(r'^$', contacts.views.ListContactView.as_view(),
-          name='contacts-list',),
-
-  )
 
 .. notslides::
 
@@ -143,25 +132,14 @@ server, you'll see the message displayed.
 That may seem like an extra layer of directories there (``contacts``),
 but in this case it makes a little bit of sense: Django is attempting
 to do things in a "generic" fashion. We can override that, if we want,
-by adding the ``template_name`` attribute to our view::
+by adding the ``template_name`` attribute to our view:
 
-  class ListContactView(ListView):
-
-      template_name = 'contact_list.html'
-      model = Contact
+.. literalinclude:: /src/contacts/views.py
 
 Now we can just create ``contact_list.html`` in the
 ``contacts/templates/`` directory.
 
-::
-
-  <h1>Contacts</h1>
-
-  <ul>
-    {% for contact in object_list %}
-      <li>{{ contact }}</li>
-    {% endfor %}
-  </ul>
+.. literalinclude:: /src/contacts/templates/contact_list.html
 
 Opening the page in the browser, we should see one contact there, the
 one we added earlier through the interactive shell.
@@ -169,39 +147,43 @@ one we added earlier through the interactive shell.
 Create
 ------
 
+.. checkpoint:: create_contact_view
+
 Adding information to the database through the interactive shell is
 going to get old fast, so let's create a view for adding a new
 contact.
 
 Just like the list view, we'll use one of Django's generic views. In
-``views.py``, we can add the new view::
+``views.py``, we can add the new view:
 
-  class CreateContactView(CreateView):
+.. literalinclude:: /src/contacts/views.py
+   :pyobject: CreateContactView
 
-      model = Contact
-      template_name = 'edit_contact.html'
-
-      def get_success_url(self):
-          return reverse('contacts-list')
 
 TK: reverse, get_success_url
+
+
+.. sidebar:: Context Variables in Class Based Views
+
+   The collection of values available to a template when it's rendered
+   is referred to as the Context. The Context is a combination of
+   information supplied by the view and information from `context
+   processors`_.
+
+   When you're using built in generic views, it's not obvious what
+   values are available to the context. With some practice you'll
+   discover they're pretty consistent -- ``form``, ``object``, and
+   ``object_list`` are often used -- but that doesn't help when you're
+   just starting off. XXX
+
+   In class based views, the ``get_context_data()`` method is used to
+   add information to the context. If you override this method, you
+   usually want to accept ``**kwargs``, and call the super class.
 
 The template is slightly more involved than the list template, but not
 much. Our ``edit_contact.html`` will look something like this.
 
-::
-
-  <h1>Add Contact</h1>
-
-  <form action="." method="POST">
-    {% csrf_token %}
-    <ul>
-      {{ form.as_ul }}
-    </ul>
-    <input type="submit" value="Save" />
-  </form>
-
-  <a href="{% url contacts-list %}">back to list</a>
+.. literalinclude:: /src/contacts/templates/edit_contact.html
 
 A few things to note:
 
@@ -228,23 +210,6 @@ Finally, let's configure the URL by adding the following line to our
 
 You can go to ``http://localhost:8000/new`` to create new contacts
 
-.. sidebar:: Context Variables in Class Based Views
-
-   The collection of values available to a template when it's rendered
-   is referred to as the Context. The Context is a combination of
-   information supplied by the view and information from `context
-   processors`_.
-
-   When you're using built in generic views, it's not obvious what
-   values are available to the context. With some practice you'll
-   discover they're pretty consistent -- ``form``, ``object``, and
-   ``object_list`` are often used -- but that doesn't help when you're
-   just starting off. XXX
-
-   In class based views, the ``get_context_data()`` method is used to
-   add information to the context. If you override this method, you
-   usually want to accept ``**kwargs``, and call the super class.
-
 Testing Your Views
 ------------------
 
@@ -263,11 +228,21 @@ own tests, and is working properly. Integration tests attempt to test
 the system from end to end, so you can ensure that the points of
 integration are functioning properly. Most complex systems have both.
 
+TK: Test client, Request Factory
+
+.. checkpoint:: view_tests
+
+.. literalinclude:: /src/contacts/tests.py
+   :prepend: from django.test.client import Client
+             from django.test.client import RequestFactory
+   :pyobject: ContactListViewTests
+
+
 Django 1.4 added additional support for integration tests, so we'll
 write a couple here.
 
 "Live Server" Tests
-+++++++++++++++++++
+~~~~~~~~~~~~~~~~~~~
 
 Django 1.4 adds a new ``TestCase`` base class, the
 ``LiveServerTestCase``. This is very much what it sounds like: a test
@@ -284,10 +259,44 @@ for our integration tests.
 Our initial test is going to be pretty simple, because our project is
 simple right now: it'll just make sure we can get the list page.
 
+TK:XXX
 
+.. checkpoint:: master
 
 Update
 ------
+
+The Update view will let us edit a contact in the address book, and as
+with the previous two, there's a generic class based view for this.
+
+.. literalinclude:: /src/contacts/views.py
+   :pyobject: UpdateContactView
+   :end-before: template_name
+
+* we can re-use the same template
+* but how does it know which contact to load?
+* we need to either: provide a pk/slug, or override get_object().
+* we'll provide pk in the URL
+
+.. literalinclude:: /src/addressbook/urls.py
+   :lines: 11-12
+
+We'll update the contact list to include an edit link next to each
+contact.
+
+.. literalinclude:: /src/contacts/templates/contact_list.html
+
+* note the use of "kwargs" in the {% url %} tag
+
+If you run the server now, you'll see an edit link. Go ahead and click
+it, and try to make a change. You'll notice that instead of editing
+the existing record, it creates a new one. Sad face. If we look at the
+source of the edit HTML, we can easily see the reason: the form
+targets ``/new``, not our edit URL. To fix this -- and still allow
+re-using the template -- we're going to
+
+.. literalinclude:: /src/contacts/views.py
+   :pyobject: UpdateContactView
 
 Delete
 ------

@@ -1,3 +1,6 @@
+.. tut::
+   :path: /src
+
 .. slideconf::
    :autoslides: False
 
@@ -56,6 +59,8 @@ Your Environment
 Setting Up Your Environment
 ===========================
 
+.. checkpoint:: environment
+
 Create a Clean Workspace
 ------------------------
 
@@ -77,7 +82,7 @@ TK: why requirements.txt
 
 requirements.txt
 
-.. literalinclude:: /examples/1_scaffolding/requirements.txt
+.. literalinclude:: /src/requirements.txt
 
 ::
 
@@ -115,17 +120,16 @@ Creating the Scaffolding
 
 ::
 
-  $ django-admin.py startproject contactmgr
+  $ django-admin.py startproject addressbook
 
 ::
 
-  ./contactmgr
-      manage.py
-      ./contactmgr
-          __init__.py
-          settings.py
-          urls.py
-          wsgi.py
+  manage.py
+  ./addressbook
+      __init__.py
+      settings.py
+      urls.py
+      wsgi.py
 
 .. notslides::
 
@@ -165,12 +169,11 @@ TK
 
 ::
 
-  $ cd contactmgr
   $ python ./manage.py startapp contacts
 
 ::
 
-  ./contactmgr
+  ./addressbook
   ./contacts
       __init__.py
       models.py

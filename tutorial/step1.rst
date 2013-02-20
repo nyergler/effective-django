@@ -1,5 +1,10 @@
+.. tut::
+   :path: /src
+
 .. slideconf::
    :autoslides: False
+
+.. checkpoint:: contact_model
 
 Configuring the Database
 ========================
@@ -20,7 +25,7 @@ settings`_. You can also add your own settings here, if needed.
 For SQLite we need to set the engine and then give it a name. The
 SQLite backend uses the ``NAME`` as the filename for the database.
 
-.. literalinclude:: /contactmgr/contactmgr/settings.py
+.. literalinclude:: /src/addressbook/settings.py
    :language: python
    :lines: 12-21
 
@@ -42,7 +47,7 @@ to encapsulate business logic. All models subclass the base TK:Model
 class, and contain field definitions. Let's start by creating a simple
 Contact model for our application in ``contacts/models.py``.
 
-.. literalinclude:: /contactmgr/contacts/models.py
+.. literalinclude:: /src/contacts/models.py
    :language: python
 
 Django provides a set of fields_ that map to data types and different
@@ -77,21 +82,11 @@ need to tell the Project to use the Application.
 The ``INSTALLED_APPS`` setting lists the applications that the project
 uses. These are listed as strings that map to Python packages. Django
 will import each and looks for a ``models`` module there. Add our
-Contacts app to the project's ``INSTALLED_APPS`` setting::
+Contacts app to the project's ``INSTALLED_APPS`` setting:
 
-  INSTALLED_APPS = (
-      'django.contrib.auth',
-      'django.contrib.contenttypes',
-      'django.contrib.sessions',
-      'django.contrib.sites',
-      'django.contrib.messages',
-      'django.contrib.staticfiles',
-      # Uncomment the next line to enable the admin:
-      # 'django.contrib.admin',
-      # Uncomment the next line to enable admin documentation:
-      # 'django.contrib.admindocs',
-      'contacts',
-  )
+.. literalinclude:: /src/addressbook/settings.py
+   :language: python
+   :lines: 111-123
 
 Then run ``syncdb`` again::
 
@@ -160,7 +155,7 @@ Writing a Test
    it'd be exposed to end users. So it's worth writing a test so we
    understand how we expect it to operate.
 
-.. literalinclude:: /contactmgr/contacts/tests.py
+.. literalinclude:: /src/contacts/tests.py
    :language: python
    :pyobject: ContactTests
 

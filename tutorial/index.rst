@@ -51,5 +51,6 @@ Contents
 
       step0.rst
       step1.rst
+      step1a.rst
       step2.rst
       step3.rst
