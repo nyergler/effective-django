@@ -120,7 +120,10 @@ Creating the Scaffolding
 
 ::
 
-  $ django-admin.py startproject addressbook
+  $ django-admin.py startproject addressbook .
+
+
+TK: why "."
 
 ::
 

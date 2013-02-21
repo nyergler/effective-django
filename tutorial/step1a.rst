@@ -261,7 +261,7 @@ simple right now: it'll just make sure we can get the list page.
 
 TK:XXX
 
-.. checkpoint:: master
+.. checkpoint:: edit_contact_view
 
 Update
 ------
@@ -271,7 +271,7 @@ with the previous two, there's a generic class based view for this.
 
 .. literalinclude:: /src/contacts/views.py
    :pyobject: UpdateContactView
-   :end-before: template_name
+   :end-before: def get_context_data
 
 * we can re-use the same template
 * but how does it know which contact to load?
@@ -293,13 +293,97 @@ it, and try to make a change. You'll notice that instead of editing
 the existing record, it creates a new one. Sad face. If we look at the
 source of the edit HTML, we can easily see the reason: the form
 targets ``/new``, not our edit URL. To fix this -- and still allow
-re-using the template -- we're going to
+re-using the template -- we're going to add some information to the
+template context.
+
+The template context is the information available to a template when
+it's rendered. This is a combination of information you provide in
+your view -- either directly or indirectly -- and information added by
+`context processors`_, such as the location for static media and
+current locale. In order to use the same template for add and edit,
+we'll add information about where the form should redirect to the
+context.
+
+.. literalinclude:: /src/contacts/views.py
+   :pyobject: CreateContactView
 
 .. literalinclude:: /src/contacts/views.py
    :pyobject: UpdateContactView
 
+We also update the template to use that value for the action and
+change the title based on whether or not we've previously saved.
+
+.. literalinclude:: /src/contacts/templates/edit_contact.html
+   :lines: 1-7
+
+You may wonder where the ``contact`` value in the contact comes from:
+the class based views that wrap a single object (those that take
+a primary key or slug) expose that to the context in two different
+ways: as a variable named ``object``, and as a variable named after
+the model class. The latter often makes your templates easier to read
+and understand later. You can customize this name by overriding
+``get_context_object_name`` on your view.
+
 Delete
 ------
+
+.. checkpoint:: delete_contact_view
+
+The final view for our basic set of CRUD views is delete. The generic
+deletion view is very similar to the edit view: it wraps a single
+object and requires that you provide a URL to redirect to on success.
+When it processes a HTTP GET request, it displays a confirmation page, and
+when it receives an HTTP DELETE or POST, it deletes the object and
+redirects to the success URL.
+
+.. literalinclude:: /src/contacts/views.py
+   :pyobject: DeleteContactView
+
+.. literalinclude:: /src/contacts/templates/delete_contact.html
+
+Of course we need to add this to the URL definitions:
+
+.. literalinclude:: /src/addressbook/urls.py
+   :lines: 13-14
+
+And we'll add the link to delete to the edit page.
+
+.. literalinclude:: /src/contacts/templates/edit_contact.html
+   :lines: 15-17
+
+Detail
+------
+
+.. checkpoint:: contact_detail_view
+
+Finally, let's go ahead and add a detail view for our Contacts. This
+will show the details of the Contact -- not much right now, but we'll
+build on this shortly. Django includes another generic view
+
+.. literalinclude:: /src/contacts/views.py
+   :pyobject: ContactView
+
+.. literalinclude:: /src/contacts/templates/contact.html
+
+Of course we need to add this to the URL definitions:
+
+.. literalinclude:: /src/addressbook/urls.py
+   :lines: 9-10
+
+We're also going to add a method to our Contact model,
+``get_absolute_url``.  ``get_absolute_url`` is a Django convention for
+obtaining the URL of a single model instance. In this case it's just
+going to be a call to reverse, but by providing this method, our model
+will play nicely with other parts of Django.
+
+.. literalinclude:: /src/contacts/models.py
+   :pyobject: Contact.get_absolute_url
+
+And we'll add the link to the contact from the contact list.
+
+.. literalinclude:: /src/contacts/templates/contact_list.html
+   :lines: 5-9
+
 
 Review
 ------
