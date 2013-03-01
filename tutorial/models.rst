@@ -4,6 +4,10 @@
 .. slideconf::
    :autoslides: False
 
+========
+ Models
+========
+
 .. checkpoint:: contact_model
 
 Configuring the Database

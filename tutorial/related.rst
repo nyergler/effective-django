@@ -1,9 +1,12 @@
 .. tut::
    :path: /src
 
-======================
- Adding Relationships
-======================
+================
+Related Models
+================
+
+Adding Relationships
+====================
 
 .. checkpoint:: address_model
 
@@ -47,6 +50,8 @@ list of all Addresses to the Contact detail view.
 
 .. literalinclude:: /src/contacts/templates/contact.html
 
+Editing Related Objects
+=======================
 
 So how do we go about editing addresses for our contacts? You can
 imagine creating another CreateView like we did for Contacts, but the
@@ -58,9 +63,7 @@ go to create the Address.
 To deal with this, we'll create a form that understands the
 relationship between Contacts and Addresses.
 
-.. checkpoint:: master
-
-:: address_form_and_view
+.. checkpoint:: edit_addresses
 
 .. sidebar:: Forms, FormSets, ModelForms
 
@@ -81,4 +84,41 @@ both specify a maximum length of 255 characters; if you attempted to
 create a Contact with a name longer than that, you'll see an error
 message.
 
-These generated model forms are great, but they don't know
+The first editing interface we're going to build for Addresses is one
+that allows you to edit all the addresses for a Contact at once. To do
+this, we'll need to create a FormSet that handles all the Addresses
+for a single Contact. The `Inline FormSet`_ does just that.
+
+.. literalinclude:: /src/contacts/forms.py
+
+When we create the view, we'll need to specify that this is the form
+we want to use, instead of having Django create one for us.
+
+.. literalinclude:: /src/contacts/views.py
+   :pyobject: EditContactAddressView
+
+Note that even though we're editing Addresses with this view, we still
+have ``model`` set to ``Contact``. This is because an inline formset
+takes the parent object as it's starting point. In the next section
+we'll see a more in depth example.
+
+Once again, this needs to be wired up into the URL configuration.
+
+.. literalinclude:: /src/addressbook/urls.py
+   :lines: 15-16
+
+And we have a simple template.
+
+.. literalinclude:: /src/contacts/templates/edit_addresses.html
+
+There are two new things in this template, both related to the fact
+we're using a formset instead of a form. First, there's a reference to
+``form.management_form``. This is a set of hidden fields that provide
+some accounting information to Django: how many forms did we start
+with, how many empty ones are there, etc. If Django can't find this
+information when you POST the form, it will raise an exception.
+
+Second, we're iterating over form instead of just outputting it (``for
+address_form in form``). Again, this is because ``form`` here is a
+formset instead of a single form. When you iterate over a formset,
+you're iterating over the individual forms in it.

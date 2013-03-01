@@ -23,7 +23,7 @@ URLconfs
   slightly mysterious manner.
 
 Defining URLs
--------------
+=============
 
 ``contactmgr/urls.py``::
 

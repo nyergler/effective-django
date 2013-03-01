@@ -33,24 +33,12 @@ Effective?
 Contents
 ========
 
-.. ifslides::
+.. toctree::
+   :maxdepth: 2
 
-   .. toctree::
-      :maxdepth: 1
-
-      step0.rst
-      step1.rst
-      step1a.rst
-      step2.rst
-      step3.rst
-
-.. ifnotslides::
-
-   .. toctree::
-      :maxdepth: 2
-
-      step0.rst
-      step1.rst
-      step1a.rst
-      step2.rst
-      step3.rst
+   getting-started.rst
+   models.rst
+   views.rst
+   forms.rst
+   related.rst
+   authzn.rst
