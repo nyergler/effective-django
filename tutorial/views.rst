@@ -1,8 +1,23 @@
 .. tut::
    :path: /src
 
-Writing Views
-=============
+.. slideconf::
+   :autoslides: False
+   :theme: single-level
+
+===============
+ Writing Views
+===============
+
+.. slide:: Writing Views
+   :level: 1
+
+   Handling HTTP Requests from users.
+
+.. rst-class:: include-as-slide, slide-level-2
+
+View Basics
+===========
 
 * Views take an HTTP Request and return a Response
 
@@ -17,20 +32,56 @@ Writing Views
         C -> A [label = "Response"];
      }
 
-* The can also take parameters: from the URL, or from the Request
+* Any callable that takes a Request can be a view
+* Like other frameworks, Django can pass values from the URL to the
+  view, as well
+
+.. rst-class:: include-as-slide, slide-level-2
+
+Generic & Class Based Views
+===========================
+
+* `Generic Views`_ have always provided some basic functionality:
+  render a template, redirect, create or edit a model, etc.
+* Django 1.3 introduced `Class Based Views`_ (CBV) for the generic views
+* Provide higher levels of abstraction and composability
+* Also hide a lot of complexity, which can be confusing for the
+  newcomer
+* Luckily the documentation is **much** better with Django 1.5
+
+.. ifnotslides::
+
+   Django 1.3 introduced class based views, which is what we'll be
+   focusing on here. Class based views, or CBVs, can eliminate a lot of
+   boilerplate from your views, especially for things like an edit view
+   where you want to take different action on a ``GET`` vs ``POST``. They
+   give you a lot of power to compose functionality from pieces. The
+   downside is that this power comes with some added complexity.
 
 
-Django 1.3 introduced class based views, which is what we'll be
-focusing on here. Class based views, or CBVs, can eliminate a lot of
-boilerplate from your views, especially for things like an edit view
-where you want to take different action on a ``GET`` vs ``POST``. They
-give you a lot of power to compose functionality from pieces. The
-downside is that this power comes with some added complexity.
+.. rst-class:: include-as-slide, slide-level-2
 
-.. checkpoint:: contact_list_view
+Class Based Views
+=================
+
+The minimal class based view subclasses View_ and implements methods
+for the HTTP methods it supports.
+
+::
+
+  from django.http import HttpResponse
+  from django.view.generic import View
+
+  class MyView(View):
+
+      def get(self, request, *args, **kwargs):
+          return HttpResponse("Hello, World")
+
 
 Listing Contacts
-----------------
+================
+
+.. checkpoint:: contact_list_view
 
 We'll start with a view that presents a list of contacts in the
 database.
@@ -65,8 +116,13 @@ view to a subset.
 .. * If one of those imports fails, your project will stop working in a
 ..   slightly mysterious manner.
 
+
+.. rst-class:: include-as-slide, slide-level-2
+
 Defining URLs
-~~~~~~~~~~~~~
+-------------
+
+Django looks for the URL configuration in ``urls.py`` in your project.
 
 .. literalinclude:: /src/addressbook/urls.py
    :language: python
@@ -89,13 +145,24 @@ Defining URLs
      real object here, and not the string notation. That's because we
      have to call the class method ``as_view()``, which returns a
      wrapper around our class that Django's URL dispatch can call.
-   * Giving a URL pattern a name allows you to do a reverse lookup
-   * Useful when linking from one View to another, or redirecting
-   * Allows you to manage your URL structure solely in the URL Conf
 
+* Giving a URL pattern a name allows you to do a reverse lookup
+
+.. notslides::
+
+   * Useful when linking from one View to another, or redirecting
+   * Allows you to manage your URL structure in one place
 
 Creating the Template
-~~~~~~~~~~~~~~~~~~~~~
+---------------------
+
+.. slide:: Django Templates
+   :level: 2
+
+   * Django allows you to specify ``TEMPLATE_DIRS`` to look for templates
+     in
+   * By default it looks for a ``template`` subdirectory in each app
+   * Keeping templates within an app makes creating reusable apps easier
 
 Now that we've defined a URL for our list view, we can try it out.
 Django includes a server suitable for development purposes that you
@@ -145,7 +212,7 @@ Opening the page in the browser, we should see one contact there, the
 one we added earlier through the interactive shell.
 
 Create
-------
+======
 
 .. checkpoint:: create_contact_view
 
@@ -211,7 +278,7 @@ Finally, let's configure the URL by adding the following line to our
 You can go to ``http://localhost:8000/new`` to create new contacts
 
 Testing Your Views
-------------------
+==================
 
 So far our views have been pretty minimal: they've leverage Django's
 generic views, and contain very little of our own code or logic. One
@@ -242,7 +309,7 @@ Django 1.4 added additional support for integration tests, so we'll
 write a couple here.
 
 "Live Server" Tests
-~~~~~~~~~~~~~~~~~~~
+-------------------
 
 Django 1.4 adds a new ``TestCase`` base class, the
 ``LiveServerTestCase``. This is very much what it sounds like: a test
@@ -264,7 +331,7 @@ TK:XXX
 .. checkpoint:: edit_contact_view
 
 Update
-------
+======
 
 The Update view will let us edit a contact in the address book, and as
 with the previous two, there's a generic class based view for this.
@@ -325,7 +392,7 @@ and understand later. You can customize this name by overriding
 ``get_context_object_name`` on your view.
 
 Delete
-------
+======
 
 .. checkpoint:: delete_contact_view
 
@@ -352,7 +419,7 @@ And we'll add the link to delete to the edit page.
    :lines: 15-17
 
 Detail
-------
+======
 
 .. checkpoint:: contact_detail_view
 
@@ -385,5 +452,34 @@ And we'll add the link to the contact from the contact list.
    :lines: 5-9
 
 
+.. rst-class:: include-as-slide, slide-level-2
+
 Review
-------
+======
+
+* Views take an HttpRequest_ and turn it into an HttpResponse_
+* Django introduced generic class-based views with Django 1.3
+* These let you create reusable, composable views
+* URLs are defined in the ``urls.py`` file in your project
+* Naming URLs lets you calculate the URL for redirection, linking,
+  etc, making it easier to change URLs, if needed
+* RequestFactory_ allows you to create Requests for testing Views
+  with
+* LiveServerTestCase_ provides the infrastructure for writing
+  integration tests
+
+.. ifslides::
+
+   * Next: :doc:`forms`
+
+
+.. _`Generic Views`: https://docs.djangoproject.com/en/1.5/topics/class-based-views/generic-display/
+.. _`Class Based Views`: https://docs.djangoproject.com/en/1.5/topics/class-based-views/
+.. _View: https://docs.djangoproject.com/en/1.5/ref/class-based-views/base/#view
+.. _ListView: https://docs.djangoproject.com/en/1.5/ref/class-based-views/generic-display/#listview
+.. _`context processors`: https://docs.djangoproject.com/en/1.5/ref/templates/api/#subclassing-context-requestcontext
+.. _`Django Form`: https://docs.djangoproject.com/en/1.5/topics/forms/i
+.. _HttpRequest: https://docs.djangoproject.com/en/1.5/ref/request-response/#httprequest-objects
+.. _HttpResponse: https://docs.djangoproject.com/en/1.5/ref/request-response/#httpresponse-objects
+.. _RequestFactory: https://docs.djangoproject.com/en/1.5/topics/testing/advanced/#django.test.client.RequestFactory
+.. _LiveServerTestCase: https://docs.djangoproject.com/en/1.5/topics/testing/overview/#liveservertestcase
