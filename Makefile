@@ -1,4 +1,4 @@
-# Makefile for Sphinx documentation
+# Makefile for Effective Django
 #
 
 # You can set these variables from the command line.
@@ -157,3 +157,8 @@ slides:
 	@echo "Build finished. The HTML slides are in $(BUILDDIR)/slides."
 
 html+slides: html slides
+
+# Support for flymake-mode's flymake-simple-make-init in Emacs
+check-syntax:
+	$(SPHINXBUILD) -n -N -q -b html $(ALLSPHINXOPTS) $(BUILDDIR)/
+	$(SPHINXBUILD) -n -N -q -b slides $(ALLSPHINXOPTS) $(BUILDDIR)/slides
