@@ -3,19 +3,34 @@
 
 .. slideconf::
    :autoslides: False
+   :theme: single-level
 
 ========
  Models
 ========
+
+.. slide:: Django Models
+   :level: 1
+
+   Storing and manipulating data with the Django ORM.
+
 
 .. checkpoint:: contact_model
 
 Configuring the Database
 ========================
 
+.. slide:: Configuring Databases
+   :level: 2
+
+   .. literalinclude:: /src/addressbook/settings.py
+      :language: python
+      :lines: 12-21
+
 Django includes support out of the box for MySQL, PostgreSQL, SQLite3,
-and Oracle. We'll use SQLite_ for our project for simplicity. If you
-were going to use MySQL, you'd need to add TK:mysql-python to your
+and Oracle. SQLite3_ is included with Python starting with version
+2.5, so we'll use it for our project for simplicity. If you were going
+to use MySQL, for example, you'd need to add `mysql-python`_ to your
 ``requirements.txt`` file.
 
 To enable SQLite as the database, edit the ``DATABASES`` definition in
@@ -39,17 +54,29 @@ file needs to be easily importable, without triggering any side
 effects. You should avoid adding imports to the settings file.
 
 You rarely need to import the settings file directly; Django imports
-it for you, and makes it available as ``django.conf.settings``. See
-TK :doc:`/settings.rst` for more details.
+it for you, and makes it available as ``django.conf.settings``. You
+typically import your settings from ``django.conf``::
 
+  from django.conf import settings
 
 Creating a Model
 ================
 
+.. slide:: Defining Models
+   :level: 2
+
+   Models are created in the ``models`` module of a Django app and
+   subclass Model_
+
+   .. literalinclude:: /src/contacts/models.py
+      :language: python
+      :end-before: __str__
+
 Django models map (roughly) to a database table, and provide a place
-to encapsulate business logic. All models subclass the base TK:Model
+to encapsulate business logic. All models subclass the base Model_
 class, and contain field definitions. Let's start by creating a simple
 Contact model for our application in ``contacts/models.py``.
+
 
 .. literalinclude:: /src/contacts/models.py
    :language: python
@@ -104,11 +131,34 @@ Then run ``syncdb`` again::
 Note that Django created a table named ``contacts_contact``: by
 default Django will name your tables using a combination of the
 application name and model name. You can override that with the
-TK:model Meta options.
+`model Meta`_ options.
 
 
 Interacting with the Model
 --------------------------
+
+.. slide:: Instantiating Models
+   :level: 2
+
+   ::
+
+     nathan = Contact()
+     nathan.first_name = 'Nathan'
+     nathan.last_name = 'Yergler'
+     nathan.save()
+
+   ::
+
+     nathan = Contact.objects.create(
+         first_name='Nathan',
+         last_name='Yergler')
+
+   ::
+
+     nathan = Contact(
+         first_name='Nathan',
+         last_name='Yergler')
+     nathan.save()
 
 Now that the model has been synced to the database we can interact
 with it using the interactive shell.
@@ -144,6 +194,30 @@ Second, there's this ``objects`` property on our model class. That's
 the model's Manager_. The default model manager provides querying
 functionality, and can be customized.
 
+.. slide:: Model Managers
+   :level: 2
+
+   * A model instance maps to a row
+   * The model Manager_ maps to the table
+   * Every model has a default manager, ``objects``
+   * Operations that deal with more than one instance, or at the
+     "collection" level, usually map to the Manager
+
+.. slide:: Querying with Managers
+   :level: 2
+
+   * The ``filter`` Manager method lets you perform queries::
+
+       Contact.objects.filter(last_name='Yergler')
+
+   * ``filter`` returns a QuerySet_, an iterable over the result.
+   * You can also assert you only expect one::
+
+       Contact.objects.get(first_name='Nathan')
+
+   * If more than one is returned, an Exception will be raised
+   * The full query_ reference is pretty good on this topic.
+
 Third, there's this ``id`` field that we didn't define. Django adds
 and ``id`` field as the primary key for your model, unless you
 `specify a primary key`_.
@@ -151,23 +225,35 @@ and ``id`` field as the primary key for your model, unless you
 Writing a Test
 --------------
 
-.. ifnotslides::
+.. slide:: Testing Models
+   :level: 2
 
-   We have one method defined on our model -- ``__str__`` -- and this
-   is a good time to start writing tests. A model's ``__str__`` method
-   will get used in quite a few places, and it's entirely conceivable
-   it'd be exposed to end users. So it's worth writing a test so we
-   understand how we expect it to operate.
+   * Business logic is usually added as methods on a Model.
+   * Important to write unit tests for those methods as you add them.
+   * We'll write an example test for the methods we add.
+
+
+We have one method defined on our model, ``__str__``, and this is a
+good time to start writing tests. The ``__str__`` method of a model
+will get used in quite a few places, and it's entirely conceivable
+it'd be exposed to end users. So it's worth writing a test so we
+understand how we expect it to operate.
 
 .. literalinclude:: /src/contacts/tests.py
    :language: python
    :pyobject: ContactTests
 
 .. slide:: Running the Tests
+   :level: 2
+
+   You can run the tests for your application using ``manage.py``::
+
+     (tutorial) $ python manage.py test
+
 
 You can run the tests for your application using ``manage.py``::
 
-  $ python manage.py test
+  (tutorial) $ python manage.py test
 
 If you run this now, you'll see that around 420 tests run. That's
 surprising, since we've only written one. That's because by default
@@ -198,5 +284,30 @@ a new database, and runs ``syncdb`` on it. Additionally, it resets it
 between each test, so that data generated or changed in one test won't
 break or influence another.
 
-TK:Review
----------
+.. rst-class:: include-as-slide, slide-level-2
+
+Review
+------
+
+* Models define the fields in a table, and can contain business logic.
+* The ``syncdb`` manage command creates the tables in your database from
+  models
+* The model Manager allows you to operate on the collection of
+  instances: querying, creating, etc.
+* Write unit tests for methods you add to the model
+* The ``test`` manage command runs the unit tests
+
+.. ifslides::
+
+   * Next: :doc:`views`
+
+.. _QuerySet: https://docs.djangoproject.com/en/1.5/ref/models/querysets/#django.db.models.query.QuerySet
+.. _query: https://docs.djangoproject.com/en/1.5/topics/db/queries/
+.. _SQLite3: http://docs.python.org/2/library/sqlite3.html
+.. _mysql-python: https://pypi.python.org/pypi/MySQL-python
+.. _`full list of settings`: https://docs.djangoproject.com/en/1.5/ref/settings/
+.. _Model: https://docs.djangoproject.com/en/1.5/ref/models/instances/#django.db.models.Model
+.. _Manager: https://docs.djangoproject.com/en/1.5/topics/db/managers/
+.. _`specify a primary key`: https://docs.djangoproject.com/en/1.5/topics/db/models/#automatic-primary-key-fields
+.. _fields: https://docs.djangoproject.com/en/1.5/ref/models/fields/
+.. _`model Meta`: https://docs.djangoproject.com/en/1.5/ref/models/options/
