@@ -1,14 +1,16 @@
 .. tut::
    :path: ./src
 
-.. .. slideconf::
-..    :theme: single-level
+.. slideconf::
+   :autoslides: False
+   :theme: single-level
 
-==================
- Effective Django
-==================
+===========================
+ Effective Django Tutorial
+===========================
 
-.. ifslides::
+.. slide:: Effective Django
+   :level: 1
 
    .. figure:: /_static/building.jpg
       :class: fill
@@ -27,37 +29,24 @@
    * Break half way through
    * Notes, examples available: http://effectivedjango.com/tutorial
 
-Goals
-=====
+.. slide:: Goals
+   :level: 2
 
-* Build a small Django application
-* Build it effectively
-* Explore some of the new features in Django
+   * Build a small Django application
+   * Build it effectively
+   * Explore some of the new features in Django
 
-Effective?
-==========
+.. slide:: Effective?
+   :level: 2
 
-* Cohesive
-* Tested
-* Scalable
-
-Contents
-========
-
-.. ifnotslides::
-
-   .. toctree::
-      :maxdepth: 2
-
-      getting-started.rst
-      models.rst
-      views.rst
-      forms.rst
-      related.rst
-      authzn.rst
+   * Cohesive
+   * Tested
+   * Scalable
 
 
-.. ifslides::
+.. slide:: Agenda
+   :level: 2
+   :inline-contents: True
 
    .. toctree::
       :maxdepth: 1
