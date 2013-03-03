@@ -2,59 +2,95 @@
    :path: /src
 
 .. slideconf::
-   :autoslides: False
+   :autoslides: True
+   :theme: slides
 
 ===============
 Getting Started
 ===============
 
-Your Application Environment
+Your Development Environment
 ============================
 
-Deployment From Day 1
----------------------
+The Environment
+---------------
 
-* Pretend you need to deploy from Day 1
-* And assume that you want that automated
-* Why?
+* Three important factors for your environment:
 
+  * Isolation
   * Determinism
-  * Repeatability
-  * Scale
+  * Similarity
 
-TK:Environment
---------------
+.. ifnotslides::
 
-XXX explain this section, consider merging with next two
+   When thinking about your development environment, there are three
+   important things to keep in mind: isolation, determinism, and
+   similarity. They're each important, and they work in concert with one
+   another.
 
-* It's important to use a reproducible environment
-* It's nice if that environment is also similar to where you'll wind
-  up deploying
-* The first can be achieved with a tool that isolates you from the
-  system python and tracks dependencies: virtualenv + requirements,
-  buildout, paver, etc.
-* The second can be achieved with something like Vagrant
+   Isolation means that you're not inadvertently leveraging tools or
+   packages installed outside the environment. This is particularly
+   important when it comes to something like Python packages with C
+   extensions: if you're using something installed at the system level
+   and don't know it, you can find that when you go to deploy or share
+   your code that it doesn't operate the way you expect. A tool like
+   virtualenv_ can help create that sort of environment.
 
-Dependency Management
----------------------
+   Your environment is deterministic if you're confident about what
+   versions of your dependencies you're relying on, and can reproduce
+   that environment reliably.
 
-* Choose a tool to track dependencies, use it in development
+   Finally, similarity to your production or deployment environment means
+   you're running on the same OS, preferably the same release, and that
+   you're using the same tools to configure your development environment
+   that you use to configure your deployment environment. This is by no
+   means a requirement, but as you build bigger, more complex software,
+   it becomes advantageous to remove another variable from thing.
 
-  * pip with a requirements files
-  * virtualenv
-  * buildout
+.. _virtualenv: http://www.virtualenv.org/
 
-* Identify specific versions of dependencies (by number or SHA)
+Isolation
+---------
 
-Your Environment
-----------------
+* We want to avoid using unknown dependencies, or unknown versions
+* virtualenv_ provides an easy way to work start a project without
+  your system's ``site-packages``
 
-* If you're on your own, just use a virtualenv
-* If you're working with an ops person/team, consider Vagrant_ from the
-  start
+Determinism
+-----------
 
-  * Even if you don't use Puppet to configure the dev VM, at least
-    you're running code on another "machine".
+* Determinism is all about dependency management
+* Choose a tool, use it in development
+
+  * pip, specifically a `requirements files`_
+  * buildout_
+  * install_requires_ in setup.py
+
+* Identify specific versions of dependencies
+
+.. ifnotslides::
+
+   You can specify versions either by the version for a package on
+   PyPI, or a specific revision (SHA in git, number in Subversion,
+   etc). This ensures that you're getting the exact version you're
+   testing with.
+
+.. _`requirements files`: http://www.pip-installer.org/en/latest/requirements.html
+.. _buildout: http://www.buildout.org/
+.. _install_requires: http://pythonhosted.org/distribute/setuptools.html#declaring-dependencies
+
+Similarity
+----------
+
+* Working in an environment similar to where you deploy eliminates
+  another variable
+* If you're building something that requires additional services, this
+  becomes even more important.
+* Vagrant_ is a tool for managing virtual machines, let's you easily
+  create an environment separate from your day to day work.
+
+.. _Vagrant: http://vagrantup.com/
+
 
 Setting Up Your Environment
 ===========================
@@ -66,27 +102,44 @@ Create a Clean Workspace
 
 ::
 
-  $ mkdir contacts
-  $ virtualenv ./contacts/
-  New python executable in ./contacts/bin/python
+  $ mkdir tutorial
+  $ virtualenv ./tutorial/
+  New python executable in ./tutorial/bin/python
   Installing setuptools............done.
   Installing pip...............done.
-  $ source ./contacts/bin/activate
-  (contacts) $
+  $ source ./tutorial/bin/activate
+  (tutorial) $
 
+.. Alternately, start by cloning the `example repository`_::
+
+..   $ git clone git://github.com/nyergler/effective-django-tutorial.git
+..   $ cd effective-django-tutorial
+..   $ git checkout environment
+..   $ virtualenv .
+..   New python executable in ./bin/python
+..   Installing setuptools............done.
+..   Installing pip...............done.
+..   $ source ./bin/activate
+..   (effective-django-tutorial) $
+
+.. _`example repository`: https://github.com/nyergler/effective-django-tutorial
 
 Start a Requirements File
 -------------------------
 
-TK: why requirements.txt
-
-requirements.txt
+Create a ``requirements.txt`` in the ``tutorial`` directory with a
+single requirement in it.
 
 .. literalinclude:: /src/requirements.txt
 
+Installing Requirements
+-----------------------
+
+And then we can use pip_ to install the dependencies.
+
 ::
 
-  $ pip install -U -r requirements.txt
+  (tutorial) $ pip install -U -r requirements.txt
 
 
 ::
@@ -103,6 +156,7 @@ requirements.txt
   Successfully installed Django
   Cleaning up...
 
+.. _pip: http://www.pip-installer.org/
 
 Beginning a Django Project
 ==========================
@@ -115,15 +169,19 @@ Scaffolding
 * Django 1.4 made a change that decouples apps from projects
 * In Django parlance, your **project** is a collections of **applications**.
 
-Creating the Scaffolding
-------------------------
+Creating the Project
+--------------------
+
+.. ifnotslides::
+
+   Django installs a ``django-admin.py`` script for handling scaffolding
+   tasks. We'll use ``startproject`` to create the project files. We
+   specify the project name and the directory to start in; we're already
+   in our isolated environment so we can just say ``.``
 
 ::
 
-  $ django-admin.py startproject addressbook .
-
-
-TK: why "."
+  (tutorial) $ django-admin.py startproject addressbook .
 
 ::
 
@@ -134,13 +192,16 @@ TK: why "."
       urls.py
       wsgi.py
 
-.. notslides::
+Project Scaffolding
+-------------------
+
+.. ifnotslides::
 
    * ``manage.py`` is a pointer back to ``django-admin.py`` with an
      environment variable set, pointing to your project as the one to
      read settings from and operate on when needed.
-   * ``settings.py`` is where you'll configure your app. It has a few
-     sensible defaults, but no database chosen when you start.
+   * ``settings.py`` is where you'll configure your project. It has a
+     few sensible defaults, but no database chosen when you start.
    * ``urls.py`` contains the URL to view mappings: we'll talk more about
      that shortly.
    * ``wsgi.py`` is WSGI_ wrapper for your application. This is used by
@@ -148,31 +209,34 @@ TK: why "."
      containers like mod_wsgi, uwsgi, etc.
 
 manage.py
----------
+~~~~~~~~~
 
-TK
+Wrapper around ``django-admin.py`` that operates on your project. You
+can run the tests or the development server using this.
 
 settings.py
------------
+~~~~~~~~~~~
 
-TK
+Your project configuration.
 
 urls.py
--------
+~~~~~~~
 
-TK
+URL definitions for your project
 
 wsgi.py
--------
+~~~~~~~
 
-TK
+A wrapper for running your project in a WSGI_ server.
 
-...and the "App"
-----------------
+.. _WSGI: https://en.wikipedia.org/wiki/Web_Server_Gateway_Interface
+
+Creating the "App"
+------------------
 
 ::
 
-  $ python ./manage.py startapp contacts
+  (tutorial) $ python ./manage.py startapp contacts
 
 ::
 
@@ -193,5 +257,15 @@ TK
    * ``tests.py`` will contain the unit and integration tests you
      write.
 
-TK: Review
-----------
+Review
+------
+
+* Make sure your development environment is deterministic and as
+  similar to where you'll deploy as possible
+* Specify explicit versions for your dependencies
+* Django organizes code into "Projects" and "Applications"
+* Applications are [potentially] reusable
+
+.. ifslides::
+
+   * Next: :doc:`models`
