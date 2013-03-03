@@ -8,6 +8,17 @@
 ===========================
  Effective Django Tutorial
 ===========================
+------------
+ PyCon 2013
+------------
+
+This tutorial will be `presented at PyCon 2013`_. The example source
+is available in the `effective-django-tutorial`_ git repository.
+
+Slides for the tutorial are available `here <./../slides/tutorial/>`_.
+
+.. _`presented at PyCon 2013`: https://us.pycon.org/2013/schedule/presentation/9/
+.. _`effective-django-tutorial`: https://github.com/nyergler/effective-django-tutorial/
 
 .. slide:: Effective Django
    :level: 1
@@ -42,7 +53,6 @@
    * Cohesive
    * Tested
    * Scalable
-
 
 .. slide:: Agenda
    :level: 2
