@@ -167,8 +167,7 @@ The ListView_ that we subclass from is itself composed of several
 mixins that provide some behavior, and that composition gives us a lot
 of power without a lot of code. In this case we set ``model =
 Contact``, which says that this view is going to list *all* the
-Contacts in our database. We'll see TK:later how you can limit the
-view to a subset.
+Contacts in our database.
 
 .. Mapping URLs
 .. ------------
@@ -260,17 +259,17 @@ can see in this error message that this view was expecting to find
 and create that.
 
 By default Django will look for templates in applications, as well as
-in directories you specify in ``settings.TEMPLATE_DIRS``.
+in directories you specify in ``settings.TEMPLATE_DIRS``. The generic
+views expect that the templates will be found in a directory named
+after the application (in this case ``contacts``), and the filename
+will contain the model name (in this case ``contact_list.html``). This
+works very well when you're distributing a reusable application: the
+consumer can create templates that override the defaults, and they're
+clearly stored in a directory associated with the application.
 
-In our ``contacts`` app, create the directory structure
-``templates/contacts``; we'll put our ``contact_list.html`` there. If
-you put a simple "Hello, world" template there and restart your
-server, you'll see the message displayed.
-
-That may seem like an extra layer of directories there (``contacts``),
-but in this case it makes a little bit of sense: Django is attempting
-to do things in a "generic" fashion. We can override that, if we want,
-by adding the ``template_name`` attribute to our view:
+For our purposes we don't need that extra layer of directory
+structure, so we'll specify the template to use explicitly, using the
+``template_name`` property.
 
 .. literalinclude:: /src/contacts/views.py
 
@@ -297,9 +296,15 @@ Just like the list view, we'll use one of Django's generic views. In
 .. literalinclude:: /src/contacts/views.py
    :pyobject: CreateContactView
 
-
-TK: reverse, get_success_url
-
+Most generic views that do form processing have the concept of the
+"success URL": where to redirect the user when the form is
+successfully submitted. The form processing views all adhere to the
+practice of POST-redirect-GET for submitting changes, so that
+refreshing the final page won't result in form re-submission. You can
+either define this as a class property, or override the
+``get_success_url()`` method, as we're doing here. In this case we're
+using the ``reverse`` function to calculate the URL of the contact
+list.
 
 .. sidebar:: Context Variables in Class Based Views
 
@@ -312,7 +317,8 @@ TK: reverse, get_success_url
    values are available to the context. With some practice you'll
    discover they're pretty consistent -- ``form``, ``object``, and
    ``object_list`` are often used -- but that doesn't help when you're
-   just starting off. XXX
+   just starting off. Luckily, the documentation for this is much
+   improved with Django 1.5.
 
    In class based views, the ``get_context_data()`` method is used to
    add information to the context. If you override this method, you
@@ -327,14 +333,16 @@ A few things to note:
 
 - The ``form`` in the context is the `Django Form`_ for our model.
   Since we didn't specify one, Django made one for us. How thoughtful.
-- If the just do ``{{ form }}`` we'll get a table; adding ``.as_ul``
-  formats the inputs for an unordered list. Try ``.as_p`` instead to
-  see what you get.
+- If the just do ``{{ form }}`` we'll get table rows; adding
+  ``.as_ul`` formats the inputs for an unordered list. Try ``.as_p``
+  instead to see what you get.
 - When we output the form, it only includes our fields, not the
   surrounding ``<form>`` tag or the submit button, so we have to add
   those.
-- TK:csrftoken
-- TK:action
+- The ``{% csrf_token %}`` tag inserts a hidden input that Django uses
+  to verify that the request came from your project, and isn't a
+  forged cross-site request. Try omitting it: you can still access the
+  page, but when you go to submit the form, you'll get an error.
 - We're using the ``url`` template tag to generate the link back to
   the contact list. Note that ``contacts-list`` is the name of our
   view from the URL configuration. By using ``url`` instead of an
