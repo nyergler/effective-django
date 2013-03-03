@@ -359,6 +359,34 @@ You can go to ``http://localhost:8000/new`` to create new contacts
 Testing Your Views
 ==================
 
+.. slide:: Test Client & RequestFactory
+   :level: 2
+
+   * Views transform a Request into a Response, but still have logic
+   * Test ``Client`` and ``RequestFactory`` are tools to help test them
+   * They share a common API, but work slightly differently
+   * Test ``Client`` resolves a URL to the view, returns a Response
+   * ``RequestFactory`` generates a Request which you can pass to the View
+     directly
+
+.. slide:: Test Client vs. RequestFactory
+   :level: 2
+
+   ::
+
+     from django.test.client import Client
+     from django.test.client import RequestFactory
+
+     client = Client()
+     response = client.get('/')
+
+   ::
+
+     factory = RequestFactory()
+     request = factory.get('/')
+
+     response = ListContactView.as_view()(request)
+
 So far our views have been pretty minimal: they've leverage Django's
 generic views, and contain very little of our own code or logic. One
 perspective is that this is how it should be: a view takes a request,
@@ -374,27 +402,50 @@ own tests, and is working properly. Integration tests attempt to test
 the system from end to end, so you can ensure that the points of
 integration are functioning properly. Most complex systems have both.
 
-TK: Test client, Request Factory
+Django has two tools that are helpful for writing view unit tests: the
+Test Client_ and the RequestFactory_. They have similar APIs, but
+approach things differently. The ``TestClient`` takes a URL to retrieve,
+and resolves it against your projects URL configuration. It then
+creates a test request, and passes that request object through your
+view. The fact that it requires you to specify the URL ties your test
+to the URL configuration of your project.
+
+The ``RequestFactory`` has the same API: you specify the URL you want
+to retrieve and any parameters or form data. But it doesn't actually
+resolve that URL: it just returns the Request object. You can then
+manually pass it to your view and test the result.
+
+In practice, RequestFactory tests are usually somewhat faster than the
+TestClient. This isn't a big deal when you have five tests, but it is
+when you have 500 or 5,000. Let's look at the same test written with
+each tool.
 
 .. checkpoint:: view_tests
 
 .. literalinclude:: /src/contacts/tests.py
    :prepend: from django.test.client import Client
              from django.test.client import RequestFactory
+             ...
    :pyobject: ContactListViewTests
 
-
-Django 1.4 added additional support for integration tests, so we'll
-write a couple here.
 
 "Live Server" Tests
 -------------------
 
+.. slide:: Live Server Tests
+   :level: 2
+
+   * Django 1.4 added the LiveServerTestCase_
+   * Makes writing integration tests with something like Selenium_
+     easier
+   * By default it spins up the server for you (similar to ``runserver``)
+   * You can also point it to a deployed instance elsewhere
+
 Django 1.4 adds a new ``TestCase`` base class, the
-``LiveServerTestCase``. This is very much what it sounds like: a test
+LiveServerTestCase_. This is very much what it sounds like: a test
 case that runs against a live server. By default Django will start the
 development server for you when it runs these tests, but they can also
-be run against another server. *Selenium* is a package commonly used
+be run against another server. Selenium_ is a package commonly used
 for writing tests that drive a web browser, and that's what we'll use
 for our integration tests.
 
@@ -402,10 +453,15 @@ for our integration tests.
 
   $ pip install selenium
 
-Our initial test is going to be pretty simple, because our project is
+Our initial tests are going to be pretty simple, because our project is
 simple right now: it'll just make sure we can get the list page.
 
-TK:XXX
+.. literalinclude:: /src/contacts/tests.py
+   :prepend: from django.test import LiveServerTestCase
+             from selenium.webdriver.firefox.webdriver import WebDriver
+             ...
+   :pyobject: ContactListIntegrationTests
+
 
 .. checkpoint:: edit_contact_view
 
@@ -564,5 +620,7 @@ Review
 .. _`Django Form`: https://docs.djangoproject.com/en/1.5/topics/forms/i
 .. _HttpRequest: https://docs.djangoproject.com/en/1.5/ref/request-response/#httprequest-objects
 .. _HttpResponse: https://docs.djangoproject.com/en/1.5/ref/request-response/#httpresponse-objects
+.. _Client: https://docs.djangoproject.com/en/1.5/topics/testing/overview/#module-django.test.client
 .. _RequestFactory: https://docs.djangoproject.com/en/1.5/topics/testing/advanced/#django.test.client.RequestFactory
 .. _LiveServerTestCase: https://docs.djangoproject.com/en/1.5/topics/testing/overview/#liveservertestcase
+.. _Selenium: http://seleniumhq.org/
