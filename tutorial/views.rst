@@ -81,6 +81,77 @@ for the HTTP methods it supports.
 Listing Contacts
 ================
 
+.. slide:: List Views
+   :level: 2
+
+   ListView_ provides a view of a set of objects.
+
+   ::
+
+     class ContactsList(ListView):
+
+         model = Contact
+         template_name = 'contact_list.html'
+
+         def get_queryset(self):
+             ... # defaults to model.objects.all()
+
+         def get_context_object_name(self):
+             ... # defaults to <model name>_list
+
+         def get_context_data(self, **kwargs):
+             ... # add anything else to the context
+
+         def get_context_data(self, **kwargs):
+             ... # add anything else to the context
+
+.. slide:: Edit Views
+   :level: 2
+
+   CreateView_, UpdateView_, DeleteView_ manipulate a single object.
+   ::
+
+     class UpdateContact(UpdateView):
+
+         model = Contact
+         template_name = 'edit_contact.html'
+
+         def get_object(self):
+             ... # defaults to looking for a pk or slug kwarg, and
+                 # passing that to filter
+
+         def get_context_object_name(self):
+             ... # defaults to <model name>
+
+         def get_context_data(self, **kwargs):
+             ... # add anything else to the context
+
+         def get_success_url(self):
+             ... # where to redirect to on success
+                 # defaults to self.get_object().get_absolute_url()
+
+.. slide:: Detail Views
+   :level: 2
+
+   DetailView_ provides a view of a single object
+
+   ::
+
+     class ContactView(DetailView):
+
+         model = Contact
+         template_name = 'contact.html'
+
+         def get_object(self):
+             ... # defaults to looking for a pk or slug kwarg, and
+                 # passing that to filter
+
+         def get_context_object_name(self):
+             ... # defaults to <model name>
+
+         def get_context_data(self, **kwargs):
+             ... # add anything else to the context
+
 .. checkpoint:: contact_list_view
 
 We'll start with a view that presents a list of contacts in the
@@ -477,6 +548,10 @@ Review
 .. _`Class Based Views`: https://docs.djangoproject.com/en/1.5/topics/class-based-views/
 .. _View: https://docs.djangoproject.com/en/1.5/ref/class-based-views/base/#view
 .. _ListView: https://docs.djangoproject.com/en/1.5/ref/class-based-views/generic-display/#listview
+.. _UpdateView: https://docs.djangoproject.com/en/1.5/ref/class-based-views/generic-editing/#updateview
+.. _CreateView: https://docs.djangoproject.com/en/1.5/ref/class-based-views/generic-editing/#createview
+.. _DeleteView: https://docs.djangoproject.com/en/1.5/ref/class-based-views/generic-editing/#deleteview
+.. _DetailView: https://docs.djangoproject.com/en/1.5/ref/class-based-views/generic-display/#detailview
 .. _`context processors`: https://docs.djangoproject.com/en/1.5/ref/templates/api/#subclassing-context-requestcontext
 .. _`Django Form`: https://docs.djangoproject.com/en/1.5/topics/forms/i
 .. _HttpRequest: https://docs.djangoproject.com/en/1.5/ref/request-response/#httprequest-objects
