@@ -1,9 +1,9 @@
 .. tut::
    :path: /src
 
-================
+==============
 Related Models
-================
+==============
 
 Adding Relationships
 ====================
@@ -38,12 +38,36 @@ we can explore this.
   Installed 0 object(s) from 0 fixture(s)
   $ python manage.py shell
 
-XXX
+Now that we have the model created, we can again play with it using
+the interactive shell.
 
-Contact.address_set.all()
-.create()
-.filter()
-Contact.objects.filter(address__type...)
+::
+
+  $ python manage.py shell
+  Python 2.7.3 (default, Aug  9 2012, 17:23:57)
+  [GCC 4.7.1 20120720 (Red Hat 4.7.1-5)] on linux2
+  Type "help", "copyright", "credits" or "license" for more information.
+  (InteractiveConsole)
+  >>> from contacts.models import Contact, Address
+  >>> nathan = Contact.objects.create(first_name='Nathan', email='nathan@yergler.net')
+  >>> nathan.address_set.all()
+  []
+  >>> nathan.address_set.create(address_type='home', city='San Francisco', state='CA', postal_code='94107')
+  <Address: Address object>
+  >>> nathan.address_set.create(address_type='college', address='354 S. Grant St.', city='West Lafayette', state='IN', postal_code='47906')
+  <Address: Address object>
+  >>> nathan.address_set.all()
+  [<Address: Address object>, <Address: Address object>]
+  >>> nathan.address_set.filter(address_type='college')
+  <Address: Address object>
+  >>> Address.objects.filter(contact__first_name='Nathan')
+  [<Address: Address object>, <Address: Address object>]
+
+As you can see, even though we defined the relationship between
+Contacts and Addresses on the Address model, Django gives us a way to
+access things in the reverse direction. We can also use the double
+underscore notation to filter Addresses or Contacts based on the
+related objects.
 
 Let's go ahead and add address display to our contacts. We'll add the
 list of all Addresses to the Contact detail view.
@@ -65,29 +89,14 @@ relationship between Contacts and Addresses.
 
 .. checkpoint:: edit_addresses
 
-.. sidebar:: Forms, FormSets, ModelForms
-
-   TK: Overview of Forms
-
-Up to this point we've written two models and some simple views.
-Behind the scenes, however, Django has been creating a third class of
-object for us: Forms. Forms are Django objects that help you take user
-input from a request, validate it, and transform it into Python
-objects. They also provide some optional helpers for rendering the
-form's HTML, which we've also been using.
-
-When you use one of the built-in generic views and give it a model,
-Django creates a ModelForm_ for that model. A Model Form uses the model
-field definition to figure out what the fields are, and what
-validation rules to use. For example, our first and last name fields
-both specify a maximum length of 255 characters; if you attempted to
-create a Contact with a name longer than that, you'll see an error
-message.
-
-The first editing interface we're going to build for Addresses is one
-that allows you to edit all the addresses for a Contact at once. To do
-this, we'll need to create a FormSet that handles all the Addresses
-for a single Contact. The `Inline FormSet`_ does just that.
+The editing interface we're going to build for Addresses is one that
+allows you to edit all the addresses for a Contact at once. To do
+this, we'll need to create a FormSet_ that handles all the Addresses
+for a single Contact. A FormSet is an object that manages multiple
+copies of the same Form (or ModelForm) in a single page. The `Inline
+FormSet`_ does just that does this for a set of objects (in this case
+Addresses) that share a common related object (in this case the
+Contact).
 
 .. literalinclude:: /src/contacts/forms.py
 
@@ -122,3 +131,6 @@ Second, we're iterating over form instead of just outputting it (``for
 address_form in form``). Again, this is because ``form`` here is a
 formset instead of a single form. When you iterate over a formset,
 you're iterating over the individual forms in it.
+
+.. _FormSet: https://docs.djangoproject.com/en/1.5/topics/forms/formsets/
+.. _`Inline FormSet`: https://docs.djangoproject.com/en/1.5/topics/forms/modelforms/#inline-formsets
