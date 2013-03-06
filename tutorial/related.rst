@@ -30,20 +30,19 @@ we can explore this.
 
 ::
 
-  $ python manage.py syncdb
+  (tutorial)$ python manage.py syncdb
   Creating tables ...
   Creating table contacts_address
   Installing custom SQL ...
   Installing indexes ...
   Installed 0 object(s) from 0 fixture(s)
-  $ python manage.py shell
 
 Now that we have the model created, we can again play with it using
 the interactive shell.
 
 ::
 
-  $ python manage.py shell
+  (tutorial)$ python manage.py shell
   Python 2.7.3 (default, Aug  9 2012, 17:23:57)
   [GCC 4.7.1 20120720 (Red Hat 4.7.1-5)] on linux2
   Type "help", "copyright", "credits" or "license" for more information.
@@ -70,7 +69,7 @@ underscore notation to filter Addresses or Contacts based on the
 related objects.
 
 Let's go ahead and add address display to our contacts. We'll add the
-list of all Addresses to the Contact detail view.
+list of all Addresses to the Contact detail view in ``contact.html``.
 
 .. literalinclude:: /src/contacts/templates/contact.html
 
@@ -94,11 +93,17 @@ allows you to edit all the addresses for a Contact at once. To do
 this, we'll need to create a FormSet_ that handles all the Addresses
 for a single Contact. A FormSet is an object that manages multiple
 copies of the same Form (or ModelForm) in a single page. The `Inline
-FormSet`_ does just that does this for a set of objects (in this case
-Addresses) that share a common related object (in this case the
-Contact).
+FormSet`_ does this for a set of objects (in this case Addresses) that
+share a common related object (in this case the Contact).
+
+Because formsets are somewhat complex objects, Django provides factory
+functions that create the class for you. We'll add a call to the
+factory to our ``forms.py`` file.
 
 .. literalinclude:: /src/contacts/forms.py
+   :prepend: from django.forms.models import inlineformset_factory
+             ...
+   :lines: 40-
 
 When we create the view, we'll need to specify that this is the form
 we want to use, instead of having Django create one for us.
@@ -108,8 +113,7 @@ we want to use, instead of having Django create one for us.
 
 Note that even though we're editing Addresses with this view, we still
 have ``model`` set to ``Contact``. This is because an inline formset
-takes the parent object as it's starting point. In the next section
-we'll see a more in depth example.
+takes the parent object as it's starting point.
 
 Once again, this needs to be wired up into the URL configuration.
 
@@ -119,6 +123,7 @@ Once again, this needs to be wired up into the URL configuration.
 And we have a simple template.
 
 .. literalinclude:: /src/contacts/templates/edit_addresses.html
+   :language: html
 
 There are two new things in this template, both related to the fact
 we're using a formset instead of a form. First, there's a reference to
@@ -130,7 +135,9 @@ information when you POST the form, it will raise an exception.
 Second, we're iterating over form instead of just outputting it (``for
 address_form in form``). Again, this is because ``form`` here is a
 formset instead of a single form. When you iterate over a formset,
-you're iterating over the individual forms in it.
+you're iterating over the individual forms in it. These individual
+forms are just "normal" ``ModelForm`` instances for each Address, so
+you can apply the same output techniques you would normally use.
 
 .. _FormSet: https://docs.djangoproject.com/en/1.5/topics/forms/formsets/
 .. _`Inline FormSet`: https://docs.djangoproject.com/en/1.5/topics/forms/modelforms/#inline-formsets

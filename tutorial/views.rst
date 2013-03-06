@@ -157,7 +157,9 @@ Listing Contacts
 We'll start with a view that presents a list of contacts in the
 database.
 
-The basic view implementation is shockingly brief.
+The basic view implementation is shockingly brief. We can write the
+view in just a few lines in the ``views.py`` file in our ``contacts``
+application.
 
 .. literalinclude:: /src/contacts/views.py
    :language: python
@@ -190,9 +192,10 @@ Contacts in our database.
 .. rst-class:: include-as-slide, slide-level-2
 
 Defining URLs
--------------
+=============
 
 Django looks for the URL configuration in ``urls.py`` in your project.
+Let's add a URL mapping for our contact list view.
 
 .. literalinclude:: /src/addressbook/urls.py
    :language: python
@@ -220,11 +223,12 @@ Django looks for the URL configuration in ``urls.py`` in your project.
 
 .. notslides::
 
-   * Useful when linking from one View to another, or redirecting
-   * Allows you to manage your URL structure in one place
+   * The URL name is useful when linking from one View to another, or
+     redirecting, as it allows you to manage your URL structure in one
+     place
 
 Creating the Template
----------------------
+=====================
 
 .. slide:: Django Templates
    :level: 2
@@ -242,7 +246,7 @@ can use to easily test your project::
   Validating models...
 
   0 errors found
-  Django version 1.4.3, using settings 'contactmgr.settings'
+  Django version 1.4.3, using settings 'addressbook.settings'
   Development server is running at http://127.0.0.1:8000/
   Quit the server with CONTROL-C.
 
@@ -267,22 +271,23 @@ works very well when you're distributing a reusable application: the
 consumer can create templates that override the defaults, and they're
 clearly stored in a directory associated with the application.
 
-For our purposes we don't need that extra layer of directory
+For our purposes, however, we don't need that extra layer of directory
 structure, so we'll specify the template to use explicitly, using the
-``template_name`` property.
+``template_name`` property. Let's add that one line to ``views.py``.
 
 .. literalinclude:: /src/contacts/views.py
 
-Now we can just create ``contact_list.html`` in the
-``contacts/templates/`` directory.
+Create a ``templates`` subdirectory in our ``contacts`` application,
+and create ``contact_list.html`` there.
 
 .. literalinclude:: /src/contacts/templates/contact_list.html
+   :language: html
 
 Opening the page in the browser, we should see one contact there, the
 one we added earlier through the interactive shell.
 
-Create
-======
+Creating Contacts
+=================
 
 .. checkpoint:: create_contact_view
 
@@ -294,6 +299,8 @@ Just like the list view, we'll use one of Django's generic views. In
 ``views.py``, we can add the new view:
 
 .. literalinclude:: /src/contacts/views.py
+   :prepend: from django.core.urlresolvers import reverse
+             ...
    :pyobject: CreateContactView
 
 Most generic views that do form processing have the concept of the
@@ -328,6 +335,7 @@ The template is slightly more involved than the list template, but not
 much. Our ``edit_contact.html`` will look something like this.
 
 .. literalinclude:: /src/contacts/templates/edit_contact.html
+   :language: html
 
 A few things to note:
 
@@ -346,7 +354,8 @@ A few things to note:
 - We're using the ``url`` template tag to generate the link back to
   the contact list. Note that ``contacts-list`` is the name of our
   view from the URL configuration. By using ``url`` instead of an
-  explicit path, we don't have to worry about a link breaking.
+  explicit path, we don't have to worry about a link breaking. ``url``
+  in templates is equivalent to ``reverse`` in Python code.
 
 Finally, let's configure the URL by adding the following line to our
 ``urls.py`` file::
@@ -387,7 +396,7 @@ Testing Your Views
 
      response = ListContactView.as_view()(request)
 
-So far our views have been pretty minimal: they've leverage Django's
+So far our views have been pretty minimal: they leverage Django's
 generic views, and contain very little of our own code or logic. One
 perspective is that this is how it should be: a view takes a request,
 and returns a response, delegating the issue of validating input to
@@ -396,19 +405,19 @@ I subscribe to. The less logic contained in views, the better.
 
 However, there is code in views that should be tested, either by unit
 tests or integration tests. The distinction is important: unit tests
-are focused on testing a single unit of functionality. Whey you're
+are focused on testing a single unit of functionality. When you're
 writing a unit test, the assumption is that everything else has its
-own tests, and is working properly. Integration tests attempt to test
+own tests and is working properly. Integration tests attempt to test
 the system from end to end, so you can ensure that the points of
-integration are functioning properly. Most complex systems have both.
+integration are functioning properly. Most systems have both.
 
-Django has two tools that are helpful for writing view unit tests: the
-Test Client_ and the RequestFactory_. They have similar APIs, but
-approach things differently. The ``TestClient`` takes a URL to retrieve,
-and resolves it against your projects URL configuration. It then
-creates a test request, and passes that request object through your
-view. The fact that it requires you to specify the URL ties your test
-to the URL configuration of your project.
+Django has two tools that are helpful for writing unit tests for
+views: the Test Client_ and the RequestFactory_. They have similar
+APIs, but approach things differently. The ``TestClient`` takes a URL
+to retrieve, and resolves it against your projects' URL configuration.
+It then creates a test request, and passes that request through your
+view, returning the Response. The fact that it requires you to specify
+the URL ties your test to the URL configuration of your project.
 
 The ``RequestFactory`` has the same API: you specify the URL you want
 to retrieve and any parameters or form data. But it doesn't actually
@@ -429,8 +438,8 @@ each tool.
    :pyobject: ContactListViewTests
 
 
-"Live Server" Tests
--------------------
+Integration Tests
+=================
 
 .. slide:: Live Server Tests
    :level: 2
@@ -451,10 +460,15 @@ for our integration tests.
 
 ::
 
-  $ pip install selenium
+  (tutorial)$ pip install selenium
 
-Our initial tests are going to be pretty simple, because our project is
-simple right now: it'll just make sure we can get the list page.
+We're going to write a couple of tests for our views:
+
+- one that creates a Contact and makes sure it's listed
+- one that makes sure our "add contact" link is visible and linked on
+  the list page
+- and one that actually exercises the add contact form, filling it in
+  and submitting it.
 
 .. literalinclude:: /src/contacts/tests.py
    :prepend: from django.test import LiveServerTestCase
@@ -462,14 +476,19 @@ simple right now: it'll just make sure we can get the list page.
              ...
    :pyobject: ContactListIntegrationTests
 
+Note that Selenium allows us to find elements in the page, inspect
+their state, click them, and send keystrokes. In short, it's like
+we're controlling the browser. In fact, if you run the tests now,
+you'll see a browser open when the tests run.
+
+Edit Views
+==========
 
 .. checkpoint:: edit_contact_view
 
-Update
-======
-
-The Update view will let us edit a contact in the address book, and as
-with the previous two, there's a generic class based view for this.
+In addition to creating Contacts, we'll of course want to edit them.
+As with the List and Create views, Django has a generic view we can
+use as a starting point.
 
 .. literalinclude:: /src/contacts/views.py
    :pyobject: UpdateContactView
@@ -487,16 +506,19 @@ We'll update the contact list to include an edit link next to each
 contact.
 
 .. literalinclude:: /src/contacts/templates/contact_list.html
+   :language: html
 
-* note the use of "kwargs" in the {% url %} tag
+Note the use of ``pk=contact.id`` in the ``{% url %}`` tag to specify
+the arguments to fill into the URL pattern.
 
 If you run the server now, you'll see an edit link. Go ahead and click
 it, and try to make a change. You'll notice that instead of editing
-the existing record, it creates a new one. Sad face. If we look at the
-source of the edit HTML, we can easily see the reason: the form
-targets ``/new``, not our edit URL. To fix this -- and still allow
-re-using the template -- we're going to add some information to the
-template context.
+the existing record, it creates a new one. Sad face.
+
+If we look at the source of the edit HTML, we can easily see the
+reason: the form targets ``/new``, not our edit URL. To fix this --
+and still allow re-using the template -- we're going to add some
+information to the template context.
 
 The template context is the information available to a template when
 it's rendered. This is a combination of information you provide in
@@ -517,6 +539,7 @@ change the title based on whether or not we've previously saved.
 
 .. literalinclude:: /src/contacts/templates/edit_contact.html
    :lines: 1-7
+   :language: html
 
 You may wonder where the ``contact`` value in the contact comes from:
 the class based views that wrap a single object (those that take
@@ -526,22 +549,40 @@ the model class. The latter often makes your templates easier to read
 and understand later. You can customize this name by overriding
 ``get_context_object_name`` on your view.
 
-Delete
-======
+.. sidebar:: Made a Change? Run the Tests.
+
+   We've just made a change to our ``CreateContactView``, which means
+   this is a perfect time to run the tests we wrote. Do they still pass?
+   If not, did we introduce a bug, or did the behavior change in a way
+   that we expected?
+
+   (Hint: We changed how the contact list is rendered, so our tests
+   that just expect the name there are going to fail. This is a case
+   where you'd need to update the test case, but it also demonstrates
+   how integration tests can be fragile.)
+
+Deleting Contacts
+=================
 
 .. checkpoint:: delete_contact_view
 
-The final view for our basic set of CRUD views is delete. The generic
+The final view for our basic set of views is delete. The generic
 deletion view is very similar to the edit view: it wraps a single
 object and requires that you provide a URL to redirect to on success.
-When it processes a HTTP GET request, it displays a confirmation page, and
-when it receives an HTTP DELETE or POST, it deletes the object and
+When it processes a HTTP GET request, it displays a confirmation page,
+and when it receives an HTTP DELETE or POST, it deletes the object and
 redirects to the success URL.
+
+We add the view definition to ``views.py``:
 
 .. literalinclude:: /src/contacts/views.py
    :pyobject: DeleteContactView
 
+And create the template, ``delete_contact.html``, in our ``templates``
+directory.
+
 .. literalinclude:: /src/contacts/templates/delete_contact.html
+   :language: html
 
 Of course we need to add this to the URL definitions:
 
@@ -553,38 +594,46 @@ And we'll add the link to delete to the edit page.
 .. literalinclude:: /src/contacts/templates/edit_contact.html
    :lines: 15-17
 
-Detail
-======
+Detail View
+===========
 
 .. checkpoint:: contact_detail_view
 
 Finally, let's go ahead and add a detail view for our Contacts. This
-will show the details of the Contact -- not much right now, but we'll
-build on this shortly. Django includes another generic view
+will show the details of the Contact: not much right now, but we'll
+build on this shortly. Django includes a generic ``DetailView``: think
+of it as the single serving ``ListView``.
 
 .. literalinclude:: /src/contacts/views.py
    :pyobject: ContactView
 
-.. literalinclude:: /src/contacts/templates/contact.html
+Again, the template is pretty straight forward; we create
+``contact.html`` in the ``templates`` directory.
 
-Of course we need to add this to the URL definitions:
+.. literalinclude:: /src/contacts/templates/contact.html
+   :language: html
+
+And add the URL mapping:
 
 .. literalinclude:: /src/addressbook/urls.py
    :lines: 9-10
 
 We're also going to add a method to our Contact model,
-``get_absolute_url``.  ``get_absolute_url`` is a Django convention for
+``get_absolute_url``. ``get_absolute_url`` is a Django convention for
 obtaining the URL of a single model instance. In this case it's just
-going to be a call to reverse, but by providing this method, our model
-will play nicely with other parts of Django.
+going to be a call to ``reverse``, but by providing this method, our
+model will play nicely with other parts of Django.
 
 .. literalinclude:: /src/contacts/models.py
+   :prepend: class Contact(models.Model):
+             ...
    :pyobject: Contact.get_absolute_url
 
 And we'll add the link to the contact from the contact list.
 
 .. literalinclude:: /src/contacts/templates/contact_list.html
    :lines: 5-9
+   :language: html
 
 
 .. rst-class:: include-as-slide, slide-level-2

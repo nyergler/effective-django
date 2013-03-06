@@ -5,9 +5,9 @@
    :autoslides: False
    :theme: single-level
 
-========
- Models
-========
+=============
+Using Models
+=============
 
 .. slide:: Django Models
    :level: 1
@@ -34,7 +34,7 @@ to use MySQL, for example, you'd need to add `mysql-python`_ to your
 ``requirements.txt`` file.
 
 To enable SQLite as the database, edit the ``DATABASES`` definition in
-``contactmgr/settings.py``. The ``settings.py`` file contains the
+``addressbook/settings.py``. The ``settings.py`` file contains the
 Django configuration for our project. There are some settings that you
 must specify -- like the ``DATABASES`` configuration -- and others
 that are optional. Django fills in some defaults when it generates the
@@ -92,7 +92,7 @@ installed and creates tables for them if needed.
 
 ::
 
-  $ python ./manage.py syncdb
+  (tutorial)$ python ./manage.py syncdb
 
   Creating tables ...
   Creating table auth_permission
@@ -121,7 +121,7 @@ Contacts app to the project's ``INSTALLED_APPS`` setting:
 
 Then run ``syncdb`` again::
 
-  $ python ./manage.py syncdb
+  (tutorial)$ python ./manage.py syncdb
   Creating tables ...
   Creating table contacts_contact
   Installing custom SQL ...
@@ -135,7 +135,7 @@ application name and model name. You can override that with the
 
 
 Interacting with the Model
---------------------------
+==========================
 
 .. slide:: Instantiating Models
    :level: 2
@@ -165,7 +165,7 @@ with it using the interactive shell.
 
 ::
 
-  $ python ./manage.py shell
+  (tutorial)$ python ./manage.py shell
   Python 2.7.3 (default, Aug  9 2012, 17:23:57)
   [GCC 4.7.1 20120720 (Red Hat 4.7.1-5)] on linux2
   Type "help", "copyright", "credits" or "license" for more information.
@@ -185,14 +185,25 @@ with it using the interactive shell.
   >>> nathan.id
   1
 
-There are a few interesting things to notice here.
-
-First, the ``shell`` manage command gives us a interactive shell with
-the Python path set up correctly for Django.
+There are a few new things here. First, the ``manage.py shell``
+command gives us a interactive shell with the Python path set up
+correctly for Django. If you try to run Python and just import your
+application, an Exception will be raised because Django doesn't know
+which ``settings`` to use, and therefore can't map Model instances to
+the database.
 
 Second, there's this ``objects`` property on our model class. That's
-the model's Manager_. The default model manager provides querying
-functionality, and can be customized.
+the model's Manager_. If a single instance of a Model is analogous to
+a row in the database, the Manager is analogous to the table. The
+default model manager provides querying functionality, and can be
+customized. When we call ``all()`` or ``filter()`` or the Manager, a
+QuerySet is returned. A QuerySet is iterable, and loads data from the
+database as needed.
+
+Finally, there's this ``id`` field that we didn't define. Django adds
+and ``id`` field as the primary key for your model, unless you
+`specify a primary key`_.
+
 
 .. slide:: Model Managers
    :level: 2
@@ -218,12 +229,8 @@ functionality, and can be customized.
    * If more than one is returned, an Exception will be raised
    * The full query_ reference is pretty good on this topic.
 
-Third, there's this ``id`` field that we didn't define. Django adds
-and ``id`` field as the primary key for your model, unless you
-`specify a primary key`_.
-
 Writing a Test
---------------
+==============
 
 .. slide:: Testing Models
    :level: 2
@@ -236,7 +243,7 @@ Writing a Test
 We have one method defined on our model, ``__str__``, and this is a
 good time to start writing tests. The ``__str__`` method of a model
 will get used in quite a few places, and it's entirely conceivable
-it'd be exposed to end users. So it's worth writing a test so we
+it'd be exposed to end users. It's worth writing a test so we
 understand how we expect it to operate.
 
 .. literalinclude:: /src/contacts/tests.py
@@ -248,12 +255,12 @@ understand how we expect it to operate.
 
    You can run the tests for your application using ``manage.py``::
 
-     (tutorial) $ python manage.py test
+     (tutorial)$ python manage.py test
 
 
 You can run the tests for your application using ``manage.py``::
 
-  (tutorial) $ python manage.py test
+  (tutorial)$ python manage.py test
 
 If you run this now, you'll see that around 420 tests run. That's
 surprising, since we've only written one. That's because by default
@@ -264,7 +271,7 @@ there by default. The extra 419 tests come from those.
 If you want to run the tests for a specific app, just specify the app
 name on the command line::
 
-  $ python manage.py test contacts
+  (tutorial)$ python manage.py test contacts
   Creating test database for alias 'default'...
   ..
   ----------------------------------------------------------------------
@@ -287,7 +294,7 @@ break or influence another.
 .. rst-class:: include-as-slide, slide-level-2
 
 Review
-------
+======
 
 * Models define the fields in a table, and can contain business logic.
 * The ``syncdb`` manage command creates the tables in your database from
