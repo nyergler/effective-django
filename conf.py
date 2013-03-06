@@ -200,7 +200,11 @@ htmlhelp_basename = 'EffectiveDjangodoc'
 
 # -- Options for LaTeX output --------------------------------------------------
 
+if 'latex' in sys.argv:
+    release = ''
 latex_elements = {
+    'releasename': 'PyCon 2013',
+    'date': '13 March 2013',
 # The paper size ('letterpaper' or 'a4paper').
 #'papersize': 'letterpaper',
 
@@ -214,7 +218,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'EffectiveDjango.tex', u'Effective Django Documentation',
+  ('tutorial/index', 'EffectiveDjango.tex', u'Effective Django',
    u'Nathan Yergler', 'manual'),
 ]
 
@@ -230,7 +234,7 @@ latex_documents = [
 #latex_show_pagerefs = False
 
 # If true, show URL addresses after external links.
-#latex_show_urls = False
+latex_show_urls = True
 
 # Documents to append as an appendix to all manuals.
 #latex_appendices = []
@@ -244,7 +248,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'effectivedjango', u'Effective Django Documentation',
+    ('index', 'effectivedjango', u'Effective Django',
      [u'Nathan Yergler'], 1)
 ]
 
@@ -258,7 +262,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'EffectiveDjango', u'Effective Django Documentation',
+  ('index', 'EffectiveDjango', u'Effective Django',
    u'Nathan Yergler', 'EffectiveDjango', 'One line description of project.',
    'Miscellaneous'),
 ]
