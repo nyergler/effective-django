@@ -108,11 +108,10 @@ Listing Contacts
 .. slide:: Edit Views
    :level: 2
 
-   CreateView_, UpdateView_, DeleteView_ manipulate a single object.
+   CreateView_, UpdateView_, DeleteView_ work on a model instance.
    ::
 
      class UpdateContact(UpdateView):
-
          model = Contact
          template_name = 'edit_contact.html'
 
@@ -122,7 +121,6 @@ Listing Contacts
 
          def get_context_object_name(self):
              ... # defaults to <model name>
-
          def get_context_data(self, **kwargs):
              ... # add anything else to the context
 
@@ -212,8 +210,7 @@ Let's add a URL mapping for our contact list view.
    * The second parameter is the view callable. It can either be the
      actual callable (imported manually), or a string describing
      it. If it's a string, Django will try to import the module (up to
-     the final dot, ``contacts.views`` in this case), and then call
-     the final part (``index`` in this case).
+     the final dot), and then calls the final segment.
    * Note that when we're using a class based view, we *must* use the
      real object here, and not the string notation. That's because we
      have to call the class method ``as_view()``, which returns a
@@ -300,6 +297,7 @@ Just like the list view, we'll use one of Django's generic views. In
 
 .. literalinclude:: /src/contacts/views.py
    :prepend: from django.core.urlresolvers import reverse
+             from django.views.generic import CreateView
              ...
    :pyobject: CreateContactView
 
@@ -341,7 +339,7 @@ A few things to note:
 
 - The ``form`` in the context is the `Django Form`_ for our model.
   Since we didn't specify one, Django made one for us. How thoughtful.
-- If the just do ``{{ form }}`` we'll get table rows; adding
+- If we just write ``{{ form }}`` we'll get table rows; adding
   ``.as_ul`` formats the inputs for an unordered list. Try ``.as_p``
   instead to see what you get.
 - When we output the form, it only includes our fields, not the
@@ -414,7 +412,7 @@ integration are functioning properly. Most systems have both.
 Django has two tools that are helpful for writing unit tests for
 views: the Test Client_ and the RequestFactory_. They have similar
 APIs, but approach things differently. The ``TestClient`` takes a URL
-to retrieve, and resolves it against your projects' URL configuration.
+to retrieve, and resolves it against your project's URL configuration.
 It then creates a test request, and passes that request through your
 view, returning the Response. The fact that it requires you to specify
 the URL ties your test to the URL configuration of your project.
@@ -491,6 +489,8 @@ As with the List and Create views, Django has a generic view we can
 use as a starting point.
 
 .. literalinclude:: /src/contacts/views.py
+   :prepend: from django.views.generic import UpdateView
+             ...
    :pyobject: UpdateContactView
    :end-before: def get_context_data
 
@@ -576,6 +576,8 @@ redirects to the success URL.
 We add the view definition to ``views.py``:
 
 .. literalinclude:: /src/contacts/views.py
+   :prepend: from django.views.generic import DeleteView
+             ...
    :pyobject: DeleteContactView
 
 And create the template, ``delete_contact.html``, in our ``templates``
@@ -605,6 +607,8 @@ build on this shortly. Django includes a generic ``DetailView``: think
 of it as the single serving ``ListView``.
 
 .. literalinclude:: /src/contacts/views.py
+   :prepend: from django.views.generic import DetailView
+             ...
    :pyobject: ContactView
 
 Again, the template is pretty straight forward; we create
@@ -642,15 +646,13 @@ Review
 ======
 
 * Views take an HttpRequest_ and turn it into an HttpResponse_
-* Django introduced generic class-based views with Django 1.3
+* Generic class-based views introduced with Django 1.3
 * These let you create reusable, composable views
-* URLs are defined in the ``urls.py`` file in your project
-* Naming URLs lets you calculate the URL for redirection, linking,
-  etc, making it easier to change URLs, if needed
-* RequestFactory_ allows you to create Requests for testing Views
+* URLs are defined in ``urls.py`` in your project
+* Naming URLs lets you calculate the URL to a view
+* RequestFactory_ creates Requests for testing Views
   with
-* LiveServerTestCase_ provides the infrastructure for writing
-  integration tests
+* LiveServerTestCase_ provides basis for writing integration tests
 
 .. ifslides::
 

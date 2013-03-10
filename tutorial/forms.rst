@@ -220,7 +220,7 @@ Note that I said ``cleaned_data`` contains all the fields *that
 validated*. That's because form-level validation **always** happens,
 even if no fields were successfully validated. That's why in the clean
 method we use ``cleaned_data.get('email')`` instead of
-``cleaned_data['email'])``.
+``cleaned_data['email']``.
 
 If you visit the create or update views now, we'll see an extra field
 there. Try to make a change, or create a contact, without entering the

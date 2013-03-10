@@ -14,10 +14,11 @@ Django is a popular, powerful web framework for Python. It has lots of
 of the power means you can write low quality code that still seems to
 work. So what does *Effective Django* mean? It means using Django in a
 way that emphasizes writing code that's cohesive, testable, and
-scalable. What do each of those words mean? Well, "cohesive" code is
-code that is focused on doing one thing, and one thing alone. It means
-that when you write a function or a method, that it does one thing and
-does it well.
+scalable. What do each of those words mean?
+
+Well, "cohesive" code is code that is focused on doing one thing, and
+one thing alone. It means that when you write a function or a method,
+that it does one thing and does it well.
 
 This is directly related to writing testable code: code that's doing
 too much is often difficult to write tests for. When I find myself

@@ -201,8 +201,8 @@ QuerySet is returned. A QuerySet is iterable, and loads data from the
 database as needed.
 
 Finally, there's this ``id`` field that we didn't define. Django adds
-and ``id`` field as the primary key for your model, unless you
-`specify a primary key`_.
+an ``id`` field as the primary key for your model, unless you `specify
+a primary key`_.
 
 
 .. slide:: Model Managers
@@ -287,8 +287,9 @@ database". Some tests need access to a database, and because we don't
 want to mingle test data with "real" data (for a variety of reasons,
 not the least of which is determinism), Django helpfully creates a
 test database for us before running the tests. Essentially it creates
-a new database, and runs ``syncdb`` on it. Additionally, it resets it
-between each test, so that data generated or changed in one test won't
+a new database, and runs ``syncdb`` on it. If you subclass from
+Django's ``TestCase`` (which we are), Django also resets any default
+data after running each TestCase, so that changes in one test won't
 break or influence another.
 
 .. rst-class:: include-as-slide, slide-level-2

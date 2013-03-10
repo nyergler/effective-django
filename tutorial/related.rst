@@ -51,9 +51,12 @@ the interactive shell.
   >>> nathan = Contact.objects.create(first_name='Nathan', email='nathan@yergler.net')
   >>> nathan.address_set.all()
   []
-  >>> nathan.address_set.create(address_type='home', city='San Francisco', state='CA', postal_code='94107')
+  >>> nathan.address_set.create(address_type='home',
+  ... city='San Francisco', state='CA', postal_code='94107')
   <Address: Address object>
-  >>> nathan.address_set.create(address_type='college', address='354 S. Grant St.', city='West Lafayette', state='IN', postal_code='47906')
+  >>> nathan.address_set.create(address_type='college',
+  ... address='354 S. Grant St.', city='West Lafayette', state='IN',
+  ... postal_code='47906')
   <Address: Address object>
   >>> nathan.address_set.all()
   [<Address: Address object>, <Address: Address object>]

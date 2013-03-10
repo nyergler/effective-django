@@ -13,7 +13,7 @@ Your Development Environment
 ============================
 
 .. slide:: The Environment
-   :level: 2
+   :level: 3
 
    Three important factors for your environment:
 
@@ -45,8 +45,10 @@ Your Development Environment
    same release, and that you're using the same tools to configure
    your development environment that you use to configure your
    deployment environment. This is by no means a requirement, but as
-   you build bigger, more complex software, it becomes advantageous to
-   remove another variable from thing.
+   you build bigger, more complex software, it's helpful to be
+   confident that any problem you see in production is reproducable in
+   your development environment, and limit the scope of investigation
+   to code you wrote.
 
 .. _virtualenv: http://www.virtualenv.org/
 
@@ -87,7 +89,7 @@ Similarity
   variables when trying to diagnose an issue
 * If you're building something that requires additional services, this
   becomes even more important.
-* Vagrant_ is a tool for managing virtual machines, let's you easily
+* Vagrant_ is a tool for managing virtual machines, lets you easily
   create an environment separate from your day to day work.
 
 .. _Vagrant: http://vagrantup.com/
@@ -142,9 +144,6 @@ And then we can use pip_ to install the dependencies.
 
   (tutorial)$ pip install -U -r requirements.txt
 
-
-::
-
   Downloading/unpacking Django==1.4.3 (from -r requirements.txt (line 1))
     Downloading Django-1.4.3.tar.gz (7.7Mb): 7.7Mb downloaded
     Running setup.py egg_info for package Django
@@ -162,13 +161,42 @@ And then we can use pip_ to install the dependencies.
 Beginning a Django Project
 ==========================
 
-Scaffolding
------------
+.. ifnotslides::
 
-* Django provides file system scaffolding just like HTTP scaffolding
-* Helps engineers understand where to find things when they go looking
-* Django 1.4 made a change that decouples apps from projects
-* In Django parlance, your **project** is a collections of **applications**.
+   When a building is under construction, scaffolding is often used to
+   support the structure before it's complete. The scaffolding can be
+   temporary, or it can serve as part of the foundation for the
+   building, but regardless it provides some support when you're just
+   starting out.
+
+   Django, like many web frameworks, provides scaffolding for your
+   development efforts. It does this by making decisions and providing
+   a starting point for your code that lets you focus on the problem
+   you're trying to solve, and not how to parse an HTTP request.
+   Django provides HTTP, as well as file system scaffolding.
+
+   The HTTP scaffolding handles things like parsing an HTTP request
+   into a Python object and providing tools to easily create a
+   response. The file system scaffolding is a little different: it's a
+   set of conventions for organizing your code. These conventions make
+   it easier to add engineers to a project, since they
+   (hypothetically) have some idea how the code is organized. In
+   Django parlance, a **project** is the final product, and it
+   assembles one or more **applications** together. Django 1.4 made a
+   change to the way the `projects and applications are laid out on
+   disk`_, which makes it easier to decouple and reuse applications
+   between projects.
+
+   .. _`projects and applications are laid out on disk`: https://docs.djangoproject.com/en/1.5/releases/1.4/#updated-default-project-layout-and-manage-py
+
+.. slide:: Scaffolding
+   :level: 3
+
+   * Django provides file system scaffolding just like HTTP scaffolding
+   * Helps engineers understand where to find things when they go looking
+   * Django 1.4 made a change that decouples apps from projects
+   * In Django parlance, your **project** is a collection of
+     **applications**.
 
 Creating the Project
 --------------------
@@ -212,25 +240,17 @@ Project Scaffolding
 .. ifslides::
 
    manage.py
-   ~~~~~~~~~
-
-   Wrapper around ``django-admin.py`` that operates on your project. You
-   can run the tests or the development server using this.
+     Wrapper around ``django-admin.py`` that operates on your project. You
+     can run the tests or the development server using this.
 
    settings.py
-   ~~~~~~~~~~~
-
-   Your project configuration.
+     Your project configuration.
 
    urls.py
-   ~~~~~~~
-
-   URL definitions for your project
+     URL definitions for your project
 
    wsgi.py
-   ~~~~~~~
-
-   A wrapper for running your project in a WSGI_ server.
+     A wrapper for running your project in a WSGI_ server.
 
 .. _WSGI: https://en.wikipedia.org/wiki/Web_Server_Gateway_Interface
 
@@ -260,15 +280,27 @@ Creating the "App"
    * ``tests.py`` will contain the unit and integration tests you
      write.
 
-Review
-======
+.. XXX: I wish this weren't so stupid; maybe this doc should just have
+.. autoslides turned off?
 
-* Make sure your development environment is deterministic and as
-  similar to where you'll deploy as possible
-* Specify explicit versions for your dependencies
-* Django organizes code into "Projects" and "Applications"
-* Applications are [potentially] reusable
+.. ifnotslides::
 
-.. ifslides::
+   Review
+   ======
+
+   * Make sure your development environment is deterministic and as
+     similar to where you'll deploy as possible
+   * Specify explicit versions for your dependencies
+   * Django organizes code into "Projects" and "Applications"
+   * Applications are [potentially] reusable
+
+.. slide:: Review
+   :level: 3
+
+   * Make sure your development environment is deterministic and as
+     similar to where you'll deploy as possible
+   * Specify explicit versions for your dependencies
+   * Django organizes code into "Projects" and "Applications"
+   * Applications are [potentially] reusable
 
    * Next: :doc:`models`
