@@ -70,7 +70,7 @@ for the HTTP methods it supports.
 ::
 
   from django.http import HttpResponse
-  from django.view.generic import View
+  from django.views.generic import View
 
   class MyView(View):
 
