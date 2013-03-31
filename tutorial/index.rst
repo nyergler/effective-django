@@ -60,14 +60,6 @@ Slides for the tutorial are available at http://effectivedjango.com/slides/tutor
 
    Nathan Yergler // nathan@yergler.net // @nyergler
 
-.. slide:: Logistics
-   :level: 2
-
-   * Talk / Demonstrate / Practice
-   * Please ask questions
-   * Break half way through
-   * Notes, examples available: http://effectivedjango.com/tutorial
-
 .. slide:: Goals
    :level: 2
 
