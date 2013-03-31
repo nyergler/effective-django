@@ -15,8 +15,13 @@
    useful.
 
    Feedback, suggestions, and questions may be sent to
-   nathan+ed@yergler.net. You can find (and fork) the source on
-   `github <http://github.com/nyergler/effective-django>`_.
+   nathan@yergler.net. You can find (and fork) the source on `github
+   <http://github.com/nyergler/effective-django>`_.
+
+   These documents are available in PDF_ and EPub_ format, as well.
+
+.. _PDF: /latex/EffectiveDjango.pdf
+.. _EPub: /epub/EffectiveDjango.epub
 
 Django is a popular, powerful web framework for Python. It has lots of
 "batteries" included, and makes it easy to get up and going. But all

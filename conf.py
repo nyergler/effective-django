@@ -276,6 +276,10 @@ texinfo_documents = [
 # How to display URL addresses: 'footnote', 'no', or 'inline'.
 #texinfo_show_urls = 'footnote'
 
+# -- EPub options
+
+epub_author = 'Nathan Yergler'
+
 # -- Google Analytics -----------------------------------------------------------
 
 googleanalytics_enabled = True

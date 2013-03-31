@@ -171,4 +171,4 @@ upload:
 	@echo "Updating $(UPLOADTARGET)"
 	rsync -rv _build/* $(UPLOADHOST):$(UPLOADPATH)
 
-all: clean html slides latexpdf
+all: clean html slides latexpdf epub
