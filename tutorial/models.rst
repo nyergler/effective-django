@@ -244,7 +244,9 @@ We have one method defined on our model, ``__str__``, and this is a
 good time to start writing tests. The ``__str__`` method of a model
 will get used in quite a few places, and it's entirely conceivable
 it'd be exposed to end users. It's worth writing a test so we
-understand how we expect it to operate.
+understand how we expect it to operate. Django creates a ``tests.py``
+file when it creates the application, so we'll add our first test to
+that file in the contacts app.
 
 .. literalinclude:: /src/contacts/tests.py
    :language: python
