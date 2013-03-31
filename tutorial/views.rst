@@ -668,7 +668,7 @@ Review
 .. _DeleteView: https://docs.djangoproject.com/en/1.5/ref/class-based-views/generic-editing/#deleteview
 .. _DetailView: https://docs.djangoproject.com/en/1.5/ref/class-based-views/generic-display/#detailview
 .. _`context processors`: https://docs.djangoproject.com/en/1.5/ref/templates/api/#subclassing-context-requestcontext
-.. _`Django Form`: https://docs.djangoproject.com/en/1.5/topics/forms/i
+.. _`Django Form`: https://docs.djangoproject.com/en/1.5/topics/forms/
 .. _HttpRequest: https://docs.djangoproject.com/en/1.5/ref/request-response/#httprequest-objects
 .. _HttpResponse: https://docs.djangoproject.com/en/1.5/ref/request-response/#httpresponse-objects
 .. _Client: https://docs.djangoproject.com/en/1.5/topics/testing/overview/#module-django.test.client
