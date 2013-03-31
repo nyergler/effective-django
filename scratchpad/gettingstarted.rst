@@ -108,3 +108,5 @@ Creating the Scaffolding
    * ``views.py`` will contain the View code
    * ``tests.py`` will contain the unit and integration tests you
      write.
+
+.. _WSGI: http://www.python.org/dev/peps/pep-0333/

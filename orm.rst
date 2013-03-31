@@ -153,7 +153,7 @@ FactoryBoy Example
    contact = ContactFactory.create()
 
 SubFactories for Related Objects
----------------------------
+--------------------------------
 
 .. testcode::
 

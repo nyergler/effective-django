@@ -19,8 +19,8 @@ conventions for executing scripts via a web server.
 
 With the inclusion of WSGI, it's possible to begin developing a web
 application by simply picking and choosing pieces that seem best for
-the task at hand. Indeed, some projects_ do just that. So why use a
-larger framework like Django_, Pylons_, or `Blue Breem`_? Frameworks
+the task at hand. Indeed, some projects do just that. So why use a
+larger framework like Django_, Pylons_, or `Blue Bream`_? Frameworks
 build upon WSGI to provide a reasonable set of defaults, a set of
 conventions, for getting started with development and focusing on the
 specific problem at hand. It's *possible* to spend time evaluating
@@ -89,3 +89,9 @@ My goal is to convince you of the importance of these principles, and
 provide examples of how to follow them to build more robust Django
 applications. I'm going to walk through building a contact management
 application iteratively, building tests as I go.
+
+.. _WSGI: http://www.python.org/dev/peps/pep-0333/
+.. _CGI: http://en.wikipedia.org/wiki/Common_Gateway_Interface
+.. _Django: http://djangoproject.com/
+.. _Pylons: http://www.pylonsproject.org/
+.. _`Blue Bream`: http://bluebream.zope.org/

@@ -73,6 +73,7 @@ release = '0.1'
 # directories to ignore when looking for source files.
 exclude_patterns = [
     '_build',
+    'scratchpad',
 
     # sample code sub-module
     'src',
