@@ -66,8 +66,8 @@ Contents
    views.rst
    classbasedviews.rst
    Forms <forms.rst>
-   conclusion.rst
-
+   acknowledgments.rst
+   further-reading.rst
 
 Everything In Its Right Place
 =============================
