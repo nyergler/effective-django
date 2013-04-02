@@ -263,7 +263,7 @@ something different.
 
 Forms have three pre-baked output formats: ``as_ul``, ``as_p``, and
 ``as_table``. If ``as_ul`` outputs the form elements as the items in
-an unordered list, it's not too mysterious was ``as_p`` and
+an unordered list, it's not too mysterious what ``as_p`` and
 ``as_table`` do.
 
 .. slide:: Controlling Form Output
