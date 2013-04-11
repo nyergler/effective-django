@@ -224,7 +224,7 @@ Tracking Changes
 
 - Forms use initial data to track changed fields
 - ``form.has_changed()``
-- ``form.changed_fields``
+- ``form.changed_data``
 - Fields can render a hidden input with the initial value, as well::
 
     >>> changed_date = forms.DateField(show_hidden_initial=True)
@@ -331,7 +331,7 @@ Additional rendering properties:
 
 - ``field.label``
 - ``field.label_tag``
-- ``field.html_id``
+- ``field.html_name``
 - ``field.help_text``
 
 Customizing Rendering

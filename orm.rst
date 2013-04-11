@@ -50,10 +50,13 @@ What Goes in Models
 Saving Data
 ===========
 
-* Calling ``.save()`` saves the entire Model
-* This makes it easy to overwrite changes
+* Starting in Django 1.5, calling ``.save()`` only updates the fields
+  that have changed.
+* Prior to 1.5, ``.save()`` updated the entire model, making it easy
+  to overwrite changes
 * `django-dirtyfields`_ lets you track which fields have been changed
-  (but does not change ``.save()`` behavior on its own
+  if you're stuck on an older version of Django (but does not change
+  ``.save()`` behavior on its own)
 
 Managers
 ========

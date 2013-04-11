@@ -63,9 +63,10 @@ Configuring URLs
           (r'^index/$', ContactList.as_view()),
       )
 
-* ``kwargs`` passed to ``as_view`` are assigned as properties
+* ``kwargs`` passed to ``as_view`` can override properties on the View
+  class
 * Arguments captured in the URL pattern are available as ``.args`` and
-  ``.kwargs``
+  ``.kwargs`` inside your class
 
 
 Idiomatic Class Based Views
@@ -111,14 +112,15 @@ HTTP Methods
 
 * The ``http_method_names`` property defines a list of supported
   methods
-* In Django 1.4 this is::
+* In Django 1.5 this is::
 
     http_method_names = ['get', 'post', 'put', 'delete', 'head',
                          'options', 'trace']
 
 * If you want to support something like HTTP ``PATCH``, you need to
-  add it to that list
-* Views will look for a class method with the same name
+  add it to that list in your View subclass
+* Views will look for a class method named for the HTTP method:
+  ``get()`` is called for ``GET``, etc.
 
 Writing Composable Views
 ========================

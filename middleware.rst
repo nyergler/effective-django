@@ -27,7 +27,7 @@ Overview of Middleware
 Middleware Hooks
 ================
 
-* Middleware classes have a few hooks:
+* Middleware classes have hooks for processing:
 
   - ``request``
   - ``response``
