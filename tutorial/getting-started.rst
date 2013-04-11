@@ -144,15 +144,19 @@ And then we can use pip_ to install the dependencies.
 
   (tutorial)$ pip install -U -r requirements.txt
 
-  Downloading/unpacking Django==1.4.3 (from -r requirements.txt (line 1))
-    Downloading Django-1.4.3.tar.gz (7.7Mb): 7.7Mb downloaded
+  Downloading/unpacking Django==1.5.1
+    Downloading Django-1.5.1.tar.gz (8.0MB): 8.0MB downloaded
     Running setup.py egg_info for package Django
 
+      warning: no previously-included files matching '__pycache__' found under directory '*'
+      warning: no previously-included files matching '*.py[co]' found under directory '*'
   Installing collected packages: Django
     Running setup.py install for Django
-      changing mode of build/scripts-2.7/django-admin.py from 664 to 775
+      changing mode of build/scripts-2.7/django-admin.py from 644 to 755
 
-      changing mode of /home/nathan/p/contacts/bin/django-admin.py to 775
+      warning: no previously-included files matching '__pycache__' found under directory '*'
+      warning: no previously-included files matching '*.py[co]' found under directory '*'
+      changing mode of /home/nathan/p/edt/bin/django-admin.py to 755
   Successfully installed Django
   Cleaning up...
 
