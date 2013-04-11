@@ -8,20 +8,10 @@
 
 .. note::
 
-   These documents are a combination of the notes and examples
-   developed for talks prepared for PyCon 2012, PyOhio 2012, and PyCon
-   2013, and for Eventbrite web engineering. I'm still working on
-   fleshing them out into a single document, but I hope you find them
-   useful.
+   There's new content and tutorials coming!
 
-   Feedback, suggestions, and questions may be sent to
-   nathan@yergler.net. You can find (and fork) the source on `github
-   <http://github.com/nyergler/effective-django>`_.
-
-   These documents are available in PDF_ and EPub_ format, as well.
-
-.. _PDF: /latex/EffectiveDjango.pdf
-.. _EPub: /epub/EffectiveDjango.epub
+   `Sign up <http://eepurl.com/xY1dn>`_ to be notified with *Effective
+   Django* is updated.
 
 Django is a popular, powerful web framework for Python. It has lots of
 "batteries" included, and makes it easy to get up and going. But all
@@ -32,6 +22,20 @@ traffic or load, but in terms of being able to add developers to
 projects. After reading *Effective Django* you should have an
 understanding of how Django's pieces fit together, how to use them to
 engineer web applications, and where to look to dig deeper.
+
+These documents are a combination of the notes and examples developed
+for talks prepared for PyCon 2012, PyOhio 2012, and PyCon 2013, and
+for Eventbrite web engineering. I'm still working on fleshing them out
+into a single document, but I hope you find them useful.
+
+Feedback, suggestions, and questions may be sent to
+nathan@yergler.net. You can find (and fork) the source on `github
+<http://github.com/nyergler/effective-django>`_.
+
+These documents are available in PDF_ and EPub_ format, as well.
+
+.. _PDF: /latex/EffectiveDjango.pdf
+.. _EPub: /epub/EffectiveDjango.epub
 
 .. slides::
 
