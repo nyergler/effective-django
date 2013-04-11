@@ -21,8 +21,9 @@ being an awesome place to work.
 
 *Effective Django* would have been opaque, disjointed, and confusing
 without feedback and patience from early reviewers: Tamara Chu,
-Brandon L. Golm, Jason Herbst, Philip John James, Galen Krumel, Sanby
-Lee, Karl Mendes, Nam-Chi Van, Nicole Zuckerman, and Madeline_.
+Brandon L. Golm, Jason Herbst, Philip John James, Galen Krumel,
+Allison Lacker, Sanby Lee, Karl Mendes, Nam-Chi Van, Nicole Zuckerman,
+and Madeline_.
 
 Thanks for reading this far. If you have feedback, comments, or
 suggestions, please feel free to email them to me: nathan@yergler.net.
