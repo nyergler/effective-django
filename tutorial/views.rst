@@ -19,7 +19,8 @@
 View Basics
 ===========
 
-* Views take an HTTP Request and return a Response
+Django Views take an `HTTP Request`_ and return an `HTTP Response`_ to
+the user.
 
   .. blockdiag::
 
@@ -32,9 +33,24 @@ View Basics
         C -> A [label = "Response"];
      }
 
-* Any callable that takes a Request can be a view
-* Like other frameworks, Django can pass values from the URL to the
-  view, as well
+Any Python callable can be a view. The only hard and fast requirement
+is that it takes the request object (customarily named ``request``) as
+its first argument. This means that a minimalist view is super
+simple::
+
+
+
+  from django.http import HttpResponse
+
+  def hello_world(request):
+      return HttpResponse("Hello, World")
+
+Of course, like most frameworks, Django also allows you to pass
+arguments to the view from the URL. We'll cover this as we build up
+our application.
+
+.. _`HTTP Request`: https://docs.djangoproject.com/en/1.5/ref/request-response/#httprequest-objects
+.. _`HTTP Response`: https://docs.djangoproject.com/en/1.5/ref/request-response/#httpresponse-objects
 
 .. rst-class:: include-as-slide, slide-level-2
 
@@ -65,7 +81,8 @@ Class Based Views
 =================
 
 The minimal class based view subclasses View_ and implements methods
-for the HTTP methods it supports.
+for the HTTP methods it supports. Here's the class-based version of
+the minimalist "Hello, World" view we previously wrote.
 
 ::
 
@@ -77,6 +94,22 @@ for the HTTP methods it supports.
       def get(self, request, *args, **kwargs):
           return HttpResponse("Hello, World")
 
+In a class based view, HTTP methods map to class method names. In this
+case, we've defined a handler for ``GET`` requests with the ``get``
+method. Just like the function implementation, it takes ``request`` as
+its first argument, and returns an HTTP Response.
+
+.. sidebar:: Permissive Signatures
+
+   You may notice that it has a couple of extra arguments in its
+   signature, compared to the view we saw previously, specifically
+   ``*args`` and ``**kwargs``. Class based views were first introduced
+   as a way to make Django's "generic" views more flexible. That meant
+   they were used in many different contexts, with potentially
+   different arguments extracted from the URLs. As I've been writing
+   class based views over the past year, I've continued to write them
+   with permissive signatures, as I've found they're often useful in
+   ways I didn't initially expect.
 
 Listing Contacts
 ================
@@ -169,60 +202,57 @@ of power without a lot of code. In this case we set ``model =
 Contact``, which says that this view is going to list *all* the
 Contacts in our database.
 
-.. Mapping URLs
-.. ------------
-
-.. * Django **URLconfs** define how to map requests to Python code
-.. * **URLconfs** are Python modules
-.. * In that module there are a few important names:
-
-..   * ``urlpatterns``
-..   * ``handler403``
-..   * ``handler404``
-..   * ``handler500``
-
-.. * As your project grows, the URL conf can begin to import lots and
-..   lots of things.
-.. * If one of those imports fails, your project will stop working in a
-..   slightly mysterious manner.
-
 
 .. rst-class:: include-as-slide, slide-level-2
 
 Defining URLs
 =============
 
-Django looks for the URL configuration in ``urls.py`` in your project.
+The URL configuration tells Django how to match a request's path to
+your Python code. Django looks for the URL configuration, defined as
+``urlpatterns``, in the ``urls.py`` file in your project.
+
 Let's add a URL mapping for our contact list view.
 
 .. literalinclude:: /src/addressbook/urls.py
    :language: python
 
 
-.. notslides::
-
-   * Use of the ``url()`` function is not strictly required, but I
-     like it: when you start adding more information to the URL
-     pattern, it lets you use named parameters, making everything more
-     clear.
-   * The first parameter is a regular expression. Note the trailing
-     ``$``; why might that be important?
-   * The second parameter is the view callable. It can either be the
-     actual callable (imported manually), or a string describing
-     it. If it's a string, Django will try to import the module (up to
-     the final dot), and then calls the final segment.
-   * Note that when we're using a class based view, we *must* use the
-     real object here, and not the string notation. That's because we
-     have to call the class method ``as_view()``, which returns a
-     wrapper around our class that Django's URL dispatch can call.
-
+* Use of the ``url()`` function is not strictly required, but I like
+  it: when you start adding more information to the URL pattern, it
+  lets you use named parameters, making everything more clear.
+* The first parameter is a regular expression. Note the trailing
+  ``$``; why might that be important?
+* The second parameter is the view callable. It can either be the
+  actual callable (imported manually), or a string describing it. If
+  it's a string, Django will import the module (up to the final dot),
+  and then calls the final segment when a request matches.
+* Note that when we're using a class based view, we *must* use the
+  real object here, and not the string notation. That's because we
+  have to call the class method ``as_view()``, which returns a wrapper
+  around our class that Django's URL dispatch can call.
 * Giving a URL pattern a name allows you to do a reverse lookup
+* The URL name is useful when linking from one View to another, or
+  redirecting, as it allows you to manage your URL structure in one
+  place
 
-.. notslides::
+While the ``urlpatterns`` name **must** be defined, Django also allows
+you to define a few other values in the URL configuration for
+exceptional cases. These include ``handler403``, ``handler404``, and
+``handler500``, which tell Django what view to use when an HTTP error
+occurs. See the `Django urlconf documentation`_ for details.
 
-   * The URL name is useful when linking from one View to another, or
-     redirecting, as it allows you to manage your URL structure in one
-     place
+.. _`Django urlconf documentation`: https://docs.djangoproject.com/en/1.5/ref/urls/#handler403
+
+.. admonition:: URL Configuration Import Errors
+
+   Django loads the URL configuration very early during startup, and
+   will attempt to import things it finds here. If one of the imports
+   fails, however, the error message can be somewhat opaque. If your
+   project stops working with an import-related exception, try to
+   import the URL configuration in the interactive shell. That usually
+   makes it clear where the problem lies.
+
 
 Creating the Template
 =====================

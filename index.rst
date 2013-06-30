@@ -67,7 +67,6 @@ Contents
    testing.rst
    middleware.rst
    Databases & Models <orm.rst>
-   views.rst
    classbasedviews.rst
    Forms <forms.rst>
    acknowledgments.rst
