@@ -205,8 +205,8 @@ htmlhelp_basename = 'EffectiveDjangodoc'
 if 'latex' in sys.argv:
     release = ''
 latex_elements = {
-    'releasename': 'PyCon 2013',
-    'date': '13 March 2013',
+    'releasename': 'OSCON 2013',
+    'date': '23 July 2013',
 # The paper size ('letterpaper' or 'a4paper').
 #'papersize': 'letterpaper',
 
