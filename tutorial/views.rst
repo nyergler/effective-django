@@ -534,7 +534,7 @@ Review
 
 .. ifslides::
 
-   * Next: :doc:`additional-views`
+   * Next: :doc:`static`
 
 
 .. _`Generic Views`: https://docs.djangoproject.com/en/1.5/topics/class-based-views/generic-display/

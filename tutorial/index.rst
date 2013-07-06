@@ -86,6 +86,7 @@ Slides for the tutorial are available at http://effectivedjango.com/slides/tutor
       getting-started.rst
       models.rst
       views.rst
+      static.rst
       additional-views.rst
       forms.rst
       related.rst
