@@ -81,11 +81,12 @@ Slides for the tutorial are available at http://effectivedjango.com/slides/tutor
    :inline-contents: True
 
    .. toctree::
-      :maxdepth: 1
+      :maxdepth: 2
 
       getting-started.rst
       models.rst
       views.rst
+      additional-views.rst
       forms.rst
       related.rst
 ..      authzn.rst
