@@ -482,9 +482,13 @@ Django 1.4 adds a new ``TestCase`` base class, the
 LiveServerTestCase_. This is very much what it sounds like: a test
 case that runs against a live server. By default Django will start the
 development server for you when it runs these tests, but they can also
-be run against another server. Selenium_ is a package commonly used
-for writing tests that drive a web browser, and that's what we'll use
-for our integration tests.
+be run against another server.
+
+Selenium_ is a tool for writing tests that drive a web browser, and
+that's what we'll use for our integration tests. By using Selenium,
+you're able to automate different browers (Chrome, Firefox, etc), and
+interact with your full application much as the user would. Before
+writing tests to use it, we'll need to install the Python implementation.
 
 ::
 
@@ -508,6 +512,13 @@ Note that Selenium allows us to find elements in the page, inspect
 their state, click them, and send keystrokes. In short, it's like
 we're controlling the browser. In fact, if you run the tests now,
 you'll see a browser open when the tests run.
+
+In our example we're using CSS Selectors to locate elements in the
+DOM, but you can also use Xpath. For many people it's a matter of
+preference, but I've found that using CSS Selectors is often less
+brittle: if I change the markup, I'm likely to leave classes on
+important elements in place, even if their relative position in the
+DOM changes.
 
 Edit Views
 ==========
