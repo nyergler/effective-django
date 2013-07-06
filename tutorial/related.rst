@@ -121,7 +121,7 @@ takes the parent object as it's starting point.
 Once again, this needs to be wired up into the URL configuration.
 
 .. literalinclude:: /src/addressbook/urls.py
-   :lines: 15-16
+   :lines: 16-17
 
 And we have a simple template.
 

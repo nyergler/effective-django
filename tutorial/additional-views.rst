@@ -1,6 +1,7 @@
 .. tut::
    :path: /src
 
+
 .. slideconf::
    :autoslides: False
    :theme: single-level
@@ -30,7 +31,7 @@ use as a starting point.
 * we'll provide pk in the URL
 
 .. literalinclude:: /src/addressbook/urls.py
-   :lines: 11-12
+   :lines: 12-13
 
 We'll update the contact list to include an edit link next to each
 contact.
@@ -68,7 +69,7 @@ We also update the template to use that value for the action and
 change the title based on whether or not we've previously saved.
 
 .. literalinclude:: /src/contacts/templates/edit_contact.html
-   :lines: 1-7
+   :lines: 5-11
    :language: html
 
 You may wonder where the ``contact`` value in the contact comes from:
@@ -119,12 +120,12 @@ directory.
 Of course we need to add this to the URL definitions:
 
 .. literalinclude:: /src/addressbook/urls.py
-   :lines: 13-14
+   :lines: 14-15
 
 And we'll add the link to delete to the edit page.
 
 .. literalinclude:: /src/contacts/templates/edit_contact.html
-   :lines: 15-17
+   :lines: 19-21
 
 Detail View
 ===========
@@ -150,7 +151,7 @@ Again, the template is pretty straight forward; we create
 And add the URL mapping:
 
 .. literalinclude:: /src/addressbook/urls.py
-   :lines: 9-10
+   :lines: 10-11
 
 We're also going to add a method to our Contact model,
 ``get_absolute_url``. ``get_absolute_url`` is a Django convention for
@@ -166,7 +167,7 @@ model will play nicely with other parts of Django.
 And we'll add the link to the contact from the contact list.
 
 .. literalinclude:: /src/contacts/templates/contact_list.html
-   :lines: 5-9
+   :lines: 7-12
    :language: html
 
 .. ifslides::
