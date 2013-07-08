@@ -212,7 +212,8 @@ The URL configuration tells Django how to match a request's path to
 your Python code. Django looks for the URL configuration, defined as
 ``urlpatterns``, in the ``urls.py`` file in your project.
 
-Let's add a URL mapping for our contact list view.
+Let's add a URL mapping for our contact list view in
+``addressbook/urls.py``.
 
 .. literalinclude:: /src/addressbook/urls.py
    :language: python
