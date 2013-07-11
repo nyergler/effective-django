@@ -287,7 +287,7 @@ you'll see an error: ``TemplateDoesNotExist``.
 Most of Django's generic views (such as ``ListView`` which we're
 using) have a predefined template name that they expect to find. We
 can see in this error message that this view was expecting to find
-``contact_list.html``, which is derives from the model name. Let's go
+``contact_list.html``, which is derived from the model name. Let's go
 and create that.
 
 By default Django will look for templates in applications, as well as

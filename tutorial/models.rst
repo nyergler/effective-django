@@ -250,6 +250,8 @@ that file in the contacts app.
 
 .. literalinclude:: /src/contacts/tests.py
    :language: python
+   :prepend: from contacts.models import Contact
+             ...
    :pyobject: ContactTests
 
 .. slide:: Running the Tests
