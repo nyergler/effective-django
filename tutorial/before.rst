@@ -15,6 +15,9 @@ and will update this document with any notes.
    I'll be using Python 2.7; you can download it from the official
    Python website: http://python.org/download/releases/2.7.5/
 
+   The latest release of 2.7 is 2.7.5. If you already have 2.7.x
+   installed, that will work fine.
+
 #. Install virtualenv and pip
 
    ``virtualenv`` is a tool for managing your Python environments. It
@@ -26,11 +29,11 @@ and will update this document with any notes.
 
    After downloading, unpack the archive and run::
 
-     $ python setup.py installl
+     $ python setup.py install
 
    You may need to run with sudo depending on your system::
 
-     $ sudo python setup.py installl
+     $ sudo python setup.py install
 
 #. Create a working directory for the tutorial, and make it a virtualenv
 
