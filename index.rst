@@ -13,7 +13,13 @@
    `Sign up <http://eepurl.com/xY1dn>`_ to be notified with *Effective
    Django* is updated.
 
-Django is a popular, powerful web framework for Python. It has lots of
+.. note::
+
+   `Video of the tutorial from PyCon`_ is available on YouTube.
+
+.. _`Video of the tutorial from PyCon`: https://www.youtube.com/watch?v=NfsJDPm0X54
+
+Django is a popular, powerful web framework for Python. It has lots of[
 "batteries" included, and makes it easy to get up and going. But all
 of the power means you can write low quality code that still seems to
 work. *Effective Django* development means building applications that

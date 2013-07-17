@@ -9,6 +9,12 @@
  Effective Django Tutorial
 ===========================
 
+.. note::
+
+   `Video of this tutorial`_ from PyCon is available on YouTube.
+
+.. _`Video of this tutorial`: https://www.youtube.com/watch?v=NfsJDPm0X54
+
 Django is a popular, powerful web framework for Python. It has lots of
 "batteries" included, and makes it easy to get up and going. But all
 of the power means you can write low quality code that still seems to
