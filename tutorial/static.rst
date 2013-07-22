@@ -2,7 +2,7 @@
    :path: /src
 
 .. slideconf::
-   :autoslides: False
+   :autoslides: True
    :theme: single-level
 
 ===================
