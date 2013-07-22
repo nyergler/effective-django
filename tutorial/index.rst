@@ -84,10 +84,23 @@ Slides for the tutorial are available at http://effectivedjango.com/slides/tutor
 
 .. slide:: Agenda
    :level: 2
-   :inline-contents: True
 
    .. toctree::
-      :maxdepth: 2
+      :maxdepth: 1
+
+      getting-started.rst
+      models.rst
+      views.rst
+      static.rst
+      additional-views.rst
+      forms.rst
+      related.rst
+..      authzn.rst
+
+.. ifnotslides::
+
+   .. toctree::
+      :maxdepth: 1
 
       getting-started.rst
       models.rst
