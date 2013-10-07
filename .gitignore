@@ -5,4 +5,9 @@
 /parts
 /.installed.cfg
 /_serekh
+/lib/
+/lib64/
+/include/
+.Python
+
 *.pyc
