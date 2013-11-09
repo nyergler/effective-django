@@ -16,19 +16,15 @@ formats, you can do so by:
 
    For Macs, it is recommended you use `MacTeX`_
 
-#. Check out this repository (Use --recursive to get the tutorial submodule)
-#. Bootstrap the buildout::
+#. Check out this repository::
 
-     $ cd effective-django
-     $ python bootstrap.py
+     $ git clone --recursive https://github.com/nyergler/effective-django.git
 
-#. Run buildout_ ::
+   Note that in order to build *Effective Django*, the sample code
+   must be cloned into the ``src`` submodule. Using ``--recursive``
+   will accomplish that.
 
-     $ ./bin/buildout
-
-   This will install the dependencies needed to build the content.
-
-#. Alternatively, use virtualenv (from within repository)::
+#. Create a virtualenv_ and install the dependencies::
 
      $ virtualenv .
      $ . bin/activate
@@ -40,7 +36,7 @@ formats, you can do so by:
 
    The output will be in the ``_build`` sub-directory.
 
-   To only build HTML, specify that target::
+   To only build HTML, specify the target explicitly::
 
      $ make html
 
@@ -52,3 +48,4 @@ Run ``make`` without any parameters for a list of possible targets.
 .. _Sphinx: http://sphinx-doc.org/
 .. _`MacTeX`: http://tug.org/mactex/
 .. _buildout: http://www.buildout.org/
+.. _virtualenv: http://www.virtualenv.org/
