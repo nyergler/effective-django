@@ -125,3 +125,53 @@ Authorization
 =============
 
 .. checkpoint:: master
+
+Having support for login and logout is nice, but we're not actually
+using it right now. So we want to first make our Contact views only
+available to authenticated users, and then we'll go on to associated
+contacts with specific Users, so the application could be used for
+multiple users.
+
+Django includes a suite a functions and decorators that help you guard
+a view based on authentication/authorization. One of the most commonly
+used is `login_required`_. Unfortunately, applying view decorators to
+class based views remains `a little cumbersome`_. There are
+essentially two methods: decorating the URL configuration, and
+decorating the class. I'll show how to decorate the class.
+
+Class based views have a ``dispatch()`` method that's called when an
+URL pattern matches. The ``dispatch()`` method looks up the
+appropriate method on the class based on the HTTP method and then
+calls it. Because we want to protect the views for all HTTP methods,
+we'll override and decorate that.
+
+In ``contacts/views.py`` we'll create a class mixin that ensures the
+user is logged in.
+
+.. literalinclude:: /src/contacts/views.py
+   :lines: 1-2, 16-21
+
+This is a *mixin* because it doesn't provide a full implementation of
+a view on its own; it needs to be *mixed* with another view to have an
+effect.
+
+Once we have it, we can add it to the class declarations in
+``contacts/views.py``. Each view will have our new ``LoggedInMixin``
+added as the first superclass. For example, ``ListContactView`` will
+look as follows.
+
+.. literalinclude:: /src/contacts/views.py
+   :pyobject: ListContactView
+
+Just as ``LOGIN_REDIRECT_URL`` tells Django where to send people
+*after* they log in, there's a setting to control where to send them
+when they *need* to login. However, this can also be a view name, so
+we don't have to bake an explicit URL into the settings.
+
+.. literalinclude:: /src/addressbook/settings.py
+   :lines: 162
+
+
+
+.. _`login_required`: https://docs.djangoproject.com/en/1.5/topics/auth/default/#django.contrib.auth.decorators.login_required
+.. _`a little cumbersome`: https://docs.djangoproject.com/en/1.5/topics/class-based-views/intro/#decorating-class-based-views
