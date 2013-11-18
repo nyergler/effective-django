@@ -104,9 +104,7 @@ functions that create the class for you. We'll add a call to the
 factory to our ``forms.py`` file.
 
 .. literalinclude:: /src/contacts/forms.py
-   :prepend: from django.forms.models import inlineformset_factory
-             ...
-   :lines: 40-
+   :lines: 3-8,40-
 
 When we create the view, we'll need to specify that this is the form
 we want to use, instead of having Django create one for us.
