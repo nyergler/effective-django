@@ -95,7 +95,7 @@ Slides for the tutorial are available at http://effectivedjango.com/slides/tutor
       additional-views.rst
       forms.rst
       related.rst
-..      authzn.rst
+      authzn.rst
 
 .. ifnotslides::
 
@@ -109,4 +109,4 @@ Slides for the tutorial are available at http://effectivedjango.com/slides/tutor
       additional-views.rst
       forms.rst
       related.rst
-..      authzn.rst
+      authzn.rst
