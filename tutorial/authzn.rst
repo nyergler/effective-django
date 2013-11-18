@@ -5,6 +5,11 @@
  Handling Authentication & Authorization
 =========================================
 
+.. warning::
+
+   This page is a work in progress; errors may exist, and additional
+   contect is forthcoming.
+
 So far we've built a simple contact manager, and added support for a
 related model (Addresses). This has shown how to use many of the
 basics, but there are a few more things you'd want before exposing
@@ -15,7 +20,7 @@ which is what we'll use.
 Authentication
 ==============
 
-.. checkpoint:: login-logout
+.. checkpoint:: authentication
 
 In order to use the included authentication support, the
 ``django.contrib.auth`` and ``django.contrib.sessions`` applications
@@ -124,7 +129,7 @@ everywhere.
 Authorization
 =============
 
-.. checkpoint:: master
+.. checkpoint:: authorization
 
 Having support for login and logout is nice, but we're not actually
 using it right now. So we want to first make our Contact views only
@@ -171,6 +176,39 @@ we don't have to bake an explicit URL into the settings.
 .. literalinclude:: /src/addressbook/settings.py
    :lines: 162
 
+Checking Ownership
+------------------
+
+Checking that you're logged in is well and good, but to make this
+suitable for multiple users we need to add the concept of ownership.
+There are three steps for
+
+#. Record the Owner of each Contact
+#. Only show Contacts the logged in user owns in the list
+#. Set the Owner when creating a new one
+
+First, we'll go ahead and add the concept of an Owner to the Contact
+model.
+
+In ``contacts/models.py``, we add an import and another field to our
+model.
+
+.. literalinclude:: /src/contacts/models.py
+   :prepend: from django.contrib.auth.models import User
+     ...
+   :pyobject: Contact
+
+Because Django doesn't support migrations out of the box, we'll need
+to blow away the database and re-run syncdb.
+
+XXX Perfect segue for talking about South
+
+Now we need to limit the contact list to only the contacts the logged
+in User owns. This gets us into overriding methods that the base view
+classes have been handling for us.
+
+.. literalinclude:: /src/contacts/views.py
+   :pyobject: ListContactView
 
 
 .. _`login_required`: https://docs.djangoproject.com/en/1.5/topics/auth/default/#django.contrib.auth.decorators.login_required
