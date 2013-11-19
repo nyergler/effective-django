@@ -11,7 +11,9 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys, os
+import datetime
+import os
+import sys
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -205,8 +207,8 @@ htmlhelp_basename = 'EffectiveDjangodoc'
 if 'latex' in sys.argv:
     release = ''
 latex_elements = {
-    'releasename': 'OSCON 2013',
-    'date': '23 July 2013',
+    'releasename': 'Build %s' % datetime.date.today().strftime('%Y.%m.%d'),
+    'date': datetime.date.today().strftime('%d %B %Y'),
 # The paper size ('letterpaper' or 'a4paper').
 #'papersize': 'letterpaper',
 
