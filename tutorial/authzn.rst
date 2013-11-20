@@ -8,7 +8,7 @@
 .. warning::
 
    This page is a work in progress; errors may exist, and additional
-   contect is forthcoming.
+   content is forthcoming.
 
 So far we've built a simple contact manager, and added support for a
 related model (Addresses). This has shown how to use many of the
@@ -207,9 +207,51 @@ Now we need to limit the contact list to only the contacts the logged
 in User owns. This gets us into overriding methods that the base view
 classes have been handling for us.
 
+For the list of Contacts, we'll want to override the ``get_queryset``
+method, which returns the `Django QuerySet`_ of objects to be
+displayed.
+
 .. literalinclude:: /src/contacts/views.py
    :pyobject: ListContactView
 
+
+The remaining views are responsible for showing only a single object
+-- the Contact (or its addresses). For those we'll create another
+mixin that enforces authorization.
+
+.. literalinclude:: /src/contacts/views.py
+   :pyobject: ContactOwnerMixin
+
+``ContactOwnerMixin`` overrides the ``get_object()`` method, which is
+responsible for getting the object for a view to operate on. If it
+can't find one with the specified primary key and owner, it raises the
+``PermissionDenied`` exception.
+
+.. note::
+
+This implementation will return HTTP 403 (Forbidden) whenever it
+cannot find the a Contact with the requested ID and owner. While this
+will mask a legitimate 404, you may not want to expose that the object
+with that ID exists at all in the system if the user does not have
+permission to access it.
+
+We'll use the ``ContactOwnerMixin`` in all of our views. For example,
+``ContactView`` will look as follows:
+
+.. literalinclude:: /src/contacts/views.py
+   :pyobject: ContactView
+
+Note that the order of inheritance is important: the superclasses
+(``LoggedInMixin``, ``ContactOwnerMixin``, ``DetailView``) will be
+checked in the order listed for methods. By placing ``LoggedInMixin``
+first, you're guaranteed that by the time execution reaches
+``ContactOwnerMixin`` and ``DetailView``, you have a logged in,
+authenticated user.
+
+Review
+======
+
+* XXX
 
 .. _`login_required`: https://docs.djangoproject.com/en/1.5/topics/auth/default/#django.contrib.auth.decorators.login_required
 .. _`a little cumbersome`: https://docs.djangoproject.com/en/1.5/topics/class-based-views/intro/#decorating-class-based-views
