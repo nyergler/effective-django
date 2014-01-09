@@ -110,3 +110,8 @@ Slides for the tutorial are available at http://effectivedjango.com/slides/tutor
       forms.rst
       related.rst
       authzn.rst
+
+"Effective Django" is licensed under the Creative Commons
+`Attribution-ShareAlike 4.0 International License`_.
+
+.. _`Attribution-ShareAlike 4.0 International License`: http://creativecommons.org/licenses/by-sa/4.0/
