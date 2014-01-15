@@ -80,23 +80,6 @@ Slides for the tutorial are available at http://effectivedjango.com/slides/tutor
    * Tested
    * Scalable
 
-
-
-.. slide:: Agenda
-   :level: 2
-
-   .. toctree::
-      :maxdepth: 1
-
-      getting-started.rst
-      models.rst
-      views.rst
-      static.rst
-      additional-views.rst
-      forms.rst
-      related.rst
-      authzn.rst
-
 .. ifnotslides::
 
    .. toctree::
