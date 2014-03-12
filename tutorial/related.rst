@@ -114,7 +114,7 @@ we want to use, instead of having Django create one for us.
 
 Note that even though we're editing Addresses with this view, we still
 have ``model`` set to ``Contact``. This is because an inline formset
-takes the parent object as it's starting point.
+takes the parent object as its starting point.
 
 Once again, this needs to be wired up into the URL configuration.
 
