@@ -229,11 +229,11 @@ can't find one with the specified primary key and owner, it raises the
 
 .. note::
 
-This implementation will return HTTP 403 (Forbidden) whenever it
-cannot find the a Contact with the requested ID and owner. While this
-will mask a legitimate 404, you may not want to expose that the object
-with that ID exists at all in the system if the user does not have
-permission to access it.
+   This implementation will return HTTP 403 (Forbidden) whenever it
+   cannot find the a Contact with the requested ID and owner. While
+   this will mask a legitimate 404, you may not want to expose that
+   the object with that ID exists at all in the system if the user
+   does not have permission to access it.
 
 We'll use the ``ContactOwnerMixin`` in all of our views. For example,
 ``ContactView`` will look as follows:
@@ -255,3 +255,9 @@ Review
 
 .. _`login_required`: https://docs.djangoproject.com/en/1.5/topics/auth/default/#django.contrib.auth.decorators.login_required
 .. _`a little cumbersome`: https://docs.djangoproject.com/en/1.5/topics/class-based-views/intro/#decorating-class-based-views
+.. _Users: https://docs.djangoproject.com/en/1.6/topics/auth/default/#user-objects
+.. _Groups: https://docs.djangoproject.com/en/1.6/topics/auth/default/#groups
+.. _Permissions: https://docs.djangoproject.com/en/1.6/topics/auth/default/#permissions-and-authorization
+.. _login: https://docs.djangoproject.com/en/1.6/topics/auth/default/#django.contrib.auth.views.login
+.. _logout: https://docs.djangoproject.com/en/1.6/topics/auth/default/#django.contrib.auth.views.login
+.. _`Django QuerySet`: https://docs.djangoproject.com/en/1.6/ref/class-based-views/mixins-multiple-object/#django.views.generic.list.MultipleObjectMixin.get_queryset
