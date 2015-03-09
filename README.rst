@@ -47,5 +47,4 @@ Run ``make`` without any parameters for a list of possible targets.
 .. _`ReStructured Text`: http://docutils.sf.net/
 .. _Sphinx: http://sphinx-doc.org/
 .. _`MacTeX`: http://tug.org/mactex/
-.. _buildout: http://www.buildout.org/
 .. _virtualenv: http://www.virtualenv.org/
