@@ -84,9 +84,11 @@ exclude_patterns = [
     # Emacs temporary files
     '**.#*',
 
-    # Buildout artifacts
+    # Buildout/virtualenv artifacts
     'eggs',
     'develop-eggs',
+    'lib',
+    'local',
     'parts',
 ]
 
