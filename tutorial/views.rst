@@ -464,6 +464,8 @@ each tool.
    :prepend: from django.test.client import Client
              from django.test.client import RequestFactory
              ...
+             from contacts.views import ListContactView
+             ...
    :pyobject: ContactListViewTests
 
 
