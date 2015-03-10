@@ -1,0 +1,363 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-188298-7']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    <title>Additional Generic Views &mdash; Effective Django</title>
+    
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Effective Django" href="../index.html" />
+    <link rel="up" title="Effective Django Tutorial" href="index.html" />
+    <link rel="next" title="Form Basics" href="forms.html" />
+    <link rel="prev" title="Using Static Assets" href="static.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="forms.html" title="Form Basics"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="static.html" title="Using Static Assets"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Effective Django</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Effective Django Tutorial</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="additional-generic-views">
+<h1>Additional Generic Views<a class="headerlink" href="#additional-generic-views" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/additional-views.html#additional-generic-views" title="Slides">§</a></h1>
+<div class="section" id="edit-views">
+<h2>Edit Views<a class="headerlink" href="#edit-views" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/additional-views.html#edit-views" title="Slides">§</a></h2>
+<p>In addition to creating Contacts, we&#8217;ll of course want to edit them.
+As with the List and Create views, Django has a generic view we can
+use as a starting point.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">UpdateView</span>
+<span class="o">...</span>
+<span class="k">class</span> <span class="nc">UpdateContactView</span><span class="p">(</span><span class="n">UpdateView</span><span class="p">):</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Contact</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;edit_contact.html&#39;</span>
+
+    <span class="k">def</span> <span class="nf">get_success_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s">&#39;contacts-list&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>we can re-use the same template</li>
+<li>but how does it know which contact to load?</li>
+<li>we need to either: provide a pk/slug, or override get_object().</li>
+<li>we&#8217;ll provide pk in the URL</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre>    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^edit/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">contacts</span><span class="o">.</span><span class="n">views</span><span class="o">.</span><span class="n">UpdateContactView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span>
+        <span class="n">name</span><span class="o">=</span><span class="s">&#39;contacts-edit&#39;</span><span class="p">,),</span>
+</pre></div>
+</div>
+<p>We&#8217;ll update the contact list to include an edit link next to each
+contact.</p>
+<div class="highlight-html"><div class="highlight"><pre>{% extends &quot;base.html&quot; %}
+
+{% block content %}
+&lt;h1&gt;Contacts&lt;/h1&gt;
+
+&lt;ul&gt;
+  {% for contact in object_list %}
+    &lt;li class=&quot;contact&quot;&gt;{{ contact }}
+      (&lt;a href=&quot;{% url &quot;contacts-edit&quot; pk=contact.id %}&quot;&gt;edit&lt;/a&gt;)
+    &lt;/li&gt;
+  {% endfor %}
+&lt;/ul&gt;
+
+&lt;a href=&quot;{% url &quot;contacts-new&quot; %}&quot;&gt;add contact&lt;/a&gt;
+{% endblock %}
+</pre></div>
+</div>
+<p>Note the use of <tt class="docutils literal"><span class="pre">pk=contact.id</span></tt> in the <tt class="docutils literal"><span class="pre">{%</span> <span class="pre">url</span> <span class="pre">%}</span></tt> tag to specify
+the arguments to fill into the URL pattern.</p>
+<p>If you run the server now, you&#8217;ll see an edit link. Go ahead and click
+it, and try to make a change. You&#8217;ll notice that instead of editing
+the existing record, it creates a new one. Sad face.</p>
+<p>If we look at the source of the edit HTML, we can easily see the
+reason: the form targets <tt class="docutils literal"><span class="pre">/new</span></tt>, not our edit URL. To fix this &#8211;
+and still allow re-using the template &#8211; we&#8217;re going to add some
+information to the template context.</p>
+<p>The template context is the information available to a template when
+it&#8217;s rendered. This is a combination of information you provide in
+your view &#8211; either directly or indirectly &#8211; and information added by
+<a class="reference external" href="https://docs.djangoproject.com/en/1.5/ref/templates/api/#subclassing-context-requestcontext">context processors</a>, such as the location for static media and
+current locale. In order to use the same template for add and edit,
+we&#8217;ll add information about where the form should redirect to the
+context.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">CreateContactView</span><span class="p">(</span><span class="n">CreateView</span><span class="p">):</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Contact</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;edit_contact.html&#39;</span>
+
+    <span class="k">def</span> <span class="nf">get_success_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s">&#39;contacts-list&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_context_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="n">context</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">CreateContactView</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">get_context_data</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">context</span><span class="p">[</span><span class="s">&#39;action&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s">&#39;contacts-new&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">context</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">UpdateContactView</span><span class="p">(</span><span class="n">UpdateView</span><span class="p">):</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Contact</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;edit_contact.html&#39;</span>
+
+    <span class="k">def</span> <span class="nf">get_success_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s">&#39;contacts-list&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_context_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="n">context</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">UpdateContactView</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">get_context_data</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">context</span><span class="p">[</span><span class="s">&#39;action&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s">&#39;contacts-edit&#39;</span><span class="p">,</span>
+                                    <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;pk&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_object</span><span class="p">()</span><span class="o">.</span><span class="n">id</span><span class="p">})</span>
+
+        <span class="k">return</span> <span class="n">context</span>
+</pre></div>
+</div>
+<p>We also update the template to use that value for the action and
+change the title based on whether or not we&#8217;ve previously saved.</p>
+<div class="highlight-html"><div class="highlight"><pre>{% if contact.id %}
+<span class="nt">&lt;h1&gt;</span>Edit Contact<span class="nt">&lt;/h1&gt;</span>
+{% else %}
+<span class="nt">&lt;h1&gt;</span>Add Contact<span class="nt">&lt;/h1&gt;</span>
+{% endif %}
+
+<span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">&quot;{{ action }}&quot;</span> <span class="na">method=</span><span class="s">&quot;POST&quot;</span><span class="nt">&gt;</span>
+</pre></div>
+</div>
+<p>You may wonder where the <tt class="docutils literal"><span class="pre">contact</span></tt> value in the contact comes from:
+the class based views that wrap a single object (those that take
+a primary key or slug) expose that to the context in two different
+ways: as a variable named <tt class="docutils literal"><span class="pre">object</span></tt>, and as a variable named after
+the model class. The latter often makes your templates easier to read
+and understand later. You can customize this name by overriding
+<tt class="docutils literal"><span class="pre">get_context_object_name</span></tt> on your view.</p>
+<div class="sidebar">
+<p class="first sidebar-title">Made a Change? Run the Tests.</p>
+<p>We&#8217;ve just made a change to our <tt class="docutils literal"><span class="pre">CreateContactView</span></tt>, which means
+this is a perfect time to run the tests we wrote. Do they still pass?
+If not, did we introduce a bug, or did the behavior change in a way
+that we expected?</p>
+<p class="last">(Hint: We changed how the contact list is rendered, so our tests
+that just expect the name there are going to fail. This is a case
+where you&#8217;d need to update the test case, but it also demonstrates
+how integration tests can be fragile.)</p>
+</div>
+</div>
+<div class="section" id="deleting-contacts">
+<h2>Deleting Contacts<a class="headerlink" href="#deleting-contacts" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/additional-views.html#deleting-contacts" title="Slides">§</a></h2>
+<p>The final view for our basic set of views is delete. The generic
+deletion view is very similar to the edit view: it wraps a single
+object and requires that you provide a URL to redirect to on success.
+When it processes a HTTP GET request, it displays a confirmation page,
+and when it receives an HTTP DELETE or POST, it deletes the object and
+redirects to the success URL.</p>
+<p>We add the view definition to <tt class="docutils literal"><span class="pre">views.py</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">DeleteView</span>
+<span class="o">...</span>
+<span class="k">class</span> <span class="nc">DeleteContactView</span><span class="p">(</span><span class="n">DeleteView</span><span class="p">):</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Contact</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;delete_contact.html&#39;</span>
+
+    <span class="k">def</span> <span class="nf">get_success_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s">&#39;contacts-list&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And create the template, <tt class="docutils literal"><span class="pre">delete_contact.html</span></tt>, in our <tt class="docutils literal"><span class="pre">templates</span></tt>
+directory.</p>
+<div class="highlight-html"><div class="highlight"><pre>{% extends &quot;base.html&quot; %}
+
+{% block content %}
+
+&lt;h1&gt;Delete Contact&lt;/h1&gt;
+
+&lt;p&gt;Are you sure you want to delete the contact {{ contact }}?&lt;/p&gt;
+
+&lt;form action=&quot;{% url &quot;contacts-delete&quot; pk=contact.id %}&quot; method=&quot;POST&quot;&gt;
+  {% csrf_token %}
+
+  &lt;input type=&quot;submit&quot; value=&quot;Yes, delete.&quot; /&gt;
+  &lt;a href=&quot;{% url &quot;contacts-list&quot; %}&quot;&gt;No, cancel.&lt;/a&gt;
+&lt;/form&gt;
+
+{% endblock %}
+</pre></div>
+</div>
+<p>Of course we need to add this to the URL definitions:</p>
+<div class="highlight-python"><div class="highlight"><pre>    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^delete/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">contacts</span><span class="o">.</span><span class="n">views</span><span class="o">.</span><span class="n">DeleteContactView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span>
+        <span class="n">name</span><span class="o">=</span><span class="s">&#39;contacts-delete&#39;</span><span class="p">,),</span>
+</pre></div>
+</div>
+<p>And we&#8217;ll add the link to delete to the edit page.</p>
+<div class="highlight-python"><div class="highlight"><pre>{% if contact.id %}
+&lt;a href=&quot;{% url &quot;contacts-delete&quot; pk=contact.id %}&quot;&gt;Delete&lt;/a&gt;
+{% endif %}
+</pre></div>
+</div>
+</div>
+<div class="section" id="detail-view">
+<h2>Detail View<a class="headerlink" href="#detail-view" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/additional-views.html#detail-view" title="Slides">§</a></h2>
+<p>Finally, let&#8217;s go ahead and add a detail view for our Contacts. This
+will show the details of the Contact: not much right now, but we&#8217;ll
+build on this shortly. Django includes a generic <tt class="docutils literal"><span class="pre">DetailView</span></tt>: think
+of it as the single serving <tt class="docutils literal"><span class="pre">ListView</span></tt>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">DetailView</span>
+<span class="o">...</span>
+<span class="k">class</span> <span class="nc">ContactView</span><span class="p">(</span><span class="n">DetailView</span><span class="p">):</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Contact</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;contact.html&#39;</span>
+</pre></div>
+</div>
+<p>Again, the template is pretty straight forward; we create
+<tt class="docutils literal"><span class="pre">contact.html</span></tt> in the <tt class="docutils literal"><span class="pre">templates</span></tt> directory.</p>
+<div class="highlight-html"><div class="highlight"><pre>{% extends &quot;base.html&quot; %}
+
+{% block content %}
+
+<span class="nt">&lt;h1&gt;</span>{{ contact }}<span class="nt">&lt;/h1&gt;</span>
+
+<span class="nt">&lt;p&gt;</span>Email: {{ contact.email }}<span class="nt">&lt;/p&gt;</span>
+
+{% endblock %}
+</pre></div>
+</div>
+<p>And add the URL mapping:</p>
+<div class="highlight-python"><div class="highlight"><pre>    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">contacts</span><span class="o">.</span><span class="n">views</span><span class="o">.</span><span class="n">ContactView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span>
+        <span class="n">name</span><span class="o">=</span><span class="s">&#39;contacts-view&#39;</span><span class="p">,),</span>
+</pre></div>
+</div>
+<p>We&#8217;re also going to add a method to our Contact model,
+<tt class="docutils literal"><span class="pre">get_absolute_url</span></tt>. <tt class="docutils literal"><span class="pre">get_absolute_url</span></tt> is a Django convention for
+obtaining the URL of a single model instance. In this case it&#8217;s just
+going to be a call to <tt class="docutils literal"><span class="pre">reverse</span></tt>, but by providing this method, our
+model will play nicely with other parts of Django.</p>
+<div class="highlight-python"><div class="highlight"><pre>class Contact(models.Model):
+...
+    def get_absolute_url(self):
+
+        return reverse(&#39;contacts-view&#39;, kwargs={&#39;pk&#39;: self.id})
+</pre></div>
+</div>
+<p>And we&#8217;ll add the link to the contact from the contact list.</p>
+<div class="highlight-html"><div class="highlight"><pre>  {% for contact in object_list %}
+    &lt;li class=&quot;contact&quot;&gt;
+      &lt;a href=&quot;{{ contact.get_absolute_url }}&quot;&gt;{{ contact }}&lt;/a&gt;
+      (&lt;a href=&quot;{% url &quot;contacts-edit&quot; pk=contact.id %}&quot;&gt;edit&lt;/a&gt;)
+    &lt;/li&gt;
+  {% endfor %}
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Additional Generic Views</a><ul>
+<li><a class="reference internal" href="#edit-views">Edit Views</a></li>
+<li><a class="reference internal" href="#deleting-contacts">Deleting Contacts</a></li>
+<li><a class="reference internal" href="#detail-view">Detail View</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="static.html"
+                        title="previous chapter">Using Static Assets</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="forms.html"
+                        title="next chapter">Form Basics</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/tutorial/additional-views.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+  <h3>Slides</h3>
+  <ul class="this-page-menu">
+    <li><a href="../.././slides/tutorial/additional-views.html"
+           rel="nofollow">View as slides</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="forms.html" title="Form Basics"
+             >next</a></li>
+        <li class="right" >
+          <a href="static.html" title="Using Static Assets"
+             >previous</a> |</li>
+        <li><a href="../index.html">Effective Django</a> &raquo;</li>
+          <li><a href="index.html" >Effective Django Tutorial</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012-2013, Nathan Yergler.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-188298-7']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    <title>Introduction &mdash; Effective Django</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Effective Django" href="index.html" />
+    <link rel="next" title="Effective Django Tutorial" href="tutorial/index.html" />
+    <link rel="prev" title="Effective Django" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="tutorial/index.html" title="Effective Django Tutorial"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="index.html" title="Effective Django"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Effective Django</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/intro.html#introduction" title="Slides">§</a></h1>
+<p>In the past decade the Python community has seen a wealth of riches
+spring up in the area of web development. Frameworks and tools have
+made it easier than ever to use Python for web applications, with some
+focused on particular domains, others on particular footprints, and
+still others on particular deployment strategies. Most of these
+frameworks have built upon <a class="reference external" href="http://www.python.org/dev/peps/pep-0333/">WSGI</a>, the Web Server Gateway Interface,
+which became part of the Python standard library in version TK. WSGI
+provides some conventions for applications and servers to communicate
+with one another, much as it&#8217;s spiritual predecessor, <a class="reference external" href="http://en.wikipedia.org/wiki/Common_Gateway_Interface">CGI</a>, provided
+conventions for executing scripts via a web server.</p>
+<p>With the inclusion of WSGI, it&#8217;s possible to begin developing a web
+application by simply picking and choosing pieces that seem best for
+the task at hand. Indeed, some projects do just that. So why use a
+larger framework like <a class="reference external" href="http://djangoproject.com/">Django</a>, <a class="reference external" href="http://www.pylonsproject.org/">Pylons</a>, or <a class="reference external" href="http://bluebream.zope.org/">Blue Bream</a>? Frameworks
+build upon WSGI to provide a reasonable set of defaults, a set of
+conventions, for getting started with development and focusing on the
+specific problem at hand. It&#8217;s <em>possible</em> to spend time evaluating
+libraries that map a URL to a view, but a framework&#8217;s developers have
+already (presumably) done such an evaluation, and chosen one that they
+feel will work well with the other parts of the framework. TK:Community</p>
+<p>A framework is general purpose by definition, but that doesn&#8217;t mean
+your use of it must be. Put another way, most frameworks support a
+variety of databases, platforms, and deployment infrastructures. But
+just because you use that framework doesn&#8217;t mean you need to, as well.
+A good framework will help you get up to speed more quickly, and will
+let you target things for your environment when needed.</p>
+<p>Django is a popular, powerful web framework for Python. It has lots of
+&#8220;batteries&#8221; included, and makes it easy to get up and going. But all
+of the power means you can write low quality code that still seems to
+work. <em>Effective Django</em> development means building applications that
+are testable, maintainable, and scalable &#8211; not only in terms of
+traffic or load, but in terms of being able to add developers to
+projects. When we&#8217;re talking about Effective Django, we&#8217;re really
+talking about software engineering for web applications. The examples
+and the details we&#8217;re going to talk about are Django specific, but the
+ideas and principles are not.</p>
+<p>So what does <em>Effective Django</em> mean? It means using Django in a way
+that emphasizes writing code that&#8217;s cohesive, testable, and scalable.
+What do each of those words mean? Well &#8220;cohesive&#8221; code is code that is
+focused on doing one thing, and one thing alone. It means that when
+you write a function or a method, that it does one thing and does it
+well. This is directly related to writing testable code: code that&#8217;s
+doing too much is often difficult to write tests for. When I find
+myself thinking, &#8220;Well, this piece of code is just too complex to
+write a test for, it&#8217;s not really worth all the effort,&#8221; that&#8217;s a
+signal that I need to step back and focus on simplifying it. Testable
+code is code that makes it straight-forward to write tests for, and
+that&#8217;s easy to diagnose problems with. Finally, we want to write
+scalable code. That doesn&#8217;t just mean it scales in terms of
+performance, but that it also scales in terms of your team and your
+team&#8217;s understanding. Applications that are well tested are easier for
+others to understand (and easier for them to modify), which means
+you&#8217;re more able to improve your application by adding engineers.</p>
+<p>Part of being able to effectively use Django is understanding
+what&#8217;s available to you, and what the restrictions are. Frameworks
+are necessarily general purpose tools, which is great: the
+abstractions and tools they provide allow us to begin working
+immediately, without delving into the details. At some point,
+however, it&#8217;s useful to understand what the framework is doing for
+you. Whether you&#8217;re trying to stretch in a way the framework didn&#8217;t
+imagine, or you&#8217;re just trying to diagnose a mysterious bug, you
+have to look inside the black box and gain a deeper
+understanding. After reading <em>Effective Django</em> you should have an
+understanding of how Django&#8217;s pieces fit together, how to use them to
+engineer web applications, and where to look to dig deeper.</p>
+<span class="admonition-format"></span><p>My goal is to convince you of the importance of these principles, and
+provide examples of how to follow them to build more robust Django
+applications. I&#8217;m going to walk through building a contact management
+application iteratively, building tests as I go.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Effective Django</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="tutorial/index.html"
+                        title="next chapter">Effective Django Tutorial</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/intro.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+  <h3>Slides</h3>
+  <ul class="this-page-menu">
+    <li><a href="./slides/intro.html"
+           rel="nofollow">View as slides</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="tutorial/index.html" title="Effective Django Tutorial"
+             >next</a></li>
+        <li class="right" >
+          <a href="index.html" title="Effective Django"
+             >previous</a> |</li>
+        <li><a href="index.html">Effective Django</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012-2013, Nathan Yergler.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

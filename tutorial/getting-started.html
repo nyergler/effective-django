@@ -1,0 +1,336 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-188298-7']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    <title>Getting Started &mdash; Effective Django</title>
+    
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Effective Django" href="../index.html" />
+    <link rel="up" title="Effective Django Tutorial" href="index.html" />
+    <link rel="next" title="Using Models" href="models.html" />
+    <link rel="prev" title="Effective Django Tutorial" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="models.html" title="Using Models"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="index.html" title="Effective Django Tutorial"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Effective Django</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Effective Django Tutorial</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="getting-started">
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/getting-started.html#getting-started" title="Slides">§</a></h1>
+<div class="section" id="your-development-environment">
+<h2>Your Development Environment<a class="headerlink" href="#your-development-environment" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/getting-started.html#your-development-environment" title="Slides">§</a></h2>
+<span class="admonition-the-environment"></span><p>When thinking about your development environment, there are three
+important things to keep in mind: isolation, determinism, and
+similarity. They&#8217;re each important, and they work in concert with one
+another.</p>
+<p><strong>Isolation</strong> means that you&#8217;re not inadvertently leveraging tools
+or packages installed outside the environment. This is particularly
+important when it comes to something like Python packages with C
+extensions: if you&#8217;re using something installed at the system level
+and don&#8217;t know it, you can find that when you go to deploy or share
+your code that it doesn&#8217;t operate the way you expect. A tool like
+<a class="reference external" href="http://www.virtualenv.org/">virtualenv</a> can help create that sort of environment.</p>
+<p>Your environment is <strong>deterministic</strong> if you&#8217;re confident about
+what versions of your dependencies you&#8217;re relying on, and can
+reproduce that environment reliably.</p>
+<p>Finally, <strong>similarity</strong> to your production or deployment
+environment means you&#8217;re running on the same OS, preferably the
+same release, and that you&#8217;re using the same tools to configure
+your development environment that you use to configure your
+deployment environment. This is by no means a requirement, but as
+you build bigger, more complex software, it&#8217;s helpful to be
+confident that any problem you see in production is reproducable in
+your development environment, and limit the scope of investigation
+to code you wrote.</p>
+<div class="section" id="isolation">
+<h3>Isolation<a class="headerlink" href="#isolation" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/getting-started.html#isolation" title="Slides">§</a></h3>
+<ul class="simple">
+<li>We want to avoid using unknown dependencies, or unknown versions</li>
+<li><a class="reference external" href="http://www.virtualenv.org/">virtualenv</a> provides an easy way to work on a project without your
+system&#8217;s <tt class="docutils literal"><span class="pre">site-packages</span></tt></li>
+</ul>
+</div>
+<div class="section" id="determinism">
+<h3>Determinism<a class="headerlink" href="#determinism" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/getting-started.html#determinism" title="Slides">§</a></h3>
+<ul class="simple">
+<li>Determinism is all about dependency management</li>
+<li>Choose a tool, use it in development and production<ul>
+<li>pip, specifically a <a class="reference external" href="http://www.pip-installer.org/en/latest/requirements.html">requirements files</a></li>
+<li><a class="reference external" href="http://www.buildout.org/">buildout</a></li>
+<li><a class="reference external" href="http://pythonhosted.org/distribute/setuptools.html#declaring-dependencies">install_requires</a> in setup.py</li>
+</ul>
+</li>
+<li>Identify specific versions of dependencies</li>
+</ul>
+<p>You can specify versions either by the version for a package on
+PyPI, or a specific revision (SHA in git, revision number in
+Subversion, etc). This ensures that you&#8217;re getting the exact
+version you&#8217;re testing with.</p>
+</div>
+<div class="section" id="similarity">
+<h3>Similarity<a class="headerlink" href="#similarity" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/getting-started.html#similarity" title="Slides">§</a></h3>
+<ul class="simple">
+<li>Working in an environment similar to where you deploy eliminates
+variables when trying to diagnose an issue</li>
+<li>If you&#8217;re building something that requires additional services, this
+becomes even more important.</li>
+<li><a class="reference external" href="http://vagrantup.com/">Vagrant</a> is a tool for managing virtual machines, lets you easily
+create an environment separate from your day to day work.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="setting-up-your-environment">
+<h2>Setting Up Your Environment<a class="headerlink" href="#setting-up-your-environment" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/getting-started.html#setting-up-your-environment" title="Slides">§</a></h2>
+<div class="section" id="create-a-clean-workspace">
+<h3>Create a Clean Workspace<a class="headerlink" href="#create-a-clean-workspace" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/getting-started.html#create-a-clean-workspace" title="Slides">§</a></h3>
+<div class="highlight-python"><div class="highlight"><pre>$ mkdir tutorial
+$ virtualenv ./tutorial/
+New python executable in ./tutorial/bin/python
+Installing setuptools............done.
+Installing pip...............done.
+$ source ./tutorial/bin/activate
+(tutorial)$
+</pre></div>
+</div>
+</div>
+<div class="section" id="start-a-requirements-file">
+<h3>Start a Requirements File<a class="headerlink" href="#start-a-requirements-file" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/getting-started.html#start-a-requirements-file" title="Slides">§</a></h3>
+<p>Create a <tt class="docutils literal"><span class="pre">requirements.txt</span></tt> in the <tt class="docutils literal"><span class="pre">tutorial</span></tt> directory with a
+single requirement in it.</p>
+<div class="highlight-python"><div class="highlight"><pre>Django==1.5.1
+</pre></div>
+</div>
+</div>
+<div class="section" id="installing-requirements">
+<h3>Installing Requirements<a class="headerlink" href="#installing-requirements" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/getting-started.html#installing-requirements" title="Slides">§</a></h3>
+<p>And then we can use <a class="reference external" href="http://www.pip-installer.org/">pip</a> to install the dependencies.</p>
+<div class="highlight-python"><div class="highlight"><pre>(tutorial)$ pip install -U -r requirements.txt
+
+Downloading/unpacking Django==1.5.1
+  Downloading Django-1.5.1.tar.gz (8.0MB): 8.0MB downloaded
+  Running setup.py egg_info for package Django
+
+    warning: no previously-included files matching &#39;__pycache__&#39; found under directory &#39;*&#39;
+    warning: no previously-included files matching &#39;*.py[co]&#39; found under directory &#39;*&#39;
+Installing collected packages: Django
+  Running setup.py install for Django
+    changing mode of build/scripts-2.7/django-admin.py from 644 to 755
+
+    warning: no previously-included files matching &#39;__pycache__&#39; found under directory &#39;*&#39;
+    warning: no previously-included files matching &#39;*.py[co]&#39; found under directory &#39;*&#39;
+    changing mode of /home/nathan/p/edt/bin/django-admin.py to 755
+Successfully installed Django
+Cleaning up...
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="beginning-a-django-project">
+<h2>Beginning a Django Project<a class="headerlink" href="#beginning-a-django-project" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/getting-started.html#beginning-a-django-project" title="Slides">§</a></h2>
+<p>When a building is under construction, scaffolding is often used to
+support the structure before it&#8217;s complete. The scaffolding can be
+temporary, or it can serve as part of the foundation for the
+building, but regardless it provides some support when you&#8217;re just
+starting out.</p>
+<p>Django, like many web frameworks, provides scaffolding for your
+development efforts. It does this by making decisions and providing
+a starting point for your code that lets you focus on the problem
+you&#8217;re trying to solve, and not how to parse an HTTP request.
+Django provides HTTP, as well as file system scaffolding.</p>
+<p>The HTTP scaffolding handles things like parsing an HTTP request
+into a Python object and providing tools to easily create a
+response. The file system scaffolding is a little different: it&#8217;s a
+set of conventions for organizing your code. These conventions make
+it easier to add engineers to a project, since they
+(hypothetically) have some idea how the code is organized. In
+Django parlance, a <strong>project</strong> is the final product, and it
+assembles one or more <strong>applications</strong> together. Django 1.4 made a
+change to the way the <a class="reference external" href="https://docs.djangoproject.com/en/1.5/releases/1.4/#updated-default-project-layout-and-manage-py">projects and applications are laid out on
+disk</a>, which makes it easier to decouple and reuse applications
+between projects.</p>
+<span class="admonition-scaffolding"></span><div class="section" id="creating-the-project">
+<h3>Creating the Project<a class="headerlink" href="#creating-the-project" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/getting-started.html#creating-the-project" title="Slides">§</a></h3>
+<p>Django installs a <tt class="docutils literal"><span class="pre">django-admin.py</span></tt> script for handling scaffolding
+tasks. We&#8217;ll use <tt class="docutils literal"><span class="pre">startproject</span></tt> to create the project files. We
+specify the project name and the directory to start in; we&#8217;re already
+in our isolated environment so we can just say <tt class="docutils literal"><span class="pre">.</span></tt></p>
+<div class="highlight-python"><div class="highlight"><pre>(tutorial)$ django-admin.py startproject addressbook .
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>manage.py
+./addressbook
+    __init__.py
+    settings.py
+    urls.py
+    wsgi.py
+</pre></div>
+</div>
+</div>
+<div class="section" id="project-scaffolding">
+<h3>Project Scaffolding<a class="headerlink" href="#project-scaffolding" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/getting-started.html#project-scaffolding" title="Slides">§</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">manage.py</span></tt> is a pointer back to <tt class="docutils literal"><span class="pre">django-admin.py</span></tt> with an
+environment variable set, pointing to your project as the one to
+read settings from and operate on when needed.</li>
+<li><tt class="docutils literal"><span class="pre">settings.py</span></tt> is where you&#8217;ll configure your project. It has a
+few sensible defaults, but no database chosen when you start.</li>
+<li><tt class="docutils literal"><span class="pre">urls.py</span></tt> contains the URL to view mappings: we&#8217;ll talk more about
+that shortly.</li>
+<li><tt class="docutils literal"><span class="pre">wsgi.py</span></tt> is a <a class="reference external" href="https://en.wikipedia.org/wiki/Web_Server_Gateway_Interface">WSGI</a> wrapper for your application. This is used
+by Django&#8217;s development servers, and possibly other containers
+like mod_wsgi, uwsgi, etc. in production.</li>
+</ul>
+</div>
+<div class="section" id="creating-the-app">
+<h3>Creating the &#8220;App&#8221;<a class="headerlink" href="#creating-the-app" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/getting-started.html#creating-the-app" title="Slides">§</a></h3>
+<div class="highlight-python"><div class="highlight"><pre>(tutorial)$ python ./manage.py startapp contacts
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>./addressbook
+./contacts
+    __init__.py
+    models.py
+    tests.py
+    views.py
+</pre></div>
+</div>
+<ul class="simple">
+<li>Beginning in Django 1.4, <em>apps</em> are placed alongside <em>project</em>
+packages. This is a great improvement when it comes to
+deployment.</li>
+<li><tt class="docutils literal"><span class="pre">models.py</span></tt> will contain the Django ORM models for your app.</li>
+<li><tt class="docutils literal"><span class="pre">views.py</span></tt> will contain the View code</li>
+<li><tt class="docutils literal"><span class="pre">tests.py</span></tt> will contain the unit and integration tests you
+write.</li>
+</ul>
+<span class="admonition-review"></span></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Getting Started</a><ul>
+<li><a class="reference internal" href="#your-development-environment">Your Development Environment</a><ul>
+<li><a class="reference internal" href="#isolation">Isolation</a></li>
+<li><a class="reference internal" href="#determinism">Determinism</a></li>
+<li><a class="reference internal" href="#similarity">Similarity</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#setting-up-your-environment">Setting Up Your Environment</a><ul>
+<li><a class="reference internal" href="#create-a-clean-workspace">Create a Clean Workspace</a></li>
+<li><a class="reference internal" href="#start-a-requirements-file">Start a Requirements File</a></li>
+<li><a class="reference internal" href="#installing-requirements">Installing Requirements</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#beginning-a-django-project">Beginning a Django Project</a><ul>
+<li><a class="reference internal" href="#creating-the-project">Creating the Project</a></li>
+<li><a class="reference internal" href="#project-scaffolding">Project Scaffolding</a></li>
+<li><a class="reference internal" href="#creating-the-app">Creating the &#8220;App&#8221;</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Effective Django Tutorial</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="models.html"
+                        title="next chapter">Using Models</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/tutorial/getting-started.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+  <h3>Slides</h3>
+  <ul class="this-page-menu">
+    <li><a href="../.././slides/tutorial/getting-started.html"
+           rel="nofollow">View as slides</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="models.html" title="Using Models"
+             >next</a></li>
+        <li class="right" >
+          <a href="index.html" title="Effective Django Tutorial"
+             >previous</a> |</li>
+        <li><a href="../index.html">Effective Django</a> &raquo;</li>
+          <li><a href="index.html" >Effective Django Tutorial</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012-2013, Nathan Yergler.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

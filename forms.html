@@ -1,0 +1,959 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-188298-7']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    <title>Effective Django Forms &mdash; Effective Django</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Effective Django" href="index.html" />
+    <link rel="next" title="Acknowledgments" href="acknowledgments.html" />
+    <link rel="prev" title="Class Based Views" href="classbasedviews.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="acknowledgments.html" title="Acknowledgments"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="classbasedviews.html" title="Class Based Views"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Effective Django</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="effective-django-forms">
+<h1>Effective Django Forms<a class="headerlink" href="#effective-django-forms" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#effective-django-forms" title="Slides">§</a></h1>
+<div class="section" id="form-basics">
+<h2>Form Basics<a class="headerlink" href="#form-basics" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#form-basics" title="Slides">§</a></h2>
+<div class="section" id="forms-in-context">
+<h3>Forms in Context<a class="headerlink" href="#forms-in-context" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#forms-in-context" title="Slides">§</a></h3>
+<table border="1" class="context-table docutils">
+<colgroup>
+<col width="43%" />
+<col width="57%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Views</strong></td>
+<td>Convert Request to Response</td>
+</tr>
+<tr class="row-even"><td><strong>Forms</strong></td>
+<td>Convert input to Python objects</td>
+</tr>
+<tr class="row-odd"><td><strong>Models</strong></td>
+<td>Data and business logic</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="defining-forms">
+<h3>Defining Forms<a class="headerlink" href="#defining-forms" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#defining-forms" title="Slides">§</a></h3>
+<p>Forms are composed of fields, which have a widget.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">gettext_lazy</span> <span class="k">as</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
+
+<span class="k">class</span> <span class="nc">ContactForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Your Name&quot;</span><span class="p">),</span>
+        <span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span>
+        <span class="n">widget</span><span class="o">=</span><span class="n">forms</span><span class="o">.</span><span class="n">TextInput</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">email</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">EmailField</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Email address&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="instantiating-a-form">
+<h3>Instantiating a Form<a class="headerlink" href="#instantiating-a-form" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#instantiating-a-form" title="Slides">§</a></h3>
+<p>Unbound forms don&#8217;t have data associated with them, but they can
+be rendered:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">form</span> <span class="o">=</span> <span class="n">ContactForm</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Bound forms have specific data associated, which can be
+validated:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">form</span> <span class="o">=</span> <span class="n">ContactForm</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="accessing-fields">
+<h3>Accessing Fields<a class="headerlink" href="#accessing-fields" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#accessing-fields" title="Slides">§</a></h3>
+<p>Two ways to access fields on a Form instance</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">form.fields['name']</span></tt> returns the <tt class="docutils literal"><span class="pre">Field</span></tt> object</li>
+<li><tt class="docutils literal"><span class="pre">form['name']</span></tt> returns a <tt class="docutils literal"><span class="pre">BoundField</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">BoundField</span></tt> wraps a field and value for HTML output</li>
+</ul>
+</div>
+<div class="section" id="initial-data">
+<h3>Initial Data<a class="headerlink" href="#initial-data" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#initial-data" title="Slides">§</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">form</span> <span class="o">=</span> <span class="n">ContactForm</span><span class="p">(</span>
+    <span class="n">initial</span><span class="o">=</span><span class="p">{</span>
+        <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;First and Last Name&#39;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">form</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">()</span>
+<span class="go">&#39;First and Last Name&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="validation">
+<h2>Validation<a class="headerlink" href="#validation" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#validation" title="Slides">§</a></h2>
+<div class="section" id="validating-the-form">
+<h3>Validating the Form<a class="headerlink" href="#validating-the-form" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#validating-the-form" title="Slides">§</a></h3>
+<p class="blockdiag">
+<img src="_images/blockdiag-f59ab43c77434baadf97d5c3b6e7930f99ed685d.png" alt="None" width="448" height="120" />
+</p>
+<ul class="simple">
+<li>Only bound forms can be validated</li>
+<li>Calling <tt class="docutils literal"><span class="pre">form.is_valid()</span></tt> triggers validation if needed</li>
+<li>Validated, cleaned data is stored in <tt class="docutils literal"><span class="pre">form.cleaned_data</span></tt></li>
+<li>Calling <tt class="docutils literal"><span class="pre">form.full_clean()</span></tt> performs the full cycle</li>
+</ul>
+</div>
+<div class="section" id="field-validation">
+<h3>Field Validation<a class="headerlink" href="#field-validation" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#field-validation" title="Slides">§</a></h3>
+<p class="blockdiag">
+<img src="_images/blockdiag-f6c1c334347d19c6cb96897afd2d30c7004e057a.png" alt="None" width="832" height="200" />
+</p>
+<ul class="simple">
+<li>Three phases for Fields: To Python, Validation, and Cleaning</li>
+<li>If validation raises an Error, cleaning is skipped</li>
+<li>Validators are callables that can raise a <tt class="docutils literal"><span class="pre">ValidationError</span></tt></li>
+<li>Django includes generic ones for some common tasks</li>
+<li>Examples: URL, Min/Max Value, Min/Max Length, URL, Regex, email</li>
+</ul>
+</div>
+<div class="section" id="field-cleaning">
+<h3>Field Cleaning<a class="headerlink" href="#field-cleaning" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#field-cleaning" title="Slides">§</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">.clean_fieldname()</span></tt> method is called after validators</li>
+<li>Input has already been converted to Python objects</li>
+<li>Methods can raise <tt class="docutils literal"><span class="pre">ValidationErrors</span></tt></li>
+<li>Methods <em>must</em> return the cleaned value</li>
+</ul>
+</div>
+<div class="section" id="clean-email">
+<h3><tt class="docutils literal"><span class="pre">.clean_email()</span></tt><a class="headerlink" href="#clean-email" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#clean-email" title="Slides">§</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ContactForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span>
+        <span class="n">label</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Name&quot;</span><span class="p">),</span>
+        <span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">email</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">EmailField</span><span class="p">(</span>
+        <span class="n">label</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Email address&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">clean_email</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;email&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;hotmail.com&#39;</span><span class="p">)):</span>
+
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s">&quot;Invalid email address.&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;email&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="form-validation">
+<h3>Form Validation<a class="headerlink" href="#form-validation" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#form-validation" title="Slides">§</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">.clean()</span></tt> performs cross-field validation</li>
+<li>Called even if errors were raised by Fields</li>
+<li><em>Must</em> return the cleaned data dictionary</li>
+<li><tt class="docutils literal"><span class="pre">ValidationErrors</span></tt> raised by <tt class="docutils literal"><span class="pre">.clean()</span></tt> will be grouped in
+<tt class="docutils literal"><span class="pre">form.non_field_errors()</span></tt> by default.</li>
+</ul>
+</div>
+<div class="section" id="clean-example">
+<h3><tt class="docutils literal"><span class="pre">.clean()</span></tt> example<a class="headerlink" href="#clean-example" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#clean-example" title="Slides">§</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ContactForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span>
+        <span class="n">label</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Name&quot;</span><span class="p">),</span>
+        <span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">email</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">EmailField</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Email address&quot;</span><span class="p">))</span>
+    <span class="n">confirm_email</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">EmailField</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Confirm&quot;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;email&#39;</span><span class="p">)</span> <span class="o">!=</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;confirm_email&#39;</span><span class="p">)):</span>
+
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s">&quot;Email addresses do not match.&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cleaned_data</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="initial-default-data">
+<h3>Initial != Default Data<a class="headerlink" href="#initial-default-data" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#initial-default-data" title="Slides">§</a></h3>
+<ul>
+<li><p class="first">Initial data is used as a starting point</p>
+</li>
+<li><p class="first">It does not automatically propagate to <tt class="docutils literal"><span class="pre">cleaned_data</span></tt></p>
+</li>
+<li><p class="first">Defaults for non-required fields should be specified when
+accessing the dict:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="bp">self</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;default&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="passing-extra-information">
+<h3>Passing Extra Information<a class="headerlink" href="#passing-extra-information" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#passing-extra-information" title="Slides">§</a></h3>
+<ul class="simple">
+<li>Sometimes you need extra information in a form</li>
+<li>Pass as a keyword argument, and pop in __init__</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">MyForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_user</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;user&#39;</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MyForm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="tracking-changes">
+<h3>Tracking Changes<a class="headerlink" href="#tracking-changes" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#tracking-changes" title="Slides">§</a></h3>
+<ul>
+<li><p class="first">Forms use initial data to track changed fields</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">form.has_changed()</span></tt></p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">form.changed_data</span></tt></p>
+</li>
+<li><p class="first">Fields can render a hidden input with the initial value, as well:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">changed_date</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">DateField</span><span class="p">(</span><span class="n">show_hidden_initial</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">form</span><span class="p">[</span><span class="s">&#39;changed_date&#39;</span><span class="p">]</span>
+<span class="go">&#39;&lt;input type=&quot;text&quot; name=&quot;changed_date&quot; id=&quot;id_changed_date&quot; /&gt;&lt;input type=&quot;hidden&quot; name=&quot;initial-changed_date&quot; id=&quot;initial-id_changed_date&quot; /&gt;&#39;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#testing" title="Slides">§</a></h2>
+<div class="section" id="testing-forms">
+<h3>Testing Forms<a class="headerlink" href="#testing-forms" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#testing-forms" title="Slides">§</a></h3>
+<ul class="simple">
+<li>Remember what Forms are for</li>
+<li>Testing strategies</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li>Initial states</li>
+<li>Field Validation</li>
+<li>Final state of <tt class="docutils literal"><span class="pre">cleaned_data</span></tt></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="unit-tests">
+<h3>Unit Tests<a class="headerlink" href="#unit-tests" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#unit-tests" title="Slides">§</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">unittest</span>
+
+<span class="k">class</span> <span class="nc">FormTests</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">test_validation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">form_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;X&#39;</span> <span class="o">*</span> <span class="mi">300</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="n">form</span> <span class="o">=</span> <span class="n">ContactForm</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">form_data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-data">
+<h3>Test Data<a class="headerlink" href="#test-data" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#test-data" title="Slides">§</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">rebar.testing</span> <span class="kn">import</span> <span class="n">flatten_to_dict</span>
+
+<span class="n">form_data</span> <span class="o">=</span> <span class="n">flatten_to_dict</span><span class="p">(</span><span class="n">ContactForm</span><span class="p">())</span>
+<span class="n">form_data</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+        <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;X&#39;</span> <span class="o">*</span> <span class="mi">300</span><span class="p">,</span>
+    <span class="p">})</span>
+<span class="n">form</span> <span class="o">=</span> <span class="n">ContactForm</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">form_data</span><span class="p">)</span>
+<span class="k">assert</span><span class="p">(</span><span class="ow">not</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="rendering-forms">
+<h2>Rendering Forms<a class="headerlink" href="#rendering-forms" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#rendering-forms" title="Slides">§</a></h2>
+<div class="section" id="idiomatic-form-usage">
+<h3>Idiomatic Form Usage<a class="headerlink" href="#idiomatic-form-usage" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#idiomatic-form-usage" title="Slides">§</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.views.generic.edit</span> <span class="kn">import</span> <span class="n">FormMixin</span><span class="p">,</span> <span class="n">ProcessFormView</span>
+
+<span class="k">class</span> <span class="nc">ContactView</span><span class="p">(</span><span class="n">FormMixin</span><span class="p">,</span> <span class="n">ProcessFormView</span><span class="p">):</span>
+    <span class="n">form_class</span> <span class="o">=</span> <span class="n">ContactForm</span>
+    <span class="n">success_url</span> <span class="o">=</span> <span class="s">&#39;/contact/sent&#39;</span>
+
+    <span class="k">def</span> <span class="nf">form_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">form</span><span class="p">):</span>
+        <span class="c"># do something -- save, send, etc</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">form_invalid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">form</span><span class="p">):</span>
+        <span class="c"># do something -- log the error, etc -- if needed</span>
+        <span class="k">pass</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="form-output">
+<h3>Form Output<a class="headerlink" href="#form-output" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#form-output" title="Slides">§</a></h3>
+<p>Three primary &#8220;whole-form&#8221; output modes:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">form.as_p()</span></tt>, <tt class="docutils literal"><span class="pre">form.as_ul()</span></tt>, <tt class="docutils literal"><span class="pre">form.as_table()</span></tt></li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre>&lt;tr&gt;&lt;th&gt;&lt;label for=&quot;id_name&quot;&gt;Name:&lt;/label&gt;&lt;/th&gt;
+  &lt;td&gt;&lt;input id=&quot;id_name&quot; type=&quot;text&quot; name=&quot;name&quot; maxlength=&quot;255&quot; /&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;th&gt;&lt;label for=&quot;id_email&quot;&gt;Email:&lt;/label&gt;&lt;/th&gt;
+  &lt;td&gt;&lt;input id=&quot;id_email&quot; type=&quot;text&quot; name=&quot;email&quot; maxlength=&quot;Email address&quot; /&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;th&gt;&lt;label for=&quot;id_confirm_email&quot;&gt;Confirm email:&lt;/label&gt;&lt;/th&gt;
+  &lt;td&gt;&lt;input id=&quot;id_confirm_email&quot; type=&quot;text&quot; name=&quot;confirm_email&quot; maxlength=&quot;Confirm&quot; /&gt;&lt;/td&gt;&lt;/tr&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="controlling-form-output">
+<h3>Controlling Form Output<a class="headerlink" href="#controlling-form-output" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#controlling-form-output" title="Slides">§</a></h3>
+<div class="highlight-python"><div class="highlight"><pre>{% for field in form %}
+{{ field.label_tag }}: {{ field }}
+{{ field.errors }}
+{% endfor %}
+{{ field.non_field_errors }}
+</pre></div>
+</div>
+<p>Additional rendering properties:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">field.label</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">field.label_tag</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">field.html_name</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">field.help_text</span></tt></li>
+</ul>
+</div>
+<div class="section" id="customizing-rendering">
+<h3>Customizing Rendering<a class="headerlink" href="#customizing-rendering" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#customizing-rendering" title="Slides">§</a></h3>
+<p>You can specify additional attributes for widgets as part of the form
+definition.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ContactForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span>
+        <span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span>
+        <span class="n">widget</span><span class="o">=</span><span class="n">forms</span><span class="o">.</span><span class="n">Textarea</span><span class="p">(</span>
+            <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;class&#39;</span><span class="p">:</span> <span class="s">&#39;custom&#39;</span><span class="p">},</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>You can also specify form-wide CSS classes to add for error and
+required states.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ContactForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+    <span class="n">error_css_class</span> <span class="o">=</span> <span class="s">&#39;error&#39;</span>
+    <span class="n">required_css_class</span> <span class="o">=</span> <span class="s">&#39;required&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="customizing-error-messages">
+<h3>Customizing Error Messages<a class="headerlink" href="#customizing-error-messages" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#customizing-error-messages" title="Slides">§</a></h3>
+<p>Built in validators have default error messages</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">generic</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">generic</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  <span class="c">...</span>
+<span class="gr">ValidationError</span>: <span class="n">[u&#39;This field is required.&#39;]</span>
+</pre></div>
+</div>
+<p><tt class="docutils literal"><span class="pre">error_messages</span></tt> lets you customize those messages</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">error_messages</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;required&#39;</span><span class="p">:</span> <span class="s">&#39;Please enter your name&#39;</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  <span class="c">...</span>
+<span class="gr">ValidationError</span>: <span class="n">[u&#39;Please enter your name&#39;]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="error-class">
+<h3>Error Class<a class="headerlink" href="#error-class" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#error-class" title="Slides">§</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">ValidationErrors</span></tt> raised are wrapped in a class</li>
+<li>This class controls HTML formatting</li>
+<li>By default, <tt class="docutils literal"><span class="pre">ErrorList</span></tt> is used: outputs as <tt class="docutils literal"><span class="pre">&lt;ul&gt;</span></tt></li>
+<li>Specify the <tt class="docutils literal"><span class="pre">error_class</span></tt> kwarg when constructing the form to
+override</li>
+</ul>
+</div>
+<div class="section" id="id1">
+<h3>Error Class<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#id1" title="Slides">§</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.forms.util</span> <span class="kn">import</span> <span class="n">ErrorList</span>
+
+<span class="k">class</span> <span class="nc">ParagraphErrorList</span><span class="p">(</span><span class="n">ErrorList</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">as_paragraphs</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">as_paragraphs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;&lt;p&gt;</span><span class="si">%s</span><span class="s">&lt;/p&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="s">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span><span class="p">)</span>
+        <span class="p">)</span>
+
+<span class="n">form</span> <span class="o">=</span> <span class="n">ContactForm</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">form_data</span><span class="p">,</span> <span class="n">error_class</span><span class="o">=</span><span class="n">ParagraphErrorList</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="multiple-forms">
+<h3>Multiple Forms<a class="headerlink" href="#multiple-forms" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#multiple-forms" title="Slides">§</a></h3>
+<p>Avoid potential name collisions with <tt class="docutils literal"><span class="pre">prefix</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">contact_form</span> <span class="o">=</span> <span class="n">ContactForm</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s">&#39;contact&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Adds the prefix to HTML name and ID:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;tr&gt;&lt;th&gt;&lt;label for=&quot;id_contact-name&quot;&gt;Name:&lt;/label&gt;&lt;/th&gt;
+  &lt;td&gt;&lt;input id=&quot;id_contact-name&quot; type=&quot;text&quot; name=&quot;contact-name&quot;
+       maxlength=&quot;255&quot; /&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;th&gt;&lt;label for=&quot;id_contact-email&quot;&gt;Email:&lt;/label&gt;&lt;/th&gt;
+  &lt;td&gt;&lt;input id=&quot;id_contact-email&quot; type=&quot;text&quot; name=&quot;contact-email&quot;
+       maxlength=&quot;Email address&quot; /&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;th&gt;&lt;label for=&quot;id_contact-confirm_email&quot;&gt;Confirm
+     email:&lt;/label&gt;&lt;/th&gt;
+  &lt;td&gt;&lt;input id=&quot;id_contact-confirm_email&quot; type=&quot;text&quot;
+       name=&quot;contact-confirm_email&quot; maxlength=&quot;Confirm&quot; /&gt;&lt;/td&gt;&lt;/tr&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="forms-for-models">
+<h2>Forms for Models<a class="headerlink" href="#forms-for-models" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#forms-for-models" title="Slides">§</a></h2>
+<div class="section" id="model-forms">
+<h3>Model Forms<a class="headerlink" href="#model-forms" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#model-forms" title="Slides">§</a></h3>
+<ul class="simple">
+<li>ModelForms map a Model to a Form</li>
+<li>Validation includes Model validators by default</li>
+<li>Supports creating and editing instances</li>
+<li>Key differences from Forms:<ul>
+<li>A field for the Primary Key (usually <tt class="docutils literal"><span class="pre">id</span></tt>)</li>
+<li><tt class="docutils literal"><span class="pre">.save()</span></tt> method</li>
+<li><tt class="docutils literal"><span class="pre">.instance</span></tt> property</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h3>Model Forms<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#id2" title="Slides">§</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
+
+<span class="k">class</span> <span class="nc">Contact</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">EmailField</span><span class="p">()</span>
+    <span class="n">notes</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">ContactForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Contact</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="limiting-fields">
+<h3>Limiting Fields<a class="headerlink" href="#limiting-fields" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#limiting-fields" title="Slides">§</a></h3>
+<ul class="simple">
+<li>You don&#8217;t need to expose all the fields in your form</li>
+<li>You can either specify fields to expose, or fields to exclude</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ContactForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Contact</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;email&#39;</span><span class="p">,)</span>
+
+
+
+<span class="k">class</span> <span class="nc">ContactForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Contact</span>
+        <span class="n">exclude</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;notes&#39;</span><span class="p">,)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="overriding-fields">
+<h3>Overriding Fields<a class="headerlink" href="#overriding-fields" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#overriding-fields" title="Slides">§</a></h3>
+<ul class="simple">
+<li>Django will generate fields and widgets based on the model</li>
+<li>These can be overridden, as well</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ContactForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="n">forms</span><span class="o">.</span><span class="n">TextInput</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Contact</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="instantiating-model-forms">
+<h3>Instantiating Model Forms<a class="headerlink" href="#instantiating-model-forms" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#instantiating-model-forms" title="Slides">§</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">model_form</span> <span class="o">=</span> <span class="n">ContactForm</span><span class="p">()</span>
+
+<span class="n">model_form</span> <span class="o">=</span> <span class="n">ContactForm</span><span class="p">(</span>
+    <span class="n">instance</span><span class="o">=</span><span class="n">Contact</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="modelform-is-valid">
+<h3>ModelForm.is_valid()<a class="headerlink" href="#modelform-is-valid" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#modelform-is-valid" title="Slides">§</a></h3>
+<p class="blockdiag">
+<img src="_images/blockdiag-d54b263c201749693662fc3d8dee6d8866fc424d.png" alt="None" width="640" height="120" />
+</p>
+<ul class="simple">
+<li>Model Forms have an additional method, <tt class="docutils literal"><span class="pre">_post_clean()</span></tt></li>
+<li>Sets cleaned fields on the Model instance</li>
+<li>Called <em>regardless</em> of whether the form is valid</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h3>Testing<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#id3" title="Slides">§</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ModelFormTests</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">test_validation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">form_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;Test Name&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="n">form</span> <span class="o">=</span> <span class="n">ContactForm</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">form_data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&#39;Test Name&#39;</span><span class="p">)</span>
+
+        <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+            <span class="n">Contact</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s">&#39;Test Name&#39;</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="form-sets">
+<h2>Form Sets<a class="headerlink" href="#form-sets" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#form-sets" title="Slides">§</a></h2>
+<div class="section" id="id4">
+<h3>Form Sets<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#id4" title="Slides">§</a></h3>
+<ul>
+<li><p class="first">Handles multiple copies of the same form</p>
+</li>
+<li><p class="first">Adds a unique prefix to each form:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">form</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">name</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Support for insertion, deletion, and ordering</p>
+</li>
+</ul>
+</div>
+<div class="section" id="defining-form-sets">
+<h3>Defining Form Sets<a class="headerlink" href="#defining-form-sets" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#defining-form-sets" title="Slides">§</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.forms</span> <span class="kn">import</span> <span class="n">formsets</span>
+
+<span class="n">ContactFormSet</span> <span class="o">=</span> <span class="n">formsets</span><span class="o">.</span><span class="n">formset_factory</span><span class="p">(</span>
+    <span class="n">ContactForm</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">formset</span> <span class="o">=</span> <span class="n">ContactFormSet</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Factory kwargs:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">can_delete</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">extra</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">max_num</span></tt></li>
+</ul>
+</div>
+<div class="section" id="using-form-sets">
+<h3>Using Form Sets<a class="headerlink" href="#using-form-sets" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#using-form-sets" title="Slides">§</a></h3>
+<div class="highlight-python"><div class="highlight"><pre>&lt;form action=”” method=”POST”&gt;
+{% formset %}
+&lt;/form&gt;
+</pre></div>
+</div>
+<p>Or more control over output:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;form action=”.” method=”POST”&gt;
+{% formset.management_form %}
+{% for form in formset %}
+   {% form %}
+{% endfor %}
+&lt;/form&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="management-form">
+<h3>Management Form<a class="headerlink" href="#management-form" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#management-form" title="Slides">§</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">formset.management_form</span></tt> provides fields for tracking the member
+forms<ul>
+<li><tt class="docutils literal"><span class="pre">TOTAL_FORMS</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">INITIAL_FORMS</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">MAX_NUM_FORMS</span></tt></li>
+</ul>
+</li>
+<li>Management form data <strong>must</strong> be present to validate a Form Set</li>
+</ul>
+</div>
+<div class="section" id="formset-is-valid">
+<h3>formset.is_valid()<a class="headerlink" href="#formset-is-valid" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#formset-is-valid" title="Slides">§</a></h3>
+<p class="blockdiag">
+<img src="_images/blockdiag-3375c22b0a4a5a86b1acdaf6612cc70f7e6b3670.png" alt="None" width="640" height="120" />
+</p>
+<ul class="simple">
+<li>Performs validation on each member form</li>
+<li>Calls <tt class="docutils literal"><span class="pre">.clean()</span></tt> method on the FormSet</li>
+<li><tt class="docutils literal"><span class="pre">formset.clean()</span></tt> can be overridden to validate across Forms</li>
+<li>Errors raised are collected in <tt class="docutils literal"><span class="pre">formset.non_form_errors()</span></tt></li>
+</ul>
+</div>
+<div class="section" id="formset-clean">
+<h3>FormSet.clean()<a class="headerlink" href="#formset-clean" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#formset-clean" title="Slides">§</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.forms</span> <span class="kn">import</span> <span class="n">formsets</span>
+
+<span class="k">class</span> <span class="nc">BaseContactFormSet</span><span class="p">(</span><span class="n">formsets</span><span class="o">.</span><span class="n">BaseFormSet</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">form</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">forms</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">()</span>
+            <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">))</span>
+
+<span class="n">ContactFormSet</span> <span class="o">=</span> <span class="n">formsets</span><span class="o">.</span><span class="n">formset_factory</span><span class="p">(</span>
+    <span class="n">ContactForm</span><span class="p">,</span>
+    <span class="n">formset</span><span class="o">=</span><span class="n">BaseContactFormSet</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="insertion">
+<h3>Insertion<a class="headerlink" href="#insertion" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#insertion" title="Slides">§</a></h3>
+<ul class="simple">
+<li>FormSets use the <tt class="docutils literal"><span class="pre">management_form</span></tt> to determine how many forms to
+build</li>
+<li>You can add more by creating a new form and incrementing
+<tt class="docutils literal"><span class="pre">TOTAL_FORM_COUNT</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">formset.empty_form</span></tt> provides an empty copy of the form with
+<tt class="docutils literal"><span class="pre">__prefix__</span></tt> as the index</li>
+</ul>
+</div>
+<div class="section" id="deletion">
+<h3>Deletion<a class="headerlink" href="#deletion" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#deletion" title="Slides">§</a></h3>
+<ul class="simple">
+<li>When deletion is enabled, additional <tt class="docutils literal"><span class="pre">DELETE</span></tt> field is added to
+each form</li>
+<li>Forms flagged for deletion are available using the
+<tt class="docutils literal"><span class="pre">.deleted_forms</span></tt> property</li>
+<li>Deleted forms are <strong>not</strong> validated</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ContactFormSet</span> <span class="o">=</span> <span class="n">formsets</span><span class="o">.</span><span class="n">formset_factory</span><span class="p">(</span>
+    <span class="n">ContactForm</span><span class="p">,</span> <span class="n">can_delete</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="ordering-forms">
+<h3>Ordering Forms<a class="headerlink" href="#ordering-forms" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#ordering-forms" title="Slides">§</a></h3>
+<ul class="simple">
+<li>When ordering is enabled, additional <tt class="docutils literal"><span class="pre">ORDER</span></tt> field is added to
+each form</li>
+<li>Forms are available (in order) using the <tt class="docutils literal"><span class="pre">.ordered_forms</span></tt> property</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ContactFormSet</span> <span class="o">=</span> <span class="n">formsets</span><span class="o">.</span><span class="n">formset_factory</span><span class="p">(</span>
+    <span class="n">ContactForm</span><span class="p">,</span>
+    <span class="n">can_order</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id5">
+<h3>Testing<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#id5" title="Slides">§</a></h3>
+<ul class="simple">
+<li>FormSets can be tested in the same way as Forms</li>
+<li>Helpers to generate test form data:<ul>
+<li><tt class="docutils literal"><span class="pre">flatten_to_dict</span></tt> works with FormSets just like Forms</li>
+<li><tt class="docutils literal"><span class="pre">empty_form_data</span></tt> takes a FormSet and index, returns a dict of data
+for an empty form:</li>
+</ul>
+</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">rebar.testing</span> <span class="kn">import</span> <span class="n">flatten_to_dict</span><span class="p">,</span> <span class="n">empty_form_data</span>
+
+<span class="n">formset</span> <span class="o">=</span> <span class="n">ContactFormSet</span><span class="p">()</span>
+<span class="n">form_data</span> <span class="o">=</span> <span class="n">flatten_to_dict</span><span class="p">(</span><span class="n">formset</span><span class="p">)</span>
+<span class="n">form_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+    <span class="n">empty_form_data</span><span class="p">(</span><span class="n">formset</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">formset</span><span class="p">))</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="model-form-sets">
+<h3>Model Form Sets<a class="headerlink" href="#model-form-sets" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#model-form-sets" title="Slides">§</a></h3>
+<ul class="simple">
+<li>ModelFormSets:FormSets :: ModelForms:Forms</li>
+<li><tt class="docutils literal"><span class="pre">queryset</span></tt> argument specifies initial set of objects</li>
+<li><tt class="docutils literal"><span class="pre">.save()</span></tt> returns the list of saved instances</li>
+<li>If <tt class="docutils literal"><span class="pre">can_delete</span></tt> is <tt class="docutils literal"><span class="pre">True</span></tt>, <tt class="docutils literal"><span class="pre">.save()</span></tt> also deletes the models
+flagged for deletion</li>
+</ul>
+</div>
+</div>
+<div class="section" id="advanced-miscellaneous-detritus">
+<h2>Advanced &amp; Miscellaneous Detritus<a class="headerlink" href="#advanced-miscellaneous-detritus" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#advanced-miscellaneous-detritus" title="Slides">§</a></h2>
+<div class="section" id="localizing-fields">
+<h3>Localizing Fields<a class="headerlink" href="#localizing-fields" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#localizing-fields" title="Slides">§</a></h3>
+<ul class="simple">
+<li>Django&#8217;s i18n/l10n framework supports localized input formats</li>
+<li>For example: 10,00 vs. 10.00</li>
+</ul>
+<p>Enable in <tt class="docutils literal"><span class="pre">settings.py</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">USE_L10N</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">USE_THOUSAND_SEPARATOR</span> <span class="o">=</span> <span class="bp">True</span> <span class="c"># optional</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="localizing-fields-example">
+<h3>Localizing Fields Example<a class="headerlink" href="#localizing-fields-example" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#localizing-fields-example" title="Slides">§</a></h3>
+<p>And then use the <tt class="docutils literal"><span class="pre">localize</span></tt> kwarg</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">DateForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">pycon_ends</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">DateField</span><span class="p">(</span><span class="n">localize</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">DateForm</span><span class="p">({</span><span class="s">&#39;pycon_ends&#39;</span><span class="p">:</span> <span class="s">&#39;3/15/2012&#39;</span><span class="p">})</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">DateForm</span><span class="p">({</span><span class="s">&#39;pycon_ends&#39;</span><span class="p">:</span> <span class="s">&#39;15/3/2012&#39;</span><span class="p">})</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span>
+<span class="go">False</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">translation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">translation</span><span class="o">.</span><span class="n">activate</span><span class="p">(</span><span class="s">&#39;en_GB&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">DateForm</span><span class="p">({</span><span class="s">&#39;pycon_ends&#39;</span><span class="p">:</span><span class="s">&#39;15/3/2012&#39;</span><span class="p">})</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="dynamic-forms">
+<h3>Dynamic Forms<a class="headerlink" href="#dynamic-forms" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#dynamic-forms" title="Slides">§</a></h3>
+<ul class="simple">
+<li>Declarative syntax is just sugar</li>
+<li>Forms use a metaclass to populate <tt class="docutils literal"><span class="pre">form.fields</span></tt></li>
+<li>After <tt class="docutils literal"><span class="pre">__init__</span></tt> finishes, you can manipulate <tt class="docutils literal"><span class="pre">form.fields</span></tt>
+without impacting other instances</li>
+</ul>
+</div>
+<div class="section" id="state-validators">
+<h3>State Validators<a class="headerlink" href="#state-validators" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#state-validators" title="Slides">§</a></h3>
+<ul class="simple">
+<li>Validation isn&#8217;t necessarily all or nothing</li>
+<li>State Validators define validation for specific states, on top of
+basic validation</li>
+<li>Your application can take action based on whether the form is valid,
+or valid for a particular state</li>
+</ul>
+</div>
+<div class="section" id="id6">
+<h3>State Validators<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#id6" title="Slides">§</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
+<span class="kn">from</span> <span class="nn">rebar.validators</span> <span class="kn">import</span> <span class="n">StateValidator</span><span class="p">,</span> <span class="n">StateValidatorFormMixin</span>
+
+<span class="k">class</span> <span class="nc">PublishValidator</span><span class="p">(</span><span class="n">StateValidator</span><span class="p">):</span>
+    <span class="n">validators</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&#39;title&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">x</span><span class="p">),</span>
+     <span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">EventForm</span><span class="p">(</span><span class="n">StateValidatorFormMixin</span><span class="p">,</span> <span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+    <span class="n">state_validators</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&#39;publish&#39;</span><span class="p">:</span> <span class="n">PublishValidator</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id7">
+<h3>State Validators<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/forms.html#id7" title="Slides">§</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">form</span> <span class="o">=</span> <span class="n">EventForm</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">(</span><span class="s">&#39;publish&#39;</span><span class="p">)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">form</span><span class="o">.</span><span class="n">errors</span><span class="p">(</span><span class="s">&#39;publish&#39;</span><span class="p">)</span>
+<span class="go">{&#39;title&#39;: &#39;This field is required&#39;}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Effective Django Forms</a><ul>
+<li><a class="reference internal" href="#form-basics">Form Basics</a><ul>
+<li><a class="reference internal" href="#forms-in-context">Forms in Context</a></li>
+<li><a class="reference internal" href="#defining-forms">Defining Forms</a></li>
+<li><a class="reference internal" href="#instantiating-a-form">Instantiating a Form</a></li>
+<li><a class="reference internal" href="#accessing-fields">Accessing Fields</a></li>
+<li><a class="reference internal" href="#initial-data">Initial Data</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#validation">Validation</a><ul>
+<li><a class="reference internal" href="#validating-the-form">Validating the Form</a></li>
+<li><a class="reference internal" href="#field-validation">Field Validation</a></li>
+<li><a class="reference internal" href="#field-cleaning">Field Cleaning</a></li>
+<li><a class="reference internal" href="#clean-email"><tt class="docutils literal"><span class="pre">.clean_email()</span></tt></a></li>
+<li><a class="reference internal" href="#form-validation">Form Validation</a></li>
+<li><a class="reference internal" href="#clean-example"><tt class="docutils literal"><span class="pre">.clean()</span></tt> example</a></li>
+<li><a class="reference internal" href="#initial-default-data">Initial != Default Data</a></li>
+<li><a class="reference internal" href="#passing-extra-information">Passing Extra Information</a></li>
+<li><a class="reference internal" href="#tracking-changes">Tracking Changes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#testing">Testing</a><ul>
+<li><a class="reference internal" href="#testing-forms">Testing Forms</a></li>
+<li><a class="reference internal" href="#unit-tests">Unit Tests</a></li>
+<li><a class="reference internal" href="#test-data">Test Data</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#rendering-forms">Rendering Forms</a><ul>
+<li><a class="reference internal" href="#idiomatic-form-usage">Idiomatic Form Usage</a></li>
+<li><a class="reference internal" href="#form-output">Form Output</a></li>
+<li><a class="reference internal" href="#controlling-form-output">Controlling Form Output</a></li>
+<li><a class="reference internal" href="#customizing-rendering">Customizing Rendering</a></li>
+<li><a class="reference internal" href="#customizing-error-messages">Customizing Error Messages</a></li>
+<li><a class="reference internal" href="#error-class">Error Class</a></li>
+<li><a class="reference internal" href="#id1">Error Class</a></li>
+<li><a class="reference internal" href="#multiple-forms">Multiple Forms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#forms-for-models">Forms for Models</a><ul>
+<li><a class="reference internal" href="#model-forms">Model Forms</a></li>
+<li><a class="reference internal" href="#id2">Model Forms</a></li>
+<li><a class="reference internal" href="#limiting-fields">Limiting Fields</a></li>
+<li><a class="reference internal" href="#overriding-fields">Overriding Fields</a></li>
+<li><a class="reference internal" href="#instantiating-model-forms">Instantiating Model Forms</a></li>
+<li><a class="reference internal" href="#modelform-is-valid">ModelForm.is_valid()</a></li>
+<li><a class="reference internal" href="#id3">Testing</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#form-sets">Form Sets</a><ul>
+<li><a class="reference internal" href="#id4">Form Sets</a></li>
+<li><a class="reference internal" href="#defining-form-sets">Defining Form Sets</a></li>
+<li><a class="reference internal" href="#using-form-sets">Using Form Sets</a></li>
+<li><a class="reference internal" href="#management-form">Management Form</a></li>
+<li><a class="reference internal" href="#formset-is-valid">formset.is_valid()</a></li>
+<li><a class="reference internal" href="#formset-clean">FormSet.clean()</a></li>
+<li><a class="reference internal" href="#insertion">Insertion</a></li>
+<li><a class="reference internal" href="#deletion">Deletion</a></li>
+<li><a class="reference internal" href="#ordering-forms">Ordering Forms</a></li>
+<li><a class="reference internal" href="#id5">Testing</a></li>
+<li><a class="reference internal" href="#model-form-sets">Model Form Sets</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#advanced-miscellaneous-detritus">Advanced &amp; Miscellaneous Detritus</a><ul>
+<li><a class="reference internal" href="#localizing-fields">Localizing Fields</a></li>
+<li><a class="reference internal" href="#localizing-fields-example">Localizing Fields Example</a></li>
+<li><a class="reference internal" href="#dynamic-forms">Dynamic Forms</a></li>
+<li><a class="reference internal" href="#state-validators">State Validators</a></li>
+<li><a class="reference internal" href="#id6">State Validators</a></li>
+<li><a class="reference internal" href="#id7">State Validators</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="classbasedviews.html"
+                        title="previous chapter">Class Based Views</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="acknowledgments.html"
+                        title="next chapter">Acknowledgments</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/forms.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+  <h3>Slides</h3>
+  <ul class="this-page-menu">
+    <li><a href="./slides/forms.html"
+           rel="nofollow">View as slides</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="acknowledgments.html" title="Acknowledgments"
+             >next</a></li>
+        <li class="right" >
+          <a href="classbasedviews.html" title="Class Based Views"
+             >previous</a> |</li>
+        <li><a href="index.html">Effective Django</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012-2013, Nathan Yergler.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

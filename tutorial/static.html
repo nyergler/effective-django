@@ -1,0 +1,314 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-188298-7']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    <title>Using Static Assets &mdash; Effective Django</title>
+    
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Effective Django" href="../index.html" />
+    <link rel="up" title="Effective Django Tutorial" href="index.html" />
+    <link rel="next" title="Additional Generic Views" href="additional-views.html" />
+    <link rel="prev" title="Writing Views" href="views.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="additional-views.html" title="Additional Generic Views"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="views.html" title="Writing Views"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Effective Django</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Effective Django Tutorial</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="using-static-assets">
+<h1>Using Static Assets<a class="headerlink" href="#using-static-assets" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/static.html#using-static-assets" title="Slides">§</a></h1>
+<p>Now that we have a basic application where we can add contacts and
+list them, it&#8217;s reasonable to think about how we&#8217;d make this look more
+appealing. Most modern web applications are a combination of server
+side code/views, and client side, static assets, such as JavaScript
+and CSS. Regardless of whether you choose JavaScript or CoffeeScript,
+CSS or SASS, Django provides support for integrating static assets
+into your project.</p>
+<div class="section" id="adding-static-files">
+<h2>Adding Static Files<a class="headerlink" href="#adding-static-files" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/static.html#adding-static-files" title="Slides">§</a></h2>
+<p>Django distinguishes between &#8220;static&#8221; and &#8220;media&#8221; files. The former
+are static assets included with your app or project. The latter are
+files uploaded by users using one of the file storage backends. Django
+includes a contrib app, <tt class="docutils literal"><span class="pre">django.contrib.staticfiles</span></tt> for managing
+static files and, importantly, generating the URLs to them. You could,
+of course, simply hard code the URLs to your static assets, and that&#8217;d
+probably work for a while. But if you want to move your static assets
+to their own server, or to a CDN, using generated URLs let&#8217;s you make
+that change without needing to update your templates.
+<tt class="docutils literal"><span class="pre">django.contrib.staticfiles</span></tt> is enabled by default when you create a
+new project, so you can just start using it.</p>
+<p>We&#8217;re going to add <a class="reference external" href="http://getbootstrap.com">Bootstrap</a> to our project for some basic styling.
+You can download the Bootstrap files from its website,
+<a class="reference external" href="http://getbootstrap.com">http://getbootstrap.com</a>.</p>
+<p>Django supports adding static files at both the application and
+project level. Where you add them sort of depends on how tied to your
+specific assembly of apps they are. That is, are they reusable for
+anyone using your app, or are they specific to your particular
+deployment?</p>
+<p>App specific static files are stored in the <tt class="docutils literal"><span class="pre">static</span></tt> subdirectory
+within the app. Django will also look in any directories listed in the
+<tt class="docutils literal"><span class="pre">STATICFILES_DIRS</span></tt> setting. Let&#8217;s update our project settings to
+specify a static files directory.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">os.path</span>
+<span class="o">...</span>
+<span class="c"># Additional locations of static files</span>
+<span class="n">STATICFILES_DIRS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="c"># Put strings here, like &quot;/home/html/static&quot; or &quot;C:/www/django/static&quot;.</span>
+    <span class="c"># Always use forward slashes, even on Windows.</span>
+    <span class="c"># Don&#39;t forget to use absolute paths, not relative paths.</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">),</span>
+        <span class="s">&#39;static&#39;</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that we use <tt class="docutils literal"><span class="pre">os.path</span></tt> to construct the absolute path. This
+ensures Django can locate the files unambiguously.</p>
+<p>Let&#8217;s go ahead and create the static directory in our project and
+unpack Bootstrap into it.</p>
+<div class="highlight-python"><div class="highlight"><pre>(tutorial)$ mkdir addressbook/static
+(tutorial)$ cd addressbook/static
+(tutorial)$ unzip ~/Downloads/bootstrap.zip
+Archive:  /Users/nathan/Downloads/bootstrap.zip
+  creating: bootstrap/
+  creating: bootstrap/css/
+ inflating: bootstrap/css/bootstrap-responsive.css
+ inflating: bootstrap/css/bootstrap-responsive.min.css
+ inflating: bootstrap/css/bootstrap.css
+ inflating: bootstrap/css/bootstrap.min.css
+  creating: bootstrap/img/
+ inflating: bootstrap/img/glyphicons-halflings-white.png
+ inflating: bootstrap/img/glyphicons-halflings.png
+  creating: bootstrap/js/
+ inflating: bootstrap/js/bootstrap.js
+ inflating: bootstrap/js/bootstrap.min.js
+</pre></div>
+</div>
+</div>
+<div class="section" id="referring-to-static-files-in-templates">
+<h2>Referring to Static Files in Templates<a class="headerlink" href="#referring-to-static-files-in-templates" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/static.html#referring-to-static-files-in-templates" title="Slides">§</a></h2>
+<p>The Django staticfiles app includes a <a class="reference external" href="https://docs.djangoproject.com/en/1.5/ref/templates/builtins/">template tag</a> that make it
+easy to refer to static files within your templates. You load template
+tag libraries using the <tt class="docutils literal"><span class="pre">load</span></tt> tag.</p>
+<div class="highlight-python"><div class="highlight"><pre>{% load staticfiles %}
+</pre></div>
+</div>
+<p>After loading the static files library, you can refer to the file
+using the <tt class="docutils literal"><span class="pre">static</span></tt> tag.</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;link href=&quot;{% static &#39;bootstrap/css/bootstrap.min.css&#39; %}&quot;
+      rel=&quot;stylesheet&quot; media=&quot;screen&quot;&gt;
+</pre></div>
+</div>
+<p>Note that the path we specify is <em>relative</em> to the static files
+directory. Django is going to join this path with the <tt class="docutils literal"><span class="pre">STATIC_URL</span></tt>
+setting to generate the actual URL to use.</p>
+<p>The <a class="reference external" href="https://docs.djangoproject.com/en/1.5/ref/settings/#std:setting-STATIC_URL">STATIC_URL setting</a> tells Django what the root URL for your
+static files is. By default it&#8217;s set to <tt class="docutils literal"><span class="pre">/static/</span></tt>.</p>
+</div>
+<div class="section" id="simple-template-inclusion">
+<h2>Simple Template Inclusion<a class="headerlink" href="#simple-template-inclusion" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/static.html#simple-template-inclusion" title="Slides">§</a></h2>
+<p>We want to add the Boostrap CSS to all of our templates, but we&#8217;d like
+to avoid repeating ourself: if we add it to each template
+individually, when we want to make changes (for example, to add
+another stylesheet) we have to make them to all the files. To solve
+this, we&#8217;ll create a base template that the others will inherit from.</p>
+<p>Let&#8217;s create <tt class="docutils literal"><span class="pre">base.html</span></tt> in the <tt class="docutils literal"><span class="pre">templates</span></tt> directory of our
+<tt class="docutils literal"><span class="pre">contacts</span></tt> app.</p>
+<div class="highlight-python"><div class="highlight"><pre>{% load staticfiles %}
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;link href=&quot;{% static &#39;bootstrap/css/bootstrap.min.css&#39; %}&quot;
+          rel=&quot;stylesheet&quot; media=&quot;screen&quot;&gt;
+  &lt;/head&gt;
+
+  &lt;body&gt;
+    {% block content %}
+    {% endblock %}
+
+    &lt;script src=&quot;{% static &#39;bootstrap/js/bootstrap.min.js&#39; %}&quot;&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre></div>
+</div>
+<p><tt class="docutils literal"><span class="pre">base.html</span></tt> defines the common structure for our pages, and includes
+a <tt class="docutils literal"><span class="pre">block</span></tt> tag, which other templates can fill in.</p>
+<p>We&#8217;ll update <tt class="docutils literal"><span class="pre">contact_list.html</span></tt> to extend from <tt class="docutils literal"><span class="pre">base.html</span></tt> and
+fill in the <tt class="docutils literal"><span class="pre">content</span></tt> block.</p>
+<div class="highlight-python"><div class="highlight"><pre>{% extends &quot;base.html&quot; %}
+
+{% block content %}
+&lt;h1&gt;Contacts&lt;/h1&gt;
+
+&lt;ul&gt;
+  {% for contact in object_list %}
+    &lt;li class=&quot;contact&quot;&gt;{{ contact }}&lt;/li&gt;
+  {% endfor %}
+&lt;/ul&gt;
+
+&lt;a href=&quot;{% url &quot;contacts-new&quot; %}&quot;&gt;add contact&lt;/a&gt;
+{% endblock %}
+</pre></div>
+</div>
+</div>
+<div class="section" id="serving-static-files">
+<h2>Serving Static Files<a class="headerlink" href="#serving-static-files" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/static.html#serving-static-files" title="Slides">§</a></h2>
+<p>We&#8217;ve told Django where we store our static files, and we&#8217;ve told it
+what URL structure to use, but we haven&#8217;t actually connected the two
+together. Django doesn&#8217;t serve static files by default, and for good
+reason: using an application server to serve static resources is going
+to be ineffecient, at best. The Django documentation on <a class="reference external" href="https://docs.djangoproject.com/en/1.5/howto/static-files/deployment/">deploying
+static files</a> does a good job of walking through the options for
+getting your static files onto your CDN or static file server.</p>
+<p>For development, however, it&#8217;s convenient to do it all with one
+process, so there&#8217;s a helper. We&#8217;ll update our <tt class="docutils literal"><span class="pre">addressbook/urls.py</span></tt>
+file to include the <tt class="docutils literal"><span class="pre">staticfiles_urlpatterns</span></tt> helper.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="kn">import</span> <span class="n">patterns</span><span class="p">,</span> <span class="n">include</span><span class="p">,</span> <span class="n">url</span>
+<span class="kn">from</span> <span class="nn">django.contrib.staticfiles.urls</span> <span class="kn">import</span> <span class="n">staticfiles_urlpatterns</span>
+
+<span class="kn">import</span> <span class="nn">contacts.views</span>
+
+
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">patterns</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^$&#39;</span><span class="p">,</span> <span class="n">contacts</span><span class="o">.</span><span class="n">views</span><span class="o">.</span><span class="n">ListContactView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span>
+        <span class="n">name</span><span class="o">=</span><span class="s">&#39;contacts-list&#39;</span><span class="p">,),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^new$&#39;</span><span class="p">,</span> <span class="n">contacts</span><span class="o">.</span><span class="n">views</span><span class="o">.</span><span class="n">CreateContactView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span>
+        <span class="n">name</span><span class="o">=</span><span class="s">&#39;contacts-new&#39;</span><span class="p">,),</span>
+<span class="p">)</span>
+
+<span class="n">urlpatterns</span> <span class="o">+=</span> <span class="n">staticfiles_urlpatterns</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Now we can run the server and see our newly Boostrapped templates in
+action.</p>
+<img alt="../_images/boostrapped.png" src="../_images/boostrapped.png" />
+</div>
+<div class="section" id="review">
+<h2>Review<a class="headerlink" href="#review" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/static.html#review" title="Slides">§</a></h2>
+<ul class="simple">
+<li>Django distinguishes between static site files, and user uploaded
+media</li>
+<li>The <tt class="docutils literal"><span class="pre">staticfiles</span></tt> app is included to help manage static files and
+serve them during development</li>
+<li>Static files can be included with apps, or with the project. Choose
+where you put them based on whether you expect all users of your app
+to need them.</li>
+<li>Templates can extend one another, using <tt class="docutils literal"><span class="pre">block</span></tt> tags.</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Using Static Assets</a><ul>
+<li><a class="reference internal" href="#adding-static-files">Adding Static Files</a></li>
+<li><a class="reference internal" href="#referring-to-static-files-in-templates">Referring to Static Files in Templates</a></li>
+<li><a class="reference internal" href="#simple-template-inclusion">Simple Template Inclusion</a></li>
+<li><a class="reference internal" href="#serving-static-files">Serving Static Files</a></li>
+<li><a class="reference internal" href="#review">Review</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="views.html"
+                        title="previous chapter">Writing Views</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="additional-views.html"
+                        title="next chapter">Additional Generic Views</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/tutorial/static.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+  <h3>Slides</h3>
+  <ul class="this-page-menu">
+    <li><a href="../.././slides/tutorial/static.html"
+           rel="nofollow">View as slides</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="additional-views.html" title="Additional Generic Views"
+             >next</a></li>
+        <li class="right" >
+          <a href="views.html" title="Writing Views"
+             >previous</a> |</li>
+        <li><a href="../index.html">Effective Django</a> &raquo;</li>
+          <li><a href="index.html" >Effective Django Tutorial</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012-2013, Nathan Yergler.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

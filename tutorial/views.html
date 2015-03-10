@@ -1,0 +1,593 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-188298-7']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    <title>Writing Views &mdash; Effective Django</title>
+    
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Effective Django" href="../index.html" />
+    <link rel="up" title="Effective Django Tutorial" href="index.html" />
+    <link rel="next" title="Using Static Assets" href="static.html" />
+    <link rel="prev" title="Using Models" href="models.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="static.html" title="Using Static Assets"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="models.html" title="Using Models"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Effective Django</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Effective Django Tutorial</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="writing-views">
+<h1>Writing Views<a class="headerlink" href="#writing-views" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/views.html#writing-views" title="Slides">§</a></h1>
+<span class="admonition-writing-views"></span><div class="include-as-slide slide-level-2 section" id="view-basics">
+<h2>View Basics<a class="headerlink" href="#view-basics" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/views.html#view-basics" title="Slides">§</a></h2>
+<p>Django Views take an <a class="reference external" href="https://docs.djangoproject.com/en/1.5/ref/request-response/#httprequest-objects">HTTP Request</a> and return an <a class="reference external" href="https://docs.djangoproject.com/en/1.5/ref/request-response/#httpresponse-objects">HTTP Response</a> to
+the user.</p>
+<blockquote>
+<div><p class="blockdiag">
+<img src="../_images/blockdiag-73065eaf0b801e69ef10fe246919a0006f946ae2.png" alt="None" width="448" height="120" />
+</p>
+</div></blockquote>
+<p>Any Python callable can be a view. The only hard and fast requirement
+is that it takes the request object (customarily named <tt class="docutils literal"><span class="pre">request</span></tt>) as
+its first argument. This means that a minimalist view is super
+simple:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span>
+
+<span class="k">def</span> <span class="nf">hello_world</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s">&quot;Hello, World&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Of course, like most frameworks, Django also allows you to pass
+arguments to the view from the URL. We&#8217;ll cover this as we build up
+our application.</p>
+</div>
+<div class="include-as-slide slide-level-2 section" id="generic-class-based-views">
+<h2>Generic &amp; Class Based Views<a class="headerlink" href="#generic-class-based-views" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/views.html#generic-class-based-views" title="Slides">§</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://docs.djangoproject.com/en/1.5/topics/class-based-views/generic-display/">Generic Views</a> have always provided some basic functionality:
+render a template, redirect, create or edit a model, etc.</li>
+<li>Django 1.3 introduced <a class="reference external" href="https://docs.djangoproject.com/en/1.5/topics/class-based-views/">Class Based Views</a> (CBV) for the generic views</li>
+<li>Provide higher levels of abstraction and composability</li>
+<li>Also hide a lot of complexity, which can be confusing for the
+newcomer</li>
+<li>Luckily the documentation is <strong>much</strong> better with Django 1.5</li>
+</ul>
+<p>Django 1.3 introduced class based views, which is what we&#8217;ll be
+focusing on here. Class based views, or CBVs, can eliminate a lot of
+boilerplate from your views, especially for things like an edit view
+where you want to take different action on a <tt class="docutils literal"><span class="pre">GET</span></tt> vs <tt class="docutils literal"><span class="pre">POST</span></tt>. They
+give you a lot of power to compose functionality from pieces. The
+downside is that this power comes with some added complexity.</p>
+</div>
+<div class="include-as-slide slide-level-2 section" id="class-based-views">
+<h2>Class Based Views<a class="headerlink" href="#class-based-views" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/views.html#class-based-views" title="Slides">§</a></h2>
+<p>The minimal class based view subclasses <a class="reference external" href="https://docs.djangoproject.com/en/1.5/ref/class-based-views/base/#view">View</a> and implements methods
+for the HTTP methods it supports. Here&#8217;s the class-based version of
+the minimalist &#8220;Hello, World&#8221; view we previously wrote.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span>
+<span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">View</span>
+
+<span class="k">class</span> <span class="nc">MyView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s">&quot;Hello, World&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In a class based view, HTTP methods map to class method names. In this
+case, we&#8217;ve defined a handler for <tt class="docutils literal"><span class="pre">GET</span></tt> requests with the <tt class="docutils literal"><span class="pre">get</span></tt>
+method. Just like the function implementation, it takes <tt class="docutils literal"><span class="pre">request</span></tt> as
+its first argument, and returns an HTTP Response.</p>
+<div class="sidebar">
+<p class="first sidebar-title">Permissive Signatures</p>
+<p class="last">You may notice that it has a couple of extra arguments in its
+signature, compared to the view we saw previously, specifically
+<tt class="docutils literal"><span class="pre">*args</span></tt> and <tt class="docutils literal"><span class="pre">**kwargs</span></tt>. Class based views were first introduced
+as a way to make Django&#8217;s &#8220;generic&#8221; views more flexible. That meant
+they were used in many different contexts, with potentially
+different arguments extracted from the URLs. As I&#8217;ve been writing
+class based views over the past year, I&#8217;ve continued to write them
+with permissive signatures, as I&#8217;ve found they&#8217;re often useful in
+ways I didn&#8217;t initially expect.</p>
+</div>
+</div>
+<div class="section" id="listing-contacts">
+<h2>Listing Contacts<a class="headerlink" href="#listing-contacts" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/views.html#listing-contacts" title="Slides">§</a></h2>
+<span class="admonition-list-views"></span><span class="admonition-edit-views"></span><span class="admonition-detail-views"></span><p>We&#8217;ll start with a view that presents a list of contacts in the
+database.</p>
+<p>The basic view implementation is shockingly brief. We can write the
+view in just a few lines in the <tt class="docutils literal"><span class="pre">views.py</span></tt> file in our <tt class="docutils literal"><span class="pre">contacts</span></tt>
+application.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">ListView</span>
+
+<span class="kn">from</span> <span class="nn">contacts.models</span> <span class="kn">import</span> <span class="n">Contact</span>
+
+
+<span class="k">class</span> <span class="nc">ListContactView</span><span class="p">(</span><span class="n">ListView</span><span class="p">):</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Contact</span>
+</pre></div>
+</div>
+<p>The <a class="reference external" href="https://docs.djangoproject.com/en/1.5/ref/class-based-views/generic-display/#listview">ListView</a> that we subclass from is itself composed of several
+mixins that provide some behavior, and that composition gives us a lot
+of power without a lot of code. In this case we set <tt class="docutils literal"><span class="pre">model</span> <span class="pre">=</span>
+<span class="pre">Contact</span></tt>, which says that this view is going to list <em>all</em> the
+Contacts in our database.</p>
+</div>
+<div class="include-as-slide slide-level-2 section" id="defining-urls">
+<h2>Defining URLs<a class="headerlink" href="#defining-urls" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/views.html#defining-urls" title="Slides">§</a></h2>
+<p>The URL configuration tells Django how to match a request&#8217;s path to
+your Python code. Django looks for the URL configuration, defined as
+<tt class="docutils literal"><span class="pre">urlpatterns</span></tt>, in the <tt class="docutils literal"><span class="pre">urls.py</span></tt> file in your project.</p>
+<p>Let&#8217;s add a URL mapping for our contact list view in
+<tt class="docutils literal"><span class="pre">addressbook/urls.py</span></tt>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="kn">import</span> <span class="n">patterns</span><span class="p">,</span> <span class="n">include</span><span class="p">,</span> <span class="n">url</span>
+
+<span class="kn">import</span> <span class="nn">contacts.views</span>
+
+
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">patterns</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^$&#39;</span><span class="p">,</span> <span class="n">contacts</span><span class="o">.</span><span class="n">views</span><span class="o">.</span><span class="n">ListContactView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span>
+        <span class="n">name</span><span class="o">=</span><span class="s">&#39;contacts-list&#39;</span><span class="p">,),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>Use of the <tt class="docutils literal"><span class="pre">url()</span></tt> function is not strictly required, but I like
+it: when you start adding more information to the URL pattern, it
+lets you use named parameters, making everything more clear.</li>
+<li>The first parameter is a regular expression. Note the trailing
+<tt class="docutils literal"><span class="pre">$</span></tt>; why might that be important?</li>
+<li>The second parameter is the view callable. It can either be the
+actual callable (imported manually), or a string describing it. If
+it&#8217;s a string, Django will import the module (up to the final dot),
+and then calls the final segment when a request matches.</li>
+<li>Note that when we&#8217;re using a class based view, we <em>must</em> use the
+real object here, and not the string notation. That&#8217;s because we
+have to call the class method <tt class="docutils literal"><span class="pre">as_view()</span></tt>, which returns a wrapper
+around our class that Django&#8217;s URL dispatch can call.</li>
+<li>Giving a URL pattern a name allows you to do a reverse lookup</li>
+<li>The URL name is useful when linking from one View to another, or
+redirecting, as it allows you to manage your URL structure in one
+place</li>
+</ul>
+<p>While the <tt class="docutils literal"><span class="pre">urlpatterns</span></tt> name <strong>must</strong> be defined, Django also allows
+you to define a few other values in the URL configuration for
+exceptional cases. These include <tt class="docutils literal"><span class="pre">handler403</span></tt>, <tt class="docutils literal"><span class="pre">handler404</span></tt>, and
+<tt class="docutils literal"><span class="pre">handler500</span></tt>, which tell Django what view to use when an HTTP error
+occurs. See the <a class="reference external" href="https://docs.djangoproject.com/en/1.5/ref/urls/#handler403">Django urlconf documentation</a> for details.</p>
+<div class="admonition-url-configuration-import-errors admonition">
+<p class="first admonition-title">URL Configuration Import Errors</p>
+<p class="last">Django loads the URL configuration very early during startup, and
+will attempt to import things it finds here. If one of the imports
+fails, however, the error message can be somewhat opaque. If your
+project stops working with an import-related exception, try to
+import the URL configuration in the interactive shell. That usually
+makes it clear where the problem lies.</p>
+</div>
+</div>
+<div class="section" id="creating-the-template">
+<h2>Creating the Template<a class="headerlink" href="#creating-the-template" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/views.html#creating-the-template" title="Slides">§</a></h2>
+<span class="admonition-django-templates"></span><p>Now that we&#8217;ve defined a URL for our list view, we can try it out.
+Django includes a server suitable for development purposes that you
+can use to easily test your project:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ python manage.py runserver
+Validating models...
+
+0 errors found
+Django version 1.4.3, using settings &#39;addressbook.settings&#39;
+Development server is running at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+</pre></div>
+</div>
+<p>If you visit the <tt class="docutils literal"><span class="pre">http://localhost:8000/</span></tt> in your browser, though,
+you&#8217;ll see an error: <tt class="docutils literal"><span class="pre">TemplateDoesNotExist</span></tt>.</p>
+<img alt="../_images/TemplateDoesNotExist.png" src="../_images/TemplateDoesNotExist.png" />
+<p>Most of Django&#8217;s generic views (such as <tt class="docutils literal"><span class="pre">ListView</span></tt> which we&#8217;re
+using) have a predefined template name that they expect to find. We
+can see in this error message that this view was expecting to find
+<tt class="docutils literal"><span class="pre">contact_list.html</span></tt>, which is derived from the model name. Let&#8217;s go
+and create that.</p>
+<p>By default Django will look for templates in applications, as well as
+in directories you specify in <tt class="docutils literal"><span class="pre">settings.TEMPLATE_DIRS</span></tt>. The generic
+views expect that the templates will be found in a directory named
+after the application (in this case <tt class="docutils literal"><span class="pre">contacts</span></tt>), and the filename
+will contain the model name (in this case <tt class="docutils literal"><span class="pre">contact_list.html</span></tt>). This
+works very well when you&#8217;re distributing a reusable application: the
+consumer can create templates that override the defaults, and they&#8217;re
+clearly stored in a directory associated with the application.</p>
+<p>For our purposes, however, we don&#8217;t need that extra layer of directory
+structure, so we&#8217;ll specify the template to use explicitly, using the
+<tt class="docutils literal"><span class="pre">template_name</span></tt> property. Let&#8217;s add that one line to <tt class="docutils literal"><span class="pre">views.py</span></tt>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">ListView</span>
+
+<span class="kn">from</span> <span class="nn">contacts.models</span> <span class="kn">import</span> <span class="n">Contact</span>
+
+
+<span class="k">class</span> <span class="nc">ListContactView</span><span class="p">(</span><span class="n">ListView</span><span class="p">):</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Contact</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;contact_list.html&#39;</span>
+</pre></div>
+</div>
+<p>Create a <tt class="docutils literal"><span class="pre">templates</span></tt> subdirectory in our <tt class="docutils literal"><span class="pre">contacts</span></tt> application,
+and create <tt class="docutils literal"><span class="pre">contact_list.html</span></tt> there.</p>
+<div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;h1&gt;</span>Contacts<span class="nt">&lt;/h1&gt;</span>
+
+<span class="nt">&lt;ul&gt;</span>
+  {% for contact in object_list %}
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;contact&quot;</span><span class="nt">&gt;</span>{{ contact }}<span class="nt">&lt;/li&gt;</span>
+  {% endfor %}
+<span class="nt">&lt;/ul&gt;</span>
+</pre></div>
+</div>
+<p>Opening the page in the browser, we should see one contact there, the
+one we added earlier through the interactive shell.</p>
+</div>
+<div class="section" id="creating-contacts">
+<h2>Creating Contacts<a class="headerlink" href="#creating-contacts" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/views.html#creating-contacts" title="Slides">§</a></h2>
+<p>Adding information to the database through the interactive shell is
+going to get old fast, so let&#8217;s create a view for adding a new
+contact.</p>
+<p>Just like the list view, we&#8217;ll use one of Django&#8217;s generic views. In
+<tt class="docutils literal"><span class="pre">views.py</span></tt>, we can add the new view:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.core.urlresolvers</span> <span class="kn">import</span> <span class="n">reverse</span>
+<span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">CreateView</span>
+<span class="o">...</span>
+<span class="k">class</span> <span class="nc">CreateContactView</span><span class="p">(</span><span class="n">CreateView</span><span class="p">):</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Contact</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;edit_contact.html&#39;</span>
+
+    <span class="k">def</span> <span class="nf">get_success_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s">&#39;contacts-list&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Most generic views that do form processing have the concept of the
+&#8220;success URL&#8221;: where to redirect the user when the form is
+successfully submitted. The form processing views all adhere to the
+practice of POST-redirect-GET for submitting changes, so that
+refreshing the final page won&#8217;t result in form re-submission. You can
+either define this as a class property, or override the
+<tt class="docutils literal"><span class="pre">get_success_url()</span></tt> method, as we&#8217;re doing here. In this case we&#8217;re
+using the <tt class="docutils literal"><span class="pre">reverse</span></tt> function to calculate the URL of the contact
+list.</p>
+<div class="sidebar">
+<p class="first sidebar-title">Context Variables in Class Based Views</p>
+<p>The collection of values available to a template when it&#8217;s rendered
+is referred to as the Context. The Context is a combination of
+information supplied by the view and information from <a class="reference external" href="https://docs.djangoproject.com/en/1.5/ref/templates/api/#subclassing-context-requestcontext">context
+processors</a>.</p>
+<p>When you&#8217;re using built in generic views, it&#8217;s not obvious what
+values are available to the context. With some practice you&#8217;ll
+discover they&#8217;re pretty consistent &#8211; <tt class="docutils literal"><span class="pre">form</span></tt>, <tt class="docutils literal"><span class="pre">object</span></tt>, and
+<tt class="docutils literal"><span class="pre">object_list</span></tt> are often used &#8211; but that doesn&#8217;t help when you&#8217;re
+just starting off. Luckily, the documentation for this is much
+improved with Django 1.5.</p>
+<p class="last">In class based views, the <tt class="docutils literal"><span class="pre">get_context_data()</span></tt> method is used to
+add information to the context. If you override this method, you
+usually want to accept <tt class="docutils literal"><span class="pre">**kwargs</span></tt>, and call the super class.</p>
+</div>
+<p>The template is slightly more involved than the list template, but not
+much. Our <tt class="docutils literal"><span class="pre">edit_contact.html</span></tt> will look something like this.</p>
+<div class="highlight-html"><div class="highlight"><pre>&lt;h1&gt;Add Contact&lt;/h1&gt;
+
+&lt;form action=&quot;{% url &quot;contacts-new&quot; %}&quot; method=&quot;POST&quot;&gt;
+  {% csrf_token %}
+  &lt;ul&gt;
+    {{ form.as_ul }}
+  &lt;/ul&gt;
+  &lt;input id=&quot;save_contact&quot; type=&quot;submit&quot; value=&quot;Save&quot; /&gt;
+&lt;/form&gt;
+
+&lt;a href=&quot;{% url &quot;contacts-list&quot; %}&quot;&gt;back to list&lt;/a&gt;
+</pre></div>
+</div>
+<p>A few things to note:</p>
+<ul class="simple">
+<li>The <tt class="docutils literal"><span class="pre">form</span></tt> in the context is the <a class="reference external" href="https://docs.djangoproject.com/en/1.5/topics/forms/">Django Form</a> for our model.
+Since we didn&#8217;t specify one, Django made one for us. How thoughtful.</li>
+<li>If we just write <tt class="docutils literal"><span class="pre">{{</span> <span class="pre">form</span> <span class="pre">}}</span></tt> we&#8217;ll get table rows; adding
+<tt class="docutils literal"><span class="pre">.as_ul</span></tt> formats the inputs for an unordered list. Try <tt class="docutils literal"><span class="pre">.as_p</span></tt>
+instead to see what you get.</li>
+<li>When we output the form, it only includes our fields, not the
+surrounding <tt class="docutils literal"><span class="pre">&lt;form&gt;</span></tt> tag or the submit button, so we have to add
+those.</li>
+<li>The <tt class="docutils literal"><span class="pre">{%</span> <span class="pre">csrf_token</span> <span class="pre">%}</span></tt> tag inserts a hidden input that Django uses
+to verify that the request came from your project, and isn&#8217;t a
+forged cross-site request. Try omitting it: you can still access the
+page, but when you go to submit the form, you&#8217;ll get an error.</li>
+<li>We&#8217;re using the <tt class="docutils literal"><span class="pre">url</span></tt> template tag to generate the link back to
+the contact list. Note that <tt class="docutils literal"><span class="pre">contacts-list</span></tt> is the name of our
+view from the URL configuration. By using <tt class="docutils literal"><span class="pre">url</span></tt> instead of an
+explicit path, we don&#8217;t have to worry about a link breaking. <tt class="docutils literal"><span class="pre">url</span></tt>
+in templates is equivalent to <tt class="docutils literal"><span class="pre">reverse</span></tt> in Python code.</li>
+</ul>
+<p>Finally, let&#8217;s configure the URL by adding the following line to our
+<tt class="docutils literal"><span class="pre">urls.py</span></tt> file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">url</span><span class="p">(</span><span class="s">r&#39;^new$&#39;</span><span class="p">,</span> <span class="n">contacts</span><span class="o">.</span><span class="n">views</span><span class="o">.</span><span class="n">CreateContactView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">&#39;contacts-new&#39;</span><span class="p">,),</span>
+</pre></div>
+</div>
+<p>You can go to <tt class="docutils literal"><span class="pre">http://localhost:8000/new</span></tt> to create new contacts</p>
+</div>
+<div class="section" id="testing-your-views">
+<h2>Testing Your Views<a class="headerlink" href="#testing-your-views" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/views.html#testing-your-views" title="Slides">§</a></h2>
+<span class="admonition-test-client-requestfactory"></span><span class="admonition-test-client-vs-requestfactory"></span><p>So far our views have been pretty minimal: they leverage Django&#8217;s
+generic views, and contain very little of our own code or logic. One
+perspective is that this is how it should be: a view takes a request,
+and returns a response, delegating the issue of validating input to
+forms, and business logic to model methods. This is a perspective that
+I subscribe to. The less logic contained in views, the better.</p>
+<p>However, there is code in views that should be tested, either by unit
+tests or integration tests. The distinction is important: unit tests
+are focused on testing a single unit of functionality. When you&#8217;re
+writing a unit test, the assumption is that everything else has its
+own tests and is working properly. Integration tests attempt to test
+the system from end to end, so you can ensure that the points of
+integration are functioning properly. Most systems have both.</p>
+<p>Django has two tools that are helpful for writing unit tests for
+views: the Test <a class="reference external" href="https://docs.djangoproject.com/en/1.5/topics/testing/overview/#module-django.test.client">Client</a> and the <a class="reference external" href="https://docs.djangoproject.com/en/1.5/topics/testing/advanced/#django.test.client.RequestFactory">RequestFactory</a>. They have similar
+APIs, but approach things differently. The <tt class="docutils literal"><span class="pre">TestClient</span></tt> takes a URL
+to retrieve, and resolves it against your project&#8217;s URL configuration.
+It then creates a test request, and passes that request through your
+view, returning the Response. The fact that it requires you to specify
+the URL ties your test to the URL configuration of your project.</p>
+<p>The <tt class="docutils literal"><span class="pre">RequestFactory</span></tt> has the same API: you specify the URL you want
+to retrieve and any parameters or form data. But it doesn&#8217;t actually
+resolve that URL: it just returns the Request object. You can then
+manually pass it to your view and test the result.</p>
+<p>In practice, RequestFactory tests are usually somewhat faster than the
+TestClient. This isn&#8217;t a big deal when you have five tests, but it is
+when you have 500 or 5,000. Let&#8217;s look at the same test written with
+each tool.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.test.client</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">django.test.client</span> <span class="kn">import</span> <span class="n">RequestFactory</span>
+<span class="o">...</span>
+<span class="kn">from</span> <span class="nn">contacts.views</span> <span class="kn">import</span> <span class="n">ListContactView</span>
+<span class="o">...</span>
+<span class="k">class</span> <span class="nc">ContactListViewTests</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Contact list view tests.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">test_contacts_in_the_context</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s">&#39;object_list&#39;</span><span class="p">]),</span> <span class="p">[])</span>
+
+        <span class="n">Contact</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">first_name</span><span class="o">=</span><span class="s">&#39;foo&#39;</span><span class="p">,</span> <span class="n">last_name</span><span class="o">=</span><span class="s">&#39;bar&#39;</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s">&#39;object_list&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_contacts_in_the_context_request_factory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">factory</span> <span class="o">=</span> <span class="n">RequestFactory</span><span class="p">()</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="n">ListContactView</span><span class="o">.</span><span class="n">as_view</span><span class="p">()(</span><span class="n">request</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">context_data</span><span class="p">[</span><span class="s">&#39;object_list&#39;</span><span class="p">]),</span> <span class="p">[])</span>
+
+        <span class="n">Contact</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">first_name</span><span class="o">=</span><span class="s">&#39;foo&#39;</span><span class="p">,</span> <span class="n">last_name</span><span class="o">=</span><span class="s">&#39;bar&#39;</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">ListContactView</span><span class="o">.</span><span class="n">as_view</span><span class="p">()(</span><span class="n">request</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">context_data</span><span class="p">[</span><span class="s">&#39;object_list&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="integration-tests">
+<h2>Integration Tests<a class="headerlink" href="#integration-tests" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/views.html#integration-tests" title="Slides">§</a></h2>
+<span class="admonition-live-server-tests"></span><p>Django 1.4 adds a new <tt class="docutils literal"><span class="pre">TestCase</span></tt> base class, the
+<a class="reference external" href="https://docs.djangoproject.com/en/1.5/topics/testing/overview/#liveservertestcase">LiveServerTestCase</a>. This is very much what it sounds like: a test
+case that runs against a live server. By default Django will start the
+development server for you when it runs these tests, but they can also
+be run against another server.</p>
+<p><a class="reference external" href="http://seleniumhq.org/">Selenium</a> is a tool for writing tests that drive a web browser, and
+that&#8217;s what we&#8217;ll use for our integration tests. By using Selenium,
+you&#8217;re able to automate different browers (Chrome, Firefox, etc), and
+interact with your full application much as the user would. Before
+writing tests to use it, we&#8217;ll need to install the Python implementation.</p>
+<div class="highlight-python"><div class="highlight"><pre>(tutorial)$ pip install selenium
+</pre></div>
+</div>
+<p>We&#8217;re going to write a couple of tests for our views:</p>
+<ul class="simple">
+<li>one that creates a Contact and makes sure it&#8217;s listed</li>
+<li>one that makes sure our &#8220;add contact&#8221; link is visible and linked on
+the list page</li>
+<li>and one that actually exercises the add contact form, filling it in
+and submitting it.</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.test</span> <span class="kn">import</span> <span class="n">LiveServerTestCase</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.firefox.webdriver</span> <span class="kn">import</span> <span class="n">WebDriver</span>
+<span class="o">...</span>
+<span class="k">class</span> <span class="nc">ContactListIntegrationTests</span><span class="p">(</span><span class="n">LiveServerTestCase</span><span class="p">):</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">setUpClass</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">selenium</span> <span class="o">=</span> <span class="n">WebDriver</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ContactListIntegrationTests</span><span class="p">,</span> <span class="n">cls</span><span class="p">)</span><span class="o">.</span><span class="n">setUpClass</span><span class="p">()</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">tearDownClass</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">selenium</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ContactListIntegrationTests</span><span class="p">,</span> <span class="n">cls</span><span class="p">)</span><span class="o">.</span><span class="n">tearDownClass</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">test_contact_listed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="c"># create a test contact</span>
+        <span class="n">Contact</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">first_name</span><span class="o">=</span><span class="s">&#39;foo&#39;</span><span class="p">,</span> <span class="n">last_name</span><span class="o">=</span><span class="s">&#39;bar&#39;</span><span class="p">)</span>
+
+        <span class="c"># make sure it&#39;s listed as &lt;first&gt; &lt;last&gt; on the list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selenium</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%s%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">live_server_url</span><span class="p">,</span> <span class="s">&#39;/&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">selenium</span><span class="o">.</span><span class="n">find_elements_by_css_selector</span><span class="p">(</span><span class="s">&#39;.contact&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">,</span>
+            <span class="s">&#39;foo bar&#39;</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_add_contact_linked</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">selenium</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%s%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">live_server_url</span><span class="p">,</span> <span class="s">&#39;/&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">selenium</span><span class="o">.</span><span class="n">find_element_by_link_text</span><span class="p">(</span><span class="s">&#39;add contact&#39;</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_add_contact</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">selenium</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%s%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">live_server_url</span><span class="p">,</span> <span class="s">&#39;/&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selenium</span><span class="o">.</span><span class="n">find_element_by_link_text</span><span class="p">(</span><span class="s">&#39;add contact&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">selenium</span><span class="o">.</span><span class="n">find_element_by_id</span><span class="p">(</span><span class="s">&#39;id_first_name&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="s">&#39;test&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selenium</span><span class="o">.</span><span class="n">find_element_by_id</span><span class="p">(</span><span class="s">&#39;id_last_name&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="s">&#39;contact&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selenium</span><span class="o">.</span><span class="n">find_element_by_id</span><span class="p">(</span><span class="s">&#39;id_email&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="s">&#39;test@example.com&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">selenium</span><span class="o">.</span><span class="n">find_element_by_id</span><span class="p">(</span><span class="s">&quot;save_contact&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">selenium</span><span class="o">.</span><span class="n">find_elements_by_css_selector</span><span class="p">(</span><span class="s">&#39;.contact&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">,</span>
+            <span class="s">&#39;test contact&#39;</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that Selenium allows us to find elements in the page, inspect
+their state, click them, and send keystrokes. In short, it&#8217;s like
+we&#8217;re controlling the browser. In fact, if you run the tests now,
+you&#8217;ll see a browser open when the tests run.</p>
+<p>In our example we&#8217;re using CSS Selectors to locate elements in the
+DOM, but you can also use Xpath. For many people it&#8217;s a matter of
+preference, but I&#8217;ve found that using CSS Selectors is often less
+brittle: if I change the markup, I&#8217;m likely to leave classes on
+important elements in place, even if their relative position in the
+DOM changes.</p>
+</div>
+<div class="section" id="review">
+<h2>Review<a class="headerlink" href="#review" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/views.html#review" title="Slides">§</a></h2>
+<ul class="simple">
+<li>Views take an <a class="reference external" href="https://docs.djangoproject.com/en/1.5/ref/request-response/#httprequest-objects">HttpRequest</a> and turn it into an <a class="reference external" href="https://docs.djangoproject.com/en/1.5/ref/request-response/#httpresponse-objects">HttpResponse</a></li>
+<li>Generic class-based views introduced with Django 1.3</li>
+<li>These let you create reusable, composable views</li>
+<li>URLs are defined in <tt class="docutils literal"><span class="pre">urls.py</span></tt> in your project</li>
+<li>Naming URLs lets you calculate the URL to a view</li>
+<li><a class="reference external" href="https://docs.djangoproject.com/en/1.5/topics/testing/advanced/#django.test.client.RequestFactory">RequestFactory</a> creates Requests for testing Views
+with</li>
+<li><a class="reference external" href="https://docs.djangoproject.com/en/1.5/topics/testing/overview/#liveservertestcase">LiveServerTestCase</a> provides basis for writing integration tests</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Writing Views</a><ul>
+<li><a class="reference internal" href="#view-basics">View Basics</a></li>
+<li><a class="reference internal" href="#generic-class-based-views">Generic &amp; Class Based Views</a></li>
+<li><a class="reference internal" href="#class-based-views">Class Based Views</a></li>
+<li><a class="reference internal" href="#listing-contacts">Listing Contacts</a></li>
+<li><a class="reference internal" href="#defining-urls">Defining URLs</a></li>
+<li><a class="reference internal" href="#creating-the-template">Creating the Template</a></li>
+<li><a class="reference internal" href="#creating-contacts">Creating Contacts</a></li>
+<li><a class="reference internal" href="#testing-your-views">Testing Your Views</a></li>
+<li><a class="reference internal" href="#integration-tests">Integration Tests</a></li>
+<li><a class="reference internal" href="#review">Review</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="models.html"
+                        title="previous chapter">Using Models</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="static.html"
+                        title="next chapter">Using Static Assets</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/tutorial/views.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+  <h3>Slides</h3>
+  <ul class="this-page-menu">
+    <li><a href="../.././slides/tutorial/views.html"
+           rel="nofollow">View as slides</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="static.html" title="Using Static Assets"
+             >next</a></li>
+        <li class="right" >
+          <a href="models.html" title="Using Models"
+             >previous</a> |</li>
+        <li><a href="../index.html">Effective Django</a> &raquo;</li>
+          <li><a href="index.html" >Effective Django Tutorial</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012-2013, Nathan Yergler.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

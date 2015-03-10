@@ -1,0 +1,329 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-188298-7']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    <title>Related Models &mdash; Effective Django</title>
+    
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Effective Django" href="../index.html" />
+    <link rel="up" title="Effective Django Tutorial" href="index.html" />
+    <link rel="next" title="Handling Authentication &amp; Authorization" href="authzn.html" />
+    <link rel="prev" title="Form Basics" href="forms.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="authzn.html" title="Handling Authentication &amp; Authorization"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="forms.html" title="Form Basics"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Effective Django</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Effective Django Tutorial</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="related-models">
+<h1>Related Models<a class="headerlink" href="#related-models" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/related.html#related-models" title="Slides">§</a></h1>
+<div class="section" id="adding-relationships">
+<h2>Adding Relationships<a class="headerlink" href="#adding-relationships" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/related.html#adding-relationships" title="Slides">§</a></h2>
+<p>We have a basic email address book at this point, but there&#8217;s other
+information we might want to track for our contacts. Mailing
+addresses, for example. A single Contact may have multiple addresses
+associated with them, so we&#8217;ll store this in a separate table,
+allowing us to have multiple addresses for each Contact.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Address</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="n">contact</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Contact</span><span class="p">)</span>
+    <span class="n">address_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span>
+        <span class="n">max_length</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">address</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span>
+        <span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">city</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span>
+        <span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span>
+        <span class="n">max_length</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">postal_code</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span>
+        <span class="n">max_length</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">unique_together</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;contact&#39;</span><span class="p">,</span> <span class="s">&#39;address_type&#39;</span><span class="p">,)</span>
+</pre></div>
+</div>
+<p>Django provides three types of fields for relating objects to each
+other: <tt class="docutils literal"><span class="pre">ForeignKey</span></tt> for creating one to many relationships,
+<tt class="docutils literal"><span class="pre">ManyToManyField</span></tt> for relating many to many, and <tt class="docutils literal"><span class="pre">OneToOneField</span></tt>
+for creating a one to one relationship. You define the relationship in
+one model, but it&#8217;s accessible from the other side, as well.</p>
+<p>Sync up the database to create the table, and then start the shell so
+we can explore this.</p>
+<div class="highlight-python"><div class="highlight"><pre>(tutorial)$ python manage.py syncdb
+Creating tables ...
+Creating table contacts_address
+Installing custom SQL ...
+Installing indexes ...
+Installed 0 object(s) from 0 fixture(s)
+</pre></div>
+</div>
+<p>Now that we have the model created, we can again play with it using
+the interactive shell.</p>
+<div class="highlight-python"><div class="highlight"><pre>(tutorial)$ python manage.py shell
+Python 2.7.3 (default, Aug  9 2012, 17:23:57)
+[GCC 4.7.1 20120720 (Red Hat 4.7.1-5)] on linux2
+Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
+(InteractiveConsole)
+&gt;&gt;&gt; from contacts.models import Contact, Address
+&gt;&gt;&gt; nathan = Contact.objects.create(first_name=&#39;Nathan&#39;, email=&#39;nathan@yergler.net&#39;)
+&gt;&gt;&gt; nathan.address_set.all()
+[]
+&gt;&gt;&gt; nathan.address_set.create(address_type=&#39;home&#39;,
+... city=&#39;San Francisco&#39;, state=&#39;CA&#39;, postal_code=&#39;94107&#39;)
+&lt;Address: Address object&gt;
+&gt;&gt;&gt; nathan.address_set.create(address_type=&#39;college&#39;,
+... address=&#39;354 S. Grant St.&#39;, city=&#39;West Lafayette&#39;, state=&#39;IN&#39;,
+... postal_code=&#39;47906&#39;)
+&lt;Address: Address object&gt;
+&gt;&gt;&gt; nathan.address_set.all()
+[&lt;Address: Address object&gt;, &lt;Address: Address object&gt;]
+&gt;&gt;&gt; nathan.address_set.filter(address_type=&#39;college&#39;)
+&lt;Address: Address object&gt;
+&gt;&gt;&gt; Address.objects.filter(contact__first_name=&#39;Nathan&#39;)
+[&lt;Address: Address object&gt;, &lt;Address: Address object&gt;]
+</pre></div>
+</div>
+<p>As you can see, even though we defined the relationship between
+Contacts and Addresses on the Address model, Django gives us a way to
+access things in the reverse direction. We can also use the double
+underscore notation to filter Addresses or Contacts based on the
+related objects.</p>
+<p>Let&#8217;s go ahead and add address display to our contacts. We&#8217;ll add the
+list of all Addresses to the Contact detail view in <tt class="docutils literal"><span class="pre">contact.html</span></tt>.</p>
+<div class="highlight-python"><div class="highlight"><pre>{% extends &quot;base.html&quot; %}
+
+{% block content %}
+
+&lt;h1&gt;{{ contact }}&lt;/h1&gt;
+
+&lt;p&gt;Email: {{ contact.email }}&lt;/p&gt;
+
+&lt;ul&gt;
+{% for address in contact.address_set.all %}
+   &lt;li&gt;{{ address.address }}&lt;br/&gt;
+       {{ address.city }} {{ address.state }}&lt;br/&gt;
+       {{ address.postal_code }}
+   &lt;/li&gt;
+{% endfor %}
+&lt;/ul&gt;
+
+{% endblock %}
+</pre></div>
+</div>
+</div>
+<div class="section" id="editing-related-objects">
+<h2>Editing Related Objects<a class="headerlink" href="#editing-related-objects" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/related.html#editing-related-objects" title="Slides">§</a></h2>
+<p>So how do we go about editing addresses for our contacts? You can
+imagine creating another CreateView like we did for Contacts, but the
+question remains: how do we wire the new Address to our Contact? We
+could conceivably just pass the Contact&#8217;s ID through the the HTML, but
+we&#8217;d still need to validate that it hadn&#8217;t been tampered with when we
+go to create the Address.</p>
+<p>To deal with this, we&#8217;ll create a form that understands the
+relationship between Contacts and Addresses.</p>
+<p>The editing interface we&#8217;re going to build for Addresses is one that
+allows you to edit all the addresses for a Contact at once. To do
+this, we&#8217;ll need to create a <a class="reference external" href="https://docs.djangoproject.com/en/1.5/topics/forms/formsets/">FormSet</a> that handles all the Addresses
+for a single Contact. A FormSet is an object that manages multiple
+copies of the same Form (or ModelForm) in a single page. The <a class="reference external" href="https://docs.djangoproject.com/en/1.5/topics/forms/modelforms/#inline-formsets">Inline
+FormSet</a> does this for a set of objects (in this case Addresses) that
+share a common related object (in this case the Contact).</p>
+<p>Because formsets are somewhat complex objects, Django provides factory
+functions that create the class for you. We&#8217;ll add a call to the
+factory to our <tt class="docutils literal"><span class="pre">forms.py</span></tt> file.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.forms.models</span> <span class="kn">import</span> <span class="n">inlineformset_factory</span>
+
+<span class="kn">from</span> <span class="nn">contacts.models</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Contact</span><span class="p">,</span>
+    <span class="n">Address</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c"># inlineformset_factory creates a Class from a parent model (Contact)</span>
+<span class="c"># to a child model (Address)</span>
+<span class="n">ContactAddressFormSet</span> <span class="o">=</span> <span class="n">inlineformset_factory</span><span class="p">(</span>
+    <span class="n">Contact</span><span class="p">,</span>
+    <span class="n">Address</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>When we create the view, we&#8217;ll need to specify that this is the form
+we want to use, instead of having Django create one for us.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">EditContactAddressView</span><span class="p">(</span><span class="n">UpdateView</span><span class="p">):</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Contact</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;edit_addresses.html&#39;</span>
+    <span class="n">form_class</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">ContactAddressFormSet</span>
+
+    <span class="k">def</span> <span class="nf">get_success_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="c"># redirect to the Contact view.</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_object</span><span class="p">()</span><span class="o">.</span><span class="n">get_absolute_url</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Note that even though we&#8217;re editing Addresses with this view, we still
+have <tt class="docutils literal"><span class="pre">model</span></tt> set to <tt class="docutils literal"><span class="pre">Contact</span></tt>. This is because an inline formset
+takes the parent object as its starting point.</p>
+<p>Once again, this needs to be wired up into the URL configuration.</p>
+<div class="highlight-python"><div class="highlight"><pre>    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^edit/(?P&lt;pk&gt;\d+)/addresses$&#39;</span><span class="p">,</span> <span class="n">contacts</span><span class="o">.</span><span class="n">views</span><span class="o">.</span><span class="n">EditContactAddressView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span>
+        <span class="n">name</span><span class="o">=</span><span class="s">&#39;contacts-edit-addresses&#39;</span><span class="p">,),</span>
+</pre></div>
+</div>
+<p>And we have a simple template.</p>
+<div class="highlight-html"><div class="highlight"><pre>{% extends &quot;base.html&quot; %}
+
+{% block content %}
+
+&lt;h1&gt;Edit Addresses&lt;/h1&gt;
+
+&lt;p&gt;Editing addresses for {{ contact }}&lt;/p&gt;
+
+&lt;form action=&quot;{% url &quot;contacts-edit-addresses&quot; pk=contact.id %}&quot;
+      method=&quot;POST&quot;&gt;
+    {% csrf_token %}
+    {{ form.management_form }}
+    {% for address_form in form %}
+
+        &lt;ul&gt;
+        {{ address_form.as_ul }}
+        &lt;/ul&gt;
+
+    {% endfor %}
+
+    &lt;input type=&quot;submit&quot; value=&quot;Save&quot; /&gt;
+&lt;/form&gt;
+
+{% endblock %}
+</pre></div>
+</div>
+<p>There are two new things in this template, both related to the fact
+we&#8217;re using a formset instead of a form. First, there&#8217;s a reference to
+<tt class="docutils literal"><span class="pre">form.management_form</span></tt>. This is a set of hidden fields that provide
+some accounting information to Django: how many forms did we start
+with, how many empty ones are there, etc. If Django can&#8217;t find this
+information when you POST the form, it will raise an exception.</p>
+<p>Second, we&#8217;re iterating over form instead of just outputting it (<tt class="docutils literal"><span class="pre">for</span>
+<span class="pre">address_form</span> <span class="pre">in</span> <span class="pre">form</span></tt>). Again, this is because <tt class="docutils literal"><span class="pre">form</span></tt> here is a
+formset instead of a single form. When you iterate over a formset,
+you&#8217;re iterating over the individual forms in it. These individual
+forms are just &#8220;normal&#8221; <tt class="docutils literal"><span class="pre">ModelForm</span></tt> instances for each Address, so
+you can apply the same output techniques you would normally use.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Related Models</a><ul>
+<li><a class="reference internal" href="#adding-relationships">Adding Relationships</a></li>
+<li><a class="reference internal" href="#editing-related-objects">Editing Related Objects</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="forms.html"
+                        title="previous chapter">Form Basics</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="authzn.html"
+                        title="next chapter">Handling Authentication &amp; Authorization</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/tutorial/related.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+  <h3>Slides</h3>
+  <ul class="this-page-menu">
+    <li><a href="../.././slides/tutorial/related.html"
+           rel="nofollow">View as slides</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="authzn.html" title="Handling Authentication &amp; Authorization"
+             >next</a></li>
+        <li class="right" >
+          <a href="forms.html" title="Form Basics"
+             >previous</a> |</li>
+        <li><a href="../index.html">Effective Django</a> &raquo;</li>
+          <li><a href="index.html" >Effective Django Tutorial</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012-2013, Nathan Yergler.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>
