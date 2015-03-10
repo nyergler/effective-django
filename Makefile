@@ -6,9 +6,6 @@ SPHINXOPTS    =
 SPHINXBUILD   = ./bin/sphinx-build
 PAPER         = letter
 BUILDDIR      = _build
-UPLOADTARGET  = http://effectivedjango.com
-UPLOADHOST    = core
-UPLOADPATH    = /var/www/effectivedjango.com/www/
 
 # Internal variables.
 PAPEROPT_a4     = -D latex_paper_size=a4
@@ -17,7 +14,7 @@ ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 # the i18n builder cannot share the environment and doctrees with the others
 I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 
-.PHONY: help clean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest gettext check-syntax upload all
+.PHONY: help clean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest gettext check-syntax push all
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
@@ -166,9 +163,11 @@ check-syntax:
 	$(SPHINXBUILD) -n -N -q -b html $(ALLSPHINXOPTS) $(BUILDDIR)/
 	$(SPHINXBUILD) -n -N -q -b slides $(ALLSPHINXOPTS) $(BUILDDIR)/slides
 
-upload:
-	@echo
-	@echo "Updating $(UPLOADTARGET)"
-	rsync -rv _build/* $(UPLOADHOST):$(UPLOADPATH)
+MESSAGE = $(shell git log -1 --pretty=format:"%s (%h)")
+
+push:
+	git --git-dir=$(BUILDDIR)/.git add .
+	git --git-dir=$(BUILDDIR)/.git commit -m '$(MESSAGE)'
+	git --git-dir=$(BUILDDIR)/.git push origin gh-pages
 
 all: clean html slides latexpdf epub
