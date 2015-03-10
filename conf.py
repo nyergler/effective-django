@@ -200,6 +200,10 @@ html_use_index = False
 # This is the file name suffix for HTML files (e.g. ".xhtml").
 #html_file_suffix = None
 
+html_extra_path = [
+    'CNAME',
+]
+
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'EffectiveDjangodoc'
 
