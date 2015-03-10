@@ -6,6 +6,7 @@ SPHINXOPTS    =
 SPHINXBUILD   = ./bin/sphinx-build
 PAPER         = letter
 BUILDDIR      = _build
+BUILDBRANCH   = gh-pages
 
 # Internal variables.
 PAPEROPT_a4     = -D latex_paper_size=a4
@@ -166,6 +167,7 @@ check-syntax:
 MESSAGE = $(shell git log -1 --pretty=format:"%s (%h)")
 
 push:
+	git --git-dir=$(BUILDDIR)/.git checkout $(BUILDBRANCH)
 	git --git-dir=$(BUILDDIR)/.git add .
 	git --git-dir=$(BUILDDIR)/.git commit -m '$(MESSAGE)'
 	git --git-dir=$(BUILDDIR)/.git push origin gh-pages
