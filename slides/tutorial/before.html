@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-188298-7']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    <title>Before You Arrive &mdash; Effective Django</title>
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/styles.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/single.css" type="text/css" />
+    
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    
+
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/common.js"></script>
+    <script type="text/javascript" src="../_static/slides.js"></script>
+    <script type="text/javascript" src="../_static/sync.js"></script>
+    <script type="text/javascript" src="../_static/controller.js"></script>
+    <script type="text/javascript" src="../_static/init.js"></script>
+    
+    <link rel="top" title="Effective Django" href="../index.html" /> 
+  </head>
+  <body>
+
+<section
+   id="slide_container"
+   class='slides layout-regular'>
+
+
+  <article class="slide level-1" id="before-you-arrive">
+<h1>Before You Arrive<a class="headerlink" href="../../tutorial/before.html#before-you-arrive" title="View HTML">§</a></h1>
+<p>Thanks for signing up to attend my tutorial, <em>Effective Django</em>. To
+help things get started smoothly, and avoid possible network issues,
+please complete the following beforehand.</p>
+<p>If you have questions, you can email me at <a class="reference external" href="mailto:nathan&#37;&#52;&#48;yergler&#46;net">nathan<span>&#64;</span>yergler<span>&#46;</span>net</a>. If you
+have platform specific issues, I'll try and help you figure them out,
+and will update this document with any notes.</p>
+<ol class="arabic">
+<li><p class="first">Install Python</p>
+<p>I'll be using Python 2.7; you can download it from the official
+Python website: <a class="reference external" href="http://python.org/download/releases/2.7.5/">http://python.org/download/releases/2.7.5/</a></p>
+<p>The latest release of 2.7 is 2.7.5. If you already have 2.7.x
+installed, that will work fine.</p>
+</li>
+<li><p class="first">Install virtualenv and pip</p>
+<p><tt class="docutils literal"><span class="pre">virtualenv</span></tt> is a tool for managing your Python environments. It
+includes <tt class="docutils literal"><span class="pre">pip</span></tt>, a Python package installer, which we'll use to
+retrieve dependencies.</p>
+<p>You can download <a class="reference external" href="https://pypi.python.org/pypi/virtualenv">virtualenv from PyPI</a> at
+<a class="reference external" href="https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.9.1.tar.gz">https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.9.1.tar.gz</a></p>
+<p>After downloading, unpack the archive and run:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ python setup.py install
+</pre></div>
+</div>
+<p>You may need to run with sudo depending on your system:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ sudo python setup.py install
+</pre></div>
+</div>
+</li>
+<li><p class="first">Create a working directory for the tutorial, and make it a virtualenv</p>
+<p>You can create this directory anywhere, but this is where we'll be
+working on code during the tutorial.  For example:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ cd Documents
+$ mkdir django-tutorial
+</pre></div>
+</div>
+<p>Once you've created the directory, create a virtualenv there:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ virtualenv ./django-tutorial
+</pre></div>
+</div>
+</li>
+<li><p class="first">Active the virtualenv</p>
+<p>On Linux and Mac OS X you can active the virtualenv by running the
+following from the command-line:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ cd django-tutorial
+$ source bin/activate
+</pre></div>
+</div>
+<p>On Windows you do:</p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; cd django-tutorial
+&gt; \Scripts\activate
+</pre></div>
+</div>
+<p>The <a class="reference external" href="http://www.virtualenv.org/en/latest/#activate-script">virtualenv documentation</a> may be useful if you have trouble activating.</p>
+</li>
+<li><p class="first">Install Django</p>
+<p>We'll talk about versions of Django during the tutorial, but in
+order to avoid network bottlenecks from dozens of people in one
+room downloading the source, it's helpful to install it into your
+virtualenv beforehand:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ pip install Django
+</pre></div>
+</div>
+<p>This will download Django and install it into the virtualenv. Once
+it's installed, you should see a <tt class="docutils literal"><span class="pre">django-admin.py</span></tt> script in the
+<tt class="docutils literal"><span class="pre">bin</span></tt> (Linux, Mac OS X) or <tt class="docutils literal"><span class="pre">Scripts</span></tt> (Windows) directory.</p>
+</li>
+</ol>
+<p>If you have questions, you can email me at <a class="reference external" href="mailto:nathan&#37;&#52;&#48;yergler&#46;net">nathan<span>&#64;</span>yergler<span>&#46;</span>net</a>. If you
+have platform specific issues, I'll try and help you figure them out,
+and will update this document with any notes.</p>
+<p>See you at the tutorial!</p>
+<p>Nathan</p>
+
+</article>
+
+
+</section>
+
+<section id="slide_notes">
+
+</section>
+
+  </body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-188298-7']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    <title>Using Models &mdash; Effective Django</title>
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/styles.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/single.css" type="text/css" />
+    
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    
+
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/common.js"></script>
+    <script type="text/javascript" src="../_static/slides.js"></script>
+    <script type="text/javascript" src="../_static/sync.js"></script>
+    <script type="text/javascript" src="../_static/controller.js"></script>
+    <script type="text/javascript" src="../_static/init.js"></script>
+    
+    <link rel="top" title="Effective Django" href="../index.html" /> 
+  </head>
+  <body>
+
+<section
+   id="slide_container"
+   class='slides layout-regular'>
+
+
+  <article class="admonition-django-models slide level-1" id="using-models">
+<h1>Django Models<a class="headerlink" href="../../tutorial/models.html#using-models" title="View HTML">§</a></h1>
+<p>Storing and manipulating data with the Django ORM.</p>
+
+</article>
+<article class="admonition-configuring-databases slide level-2">
+<h2>Configuring Databases</h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">DATABASES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;ENGINE&#39;</span><span class="p">:</span> <span class="s">&#39;django.db.backends.sqlite3&#39;</span><span class="p">,</span>  <span class="c"># &#39;postgresql_psycopg2&#39;, &#39;mysql&#39;, &#39;sqlite3&#39; or &#39;oracle&#39;.</span>
+        <span class="s">&#39;NAME&#39;</span><span class="p">:</span> <span class="s">&#39;address.db&#39;</span><span class="p">,</span>
+        <span class="s">&#39;USER&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>                      <span class="c"># Not used with sqlite3.</span>
+        <span class="s">&#39;PASSWORD&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>                  <span class="c"># Not used with sqlite3.</span>
+        <span class="s">&#39;HOST&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>                      <span class="c"># Set to empty string for localhost. Not used with sqlite3.</span>
+        <span class="s">&#39;PORT&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>                      <span class="c"># Set to empty string for default. Not used with sqlite3.</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+
+</article>
+<article class="admonition-defining-models slide level-2">
+<h2>Defining Models</h2>
+<p>Models are created in the <tt class="docutils literal"><span class="pre">models</span></tt> module of a Django app and
+subclass <a class="reference external" href="https://docs.djangoproject.com/en/1.5/ref/models/instances/#django.db.models.Model">Model</a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+
+
+<span class="k">class</span> <span class="nc">Contact</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="n">first_name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span>
+        <span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">last_name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span>
+        <span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span>
+
+    <span class="p">)</span>
+
+    <span class="n">email</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">EmailField</span><span class="p">()</span>
+</pre></div>
+</div>
+
+</article>
+<article class="admonition-instantiating-models slide level-2">
+<h2>Instantiating Models</h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">nathan</span> <span class="o">=</span> <span class="n">Contact</span><span class="p">()</span>
+<span class="n">nathan</span><span class="o">.</span><span class="n">first_name</span> <span class="o">=</span> <span class="s">&#39;Nathan&#39;</span>
+<span class="n">nathan</span><span class="o">.</span><span class="n">last_name</span> <span class="o">=</span> <span class="s">&#39;Yergler&#39;</span>
+<span class="n">nathan</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">nathan</span> <span class="o">=</span> <span class="n">Contact</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">first_name</span><span class="o">=</span><span class="s">&#39;Nathan&#39;</span><span class="p">,</span>
+    <span class="n">last_name</span><span class="o">=</span><span class="s">&#39;Yergler&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">nathan</span> <span class="o">=</span> <span class="n">Contact</span><span class="p">(</span>
+    <span class="n">first_name</span><span class="o">=</span><span class="s">&#39;Nathan&#39;</span><span class="p">,</span>
+    <span class="n">last_name</span><span class="o">=</span><span class="s">&#39;Yergler&#39;</span><span class="p">)</span>
+<span class="n">nathan</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+
+</article>
+<article class="admonition-model-managers slide level-2">
+<h2>Model Managers</h2>
+<ul class="simple">
+<li>A model instance maps to a row</li>
+<li>The model <a class="reference external" href="https://docs.djangoproject.com/en/1.5/topics/db/managers/">Manager</a> maps to the table</li>
+<li>Every model has a default manager, <tt class="docutils literal"><span class="pre">objects</span></tt></li>
+<li>Operations that deal with more than one instance, or at the
+&quot;collection&quot; level, usually map to the Manager</li>
+</ul>
+
+</article>
+<article class="admonition-querying-with-managers slide level-2">
+<h2>Querying with Managers</h2>
+<ul>
+<li><p class="first">The <tt class="docutils literal"><span class="pre">filter</span></tt> Manager method lets you perform queries:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Contact</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">last_name</span><span class="o">=</span><span class="s">&#39;Yergler&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">filter</span></tt> returns a <a class="reference external" href="https://docs.djangoproject.com/en/1.5/ref/models/querysets/#django.db.models.query.QuerySet">QuerySet</a>, an iterable over the result.</p>
+</li>
+<li><p class="first">You can also assert you only expect one:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Contact</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">first_name</span><span class="o">=</span><span class="s">&#39;Nathan&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">If more than one is returned, an Exception will be raised</p>
+</li>
+<li><p class="first">The full <a class="reference external" href="https://docs.djangoproject.com/en/1.5/topics/db/queries/">query</a> reference is pretty good on this topic.</p>
+</li>
+</ul>
+
+</article>
+<article class="admonition-testing-models slide level-2">
+<h2>Testing Models</h2>
+<ul class="simple">
+<li>Business logic is usually added as methods on a Model.</li>
+<li>Important to write unit tests for those methods as you add them.</li>
+<li>We'll write an example test for the methods we add.</li>
+</ul>
+
+</article>
+<article class="admonition-running-the-tests slide level-2">
+<h2>Running the Tests</h2>
+<p>You can run the tests for your application using <tt class="docutils literal"><span class="pre">manage.py</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre>(tutorial)$ python manage.py test
+</pre></div>
+</div>
+
+</article>
+<article class="include-as-slide slide-level-2 slide level-2" id="review">
+<h2>Review<a class="headerlink" href="../../tutorial/models.html#review" title="View HTML">§</a></h2>
+<ul class="simple">
+<li>Models define the fields in a table, and can contain business logic.</li>
+<li>The <tt class="docutils literal"><span class="pre">syncdb</span></tt> manage command creates the tables in your database from
+models</li>
+<li>The model Manager allows you to operate on the collection of
+instances: querying, creating, etc.</li>
+<li>Write unit tests for methods you add to the model</li>
+<li>The <tt class="docutils literal"><span class="pre">test</span></tt> manage command runs the unit tests</li>
+</ul>
+<ul class="simple">
+<li>Next: <a class="reference internal" href="views.html"><em>Writing Views</em></a></li>
+</ul>
+
+</article>
+
+
+</section>
+
+<section id="slide_notes">
+
+</section>
+
+  </body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-188298-7']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    <title>Form Basics &mdash; Effective Django</title>
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/styles.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/single.css" type="text/css" />
+    
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    
+
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/common.js"></script>
+    <script type="text/javascript" src="../_static/slides.js"></script>
+    <script type="text/javascript" src="../_static/sync.js"></script>
+    <script type="text/javascript" src="../_static/controller.js"></script>
+    <script type="text/javascript" src="../_static/init.js"></script>
+    
+    <link rel="top" title="Effective Django" href="../index.html" /> 
+  </head>
+  <body>
+
+<section
+   id="slide_container"
+   class='slides layout-regular'>
+
+
+  <article class="admonition-django-forms slide level-1" id="form-basics">
+<h1>Django Forms<a class="headerlink" href="../../tutorial/forms.html#form-basics" title="View HTML">§</a></h1>
+<p>Validate user input and return Python objects</p>
+
+</article>
+<article class="admonition-defining-forms slide level-2">
+<h2>Defining Forms</h2>
+<p>Forms are composed of fields, which have a widget.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">gettext_lazy</span> <span class="k">as</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
+
+<span class="k">class</span> <span class="nc">ContactForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Your Name&quot;</span><span class="p">),</span>
+        <span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span>
+        <span class="n">widget</span><span class="o">=</span><span class="n">forms</span><span class="o">.</span><span class="n">TextInput</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">email</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">EmailField</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Email address&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+
+</article>
+<article class="admonition-instantiating-a-form slide level-2">
+<h2>Instantiating a Form</h2>
+<p>Unbound forms don't have data associated with them, but they can
+be rendered:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">form</span> <span class="o">=</span> <span class="n">ContactForm</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Bound forms have specific data associated, which can be
+validated:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">form</span> <span class="o">=</span> <span class="n">ContactForm</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">)</span>
+</pre></div>
+</div>
+
+</article>
+<article class="admonition-accessing-fields slide level-2">
+<h2>Accessing Fields</h2>
+<p>Two ways to access fields on a Form instance</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">form.fields['name']</span></tt> returns the <tt class="docutils literal"><span class="pre">Field</span></tt> object</li>
+<li><tt class="docutils literal"><span class="pre">form['name']</span></tt> returns a <tt class="docutils literal"><span class="pre">BoundField</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">BoundField</span></tt> wraps a field and value for HTML output</li>
+</ul>
+
+</article>
+<article class="admonition-validating-the-form slide level-2">
+<h2>Validating the Form</h2>
+<img alt="../_images/blockdiag-f59ab43c77434baadf97d5c3b6e7930f99ed685d.png" src="../_images/blockdiag-f59ab43c77434baadf97d5c3b6e7930f99ed685d.png" />
+<ul class="simple">
+<li>Only bound forms can be validated</li>
+<li>Calling <tt class="docutils literal"><span class="pre">form.is_valid()</span></tt> triggers validation if needed</li>
+<li>Validated, cleaned data is stored in <tt class="docutils literal"><span class="pre">form.cleaned_data</span></tt></li>
+<li>Calling <tt class="docutils literal"><span class="pre">form.full_clean()</span></tt> performs the full cycle</li>
+</ul>
+
+</article>
+<article class="admonition-field-validation slide level-2">
+<h2>Field Validation</h2>
+<img alt="../_images/blockdiag-f6c1c334347d19c6cb96897afd2d30c7004e057a.png" src="../_images/blockdiag-f6c1c334347d19c6cb96897afd2d30c7004e057a.png" />
+<ul class="simple">
+<li>Three phases for Fields: To Python, Validation, and Cleaning</li>
+<li>If validation raises an Error, cleaning is skipped</li>
+<li>Validators are callables that can raise a <tt class="docutils literal"><span class="pre">ValidationError</span></tt></li>
+<li>Django includes generic ones for some common tasks</li>
+<li>Examples: URL, Min/Max Value, Min/Max Length, URL, Regex, email</li>
+</ul>
+
+</article>
+<article class="admonition-field-cleaning slide level-2">
+<h2>Field Cleaning</h2>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">.clean_fieldname()</span></tt> method is called after validators</li>
+<li>Input has already been converted to Python objects</li>
+<li>Methods can raise <tt class="docutils literal"><span class="pre">ValidationErrors</span></tt></li>
+<li>Methods <em>must</em> return the cleaned value</li>
+</ul>
+
+</article>
+<article class="admonition-rendering-forms slide level-2">
+<h2>Rendering Forms</h2>
+<p>Three primary &quot;whole-form&quot; output modes:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">form.as_p()</span></tt>, <tt class="docutils literal"><span class="pre">form.as_ul()</span></tt>, <tt class="docutils literal"><span class="pre">form.as_table()</span></tt></li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre>&lt;tr&gt;&lt;th&gt;&lt;label for=&quot;id_name&quot;&gt;Name:&lt;/label&gt;&lt;/th&gt;
+  &lt;td&gt;&lt;input id=&quot;id_name&quot; type=&quot;text&quot; name=&quot;name&quot; maxlength=&quot;255&quot; /&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;th&gt;&lt;label for=&quot;id_email&quot;&gt;Email:&lt;/label&gt;&lt;/th&gt;
+  &lt;td&gt;&lt;input id=&quot;id_email&quot; type=&quot;text&quot; name=&quot;email&quot; maxlength=&quot;Email address&quot; /&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;th&gt;&lt;label for=&quot;id_confirm_email&quot;&gt;Confirm email:&lt;/label&gt;&lt;/th&gt;
+  &lt;td&gt;&lt;input id=&quot;id_confirm_email&quot; type=&quot;text&quot; name=&quot;confirm_email&quot; maxlength=&quot;Confirm&quot; /&gt;&lt;/td&gt;&lt;/tr&gt;
+</pre></div>
+</div>
+
+</article>
+<article class="admonition-controlling-form-output slide level-2">
+<h2>Controlling Form Output</h2>
+<div class="highlight-python"><div class="highlight"><pre>{% for field in form %}
+{{ field.label_tag }}: {{ field }}
+{{ field.errors }}
+{% endfor %}
+{{ field.non_field_errors }}
+</pre></div>
+</div>
+<p>Additional rendering properties:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">field.label</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">field.label_tag</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">field.auto_id</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">field.help_text</span></tt></li>
+</ul>
+
+</article>
+
+
+</section>
+
+<section id="slide_notes">
+
+</section>
+
+  </body>
+</html>
