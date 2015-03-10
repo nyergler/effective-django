@@ -201,6 +201,7 @@ html_use_index = False
 #html_file_suffix = None
 
 html_extra_path = [
+    '.nojekyll',
     'CNAME',
 ]
 
