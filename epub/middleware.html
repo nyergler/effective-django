@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-188298-7']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    <title>Understanding Middleware</title>
+    
+    <link rel="stylesheet" href="_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" /> 
+  </head>
+  <body>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="orm.html" title="Effective Django ORM"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="testing.html" title="Testing in Django"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Effective Django</a> &raquo;</li> 
+      </ul>
+    </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="understanding-middleware">
+<h1>Understanding Middleware</h1>
+<div class="section" id="overview-of-middleware">
+<h2>Overview of Middleware</h2>
+<ul class="simple">
+<li>Lightweight &#8220;plug-ins&#8221; for Django</li>
+<li>Allows modifying the Request or Response, or mutating the View
+parameters</li>
+<li>Defined as a sequence (tuple) of classes in <tt class="docutils literal"><span class="pre">settings</span></tt></li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">MIDDLEWARE_CLASSES</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s">&#39;django.middleware.common.CommonMiddleware&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.sessions.middleware.SessionMiddleware&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.middleware.csrf.CsrfViewMiddleware&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.auth.middleware.AuthenticationMiddleware&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.messages.middleware.MessageMiddleware&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="middleware-hooks">
+<h2>Middleware Hooks</h2>
+<ul class="simple">
+<li>Middleware classes have hooks for processing:<ul>
+<li><tt class="docutils literal"><span class="pre">request</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">response</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">view</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">template_response</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">exception</span></tt></li>
+</ul>
+</li>
+<li>Individual middleware may implement some or all</li>
+</ul>
+</div>
+<div class="section" id="typical-uses">
+<h2>Typical Uses</h2>
+<ul class="simple">
+<li>Sessions</li>
+<li>Authentication</li>
+<li>CSRF Protection</li>
+<li>GZipping Content</li>
+</ul>
+</div>
+<div class="section" id="middleware-example">
+<h2>Middleware Example</h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">LocaleMiddleware</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">process_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="s">&#39;locale&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">cookies</span><span class="p">:</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">locale</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">locale</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">locale</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">process_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;locale&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">cookies</span><span class="p">[</span><span class="s">&#39;locale&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">locale</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="request-middleware">
+<h2>Request Middleware</h2>
+<ul class="simple">
+<li>On ingress, middleware is executed in order</li>
+<li>Request middleware returns <tt class="docutils literal"><span class="pre">None</span></tt> to continue processing</li>
+<li>Returning an <tt class="docutils literal"><span class="pre">HttpResponse</span></tt> short circuits additional middleware</li>
+</ul>
+</div>
+<div class="section" id="response-middleware">
+<h2>Response Middleware</h2>
+<ul class="simple">
+<li>On egress, middleware is executed in reverse order</li>
+<li>Response middleware is executed <em>even if corresponding request
+middleware not executed</em></li>
+</ul>
+</div>
+<div class="section" id="writing-your-own">
+<h2>Writing Your Own</h2>
+<ul class="simple">
+<li>Simple Python Classes</li>
+<li>Can implement all or part of the interface</li>
+<li>Middleware is long-lived</li>
+<li>The place for storing request-specific information is cunningly
+named <tt class="docutils literal"><span class="pre">request</span></tt></li>
+</ul>
+</div>
+<div class="section" id="wsgi-middleware">
+<h2>WSGI Middleware</h2>
+<ul class="simple">
+<li><a class="reference external" href="http://wsgi.org">WSGI</a><span class="link-target"> [http://wsgi.org]</span> also defines a middleware interface</li>
+<li>The two have similar functions, but are <strong>not</strong> the same</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2012-2013, Nathan Yergler.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

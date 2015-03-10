@@ -1,0 +1,345 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-188298-7']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    <title>Effective Django ORM</title>
+    
+    <link rel="stylesheet" href="_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" /> 
+  </head>
+  <body>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="classbasedviews.html" title="Class Based Views"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="middleware.html" title="Understanding Middleware"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Effective Django</a> &raquo;</li> 
+      </ul>
+    </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="effective-django-orm">
+<h1>Effective Django ORM</h1>
+<div class="section" id="configuring-the-database">
+<h2>Configuring the Database</h2>
+</div>
+<div class="section" id="writing-models">
+<h2>Writing Models</h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+
+<span class="k">class</span> <span class="nc">Address</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="n">address</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">city</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="nb">zip</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Contact</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="n">first_name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">last_name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="n">birthdate</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">phone</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">EMailField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="n">address</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Address</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="working-with-models">
+<h2>Working with Models</h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">nathan</span> <span class="o">=</span> <span class="n">Contact</span><span class="p">()</span>
+<span class="n">nathan</span><span class="o">.</span><span class="n">first_name</span> <span class="o">=</span> <span class="s">&#39;Nathan&#39;</span>
+<span class="n">nathan</span><span class="o">.</span><span class="n">last_name</span> <span class="o">=</span> <span class="s">&#39;Yergler&#39;</span>
+<span class="n">nathan</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="what-goes-in-models">
+<h2>What Goes in Models</h2>
+<ul class="simple">
+<li>Models should encapsulate business logic</li>
+<li>Encourages testable, composable code</li>
+<li>If logic operates on a &#8220;set&#8221; of Models, put it in the Manager</li>
+</ul>
+</div>
+<div class="section" id="saving-data">
+<h2>Saving Data</h2>
+<ul class="simple">
+<li>Starting in Django 1.5, calling <tt class="docutils literal"><span class="pre">.save()</span></tt> only updates the fields
+that have changed.</li>
+<li>Prior to 1.5, <tt class="docutils literal"><span class="pre">.save()</span></tt> updated the entire model, making it easy
+to overwrite changes</li>
+<li><a class="reference external" href="http://pypi.python.org/pypi/django-dirtyfields/">django-dirtyfields</a><span class="link-target"> [http://pypi.python.org/pypi/django-dirtyfields/]</span> lets you track which fields have been changed
+if you&#8217;re stuck on an older version of Django (but does not change
+<tt class="docutils literal"><span class="pre">.save()</span></tt> behavior on its own)</li>
+</ul>
+</div>
+<div class="section" id="managers">
+<h2>Managers</h2>
+<ul class="simple">
+<li>Models get a manager injected as <tt class="docutils literal"><span class="pre">.objects</span></tt></li>
+<li>Managers allow you to operate over collections of your model</li>
+<li>Default manager emulates part of the <tt class="docutils literal"><span class="pre">QuerySet</span></tt> API for
+convenience</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Contact</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">last_name__iexact</span><span class="o">=</span><span class="s">&#39;yergler&#39;</span><span class="p">)</span>
+<span class="n">Contact</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">address__state</span><span class="o">=</span><span class="s">&#39;OH&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="custom-managers">
+<h3>Custom Managers</h3>
+<ul class="simple">
+<li>You can override the default Manager, or add additional ones</li>
+<li>Operations on sets of Model instances belongs here</li>
+<li>Subclass from <tt class="docutils literal"><span class="pre">models.Manager</span></tt> to get queryset emulation</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ContactManager</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Manager</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">with_email</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">email__ne</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Contact</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="o">...</span>
+
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">ContactManager</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">contacts</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">with_email</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">email__endswith</span><span class="o">=</span><span class="s">&#39;osu.edu&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="low-level-managers">
+<h3>Low-level Managers</h3>
+<ul class="simple">
+<li>Sometimes you want to heavily customize the manager without
+re-implementing everything</li>
+<li><tt class="docutils literal"><span class="pre">Manager.get_query_set()</span></tt>
+allows you to customize the basic QuerySet used by Manager methods</li>
+</ul>
+</div>
+</div>
+<div class="section" id="testing">
+<h2>Testing</h2>
+<div class="section" id="what-to-test">
+<h3>What to Test</h3>
+<ul class="simple">
+<li>Business logic methods</li>
+<li>Customized Manager methods</li>
+</ul>
+</div>
+<div class="section" id="writing-a-test">
+<h3>Writing a Test</h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">test_with_email</span><span class="p">():</span>
+
+    <span class="c"># make a couple Contacts</span>
+    <span class="n">Contact</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">first_name</span><span class="o">=</span><span class="s">&#39;Nathan&#39;</span><span class="p">)</span>
+    <span class="n">Contact</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="s">&#39;nathan@eventbrite.com&#39;</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">Contact</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">with_email</span><span class="p">()),</span> <span class="mi">1</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-objects">
+<h3>Test Objects</h3>
+<ul class="simple">
+<li>Creating objects for tests is time consuming</li>
+<li>Unnecessarily involves the database</li>
+<li><a class="reference external" href="http://pypi.python.org/pypi/factory_boy">factory boy</a><span class="link-target"> [http://pypi.python.org/pypi/factory_boy]</span> provides an easy way to make model factories</li>
+</ul>
+</div>
+<div class="section" id="factoryboy-example">
+<h3>FactoryBoy Example</h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">factory</span>
+<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">Contact</span>
+
+<span class="k">class</span> <span class="nc">ContactFactory</span><span class="p">(</span><span class="n">factory</span><span class="o">.</span><span class="n">Factory</span><span class="p">):</span>
+    <span class="n">FACTORY_FOR</span> <span class="o">=</span> <span class="n">Contact</span>
+
+    <span class="n">first_name</span> <span class="o">=</span> <span class="s">&#39;John&#39;</span>
+    <span class="n">last_name</span> <span class="o">=</span> <span class="s">&#39;Doe&#39;</span>
+
+<span class="c"># Returns a Contact instance that&#39;s not saved</span>
+<span class="n">contact</span> <span class="o">=</span> <span class="n">ContactFactory</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+<span class="n">contact</span> <span class="o">=</span> <span class="n">ContactFactory</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">last_name</span><span class="o">=</span><span class="s">&#39;Yergler&#39;</span><span class="p">)</span>
+
+<span class="c"># Returns a saved Contact instance</span>
+<span class="n">contact</span> <span class="o">=</span> <span class="n">ContactFactory</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="subfactories-for-related-objects">
+<h3>SubFactories for Related Objects</h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">AddressFactory</span><span class="p">(</span><span class="n">factory</span><span class="o">.</span><span class="n">Factory</span><span class="p">):</span>
+    <span class="n">FACTORY_FOR</span> <span class="o">=</span> <span class="n">Address</span>
+
+    <span class="n">contact</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="n">SubFactory</span><span class="p">(</span><span class="n">ContactFactory</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">address</span> <span class="o">=</span> <span class="n">AddressFactory</span><span class="p">(</span><span class="n">city</span><span class="o">=</span><span class="s">&#39;Columbus&#39;</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="s">&#39;OH&#39;</span><span class="p">)</span>
+<span class="n">address</span><span class="o">.</span><span class="n">contact</span><span class="o">.</span><span class="n">first_name</span>
+</pre></div>
+</div>
+<div class="highlight-none"><div class="highlight"><pre>&#39;John&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="querying-your-data">
+<h2>Querying Your Data</h2>
+<ul class="simple">
+<li>Query Sets are chainable</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Contact</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s">&#39;OH&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">email__ne</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>Multiple filters are collapsed into SQL &#8220;and&#8221; conditions</li>
+</ul>
+<div class="section" id="or-conditions-in-queries">
+<h3>OR conditions in Queries</h3>
+<p>If you need to do &#8220;or&#8221; conditions, you can use <tt class="docutils literal"><span class="pre">Q</span></tt> objects</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span>
+
+<span class="n">Contact</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+    <span class="n">Q</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s">&#39;OH&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">email__endswith</span><span class="o">=</span><span class="s">&#39;osu.edu&#39;</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="orm-performance">
+<h2>ORM Performance</h2>
+<div class="section" id="instantiation-is-expensive">
+<h3>Instantiation is Expensive</h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">Users</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">is_active</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="n">send_email</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>QuerySets are lazy, but have non-trivial overhead when evaluated</li>
+<li>If a query returns 1000s of rows, users will notice this</li>
+<li><tt class="docutils literal"><span class="pre">.values()</span></tt> and <tt class="docutils literal"><span class="pre">.values_list()</span></tt> avoid instantiation</li>
+</ul>
+</div>
+<div class="section" id="avoiding-instantiation">
+<h3>Avoiding Instantiation</h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">user_emails</span> <span class="o">=</span> <span class="n">Users</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span>\
+    <span class="nb">filter</span><span class="p">(</span><span class="n">is_active</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span>\
+    <span class="n">values_list</span><span class="p">(</span><span class="s">&#39;email&#39;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">email</span> <span class="ow">in</span> <span class="n">user_emails</span><span class="p">:</span>
+    <span class="n">send_email</span><span class="p">(</span><span class="n">email</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="traversing-relationships">
+<h3>Traversing Relationships</h3>
+<ul class="simple">
+<li>Traversing foreign keys can incur additional queries</li>
+<li><tt class="docutils literal"><span class="pre">select_related</span></tt> queries for foreign keys in the initial query</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Contact</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span>\
+    <span class="n">select_related</span><span class="p">(</span><span class="s">&#39;address&#39;</span><span class="p">)</span><span class="o">.</span>\
+    <span class="nb">filter</span><span class="p">(</span><span class="n">last_name</span> <span class="o">=</span> <span class="s">&#39;Yergler&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="query-performance">
+<h3>Query Performance</h3>
+<ul class="simple">
+<li>QuerySets maintain state in memory</li>
+<li>Chaining triggers cloning, duplicating that state</li>
+<li>Unfortunately, QuerySets maintain a <em>lot</em> of state</li>
+<li>If possible, don&#8217;t chain more than one filter</li>
+</ul>
+</div>
+<div class="section" id="falling-back-to-raw-sql">
+<h3>Falling Back to Raw SQL</h3>
+<ul class="simple">
+<li>Django has to be database agnostic, you don&#8217;t</li>
+<li>Sometimes the clearest thing to do is write a SQL statement</li>
+<li>The <tt class="docutils literal"><span class="pre">.raw()</span></tt> method lets you do this</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Contact</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">raw</span><span class="p">(</span><span class="s">&#39;SELECT * FROM contacts WHERE last_name = </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">lname</span><span class="p">])</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>Must retrieve the primary key</li>
+<li>Omitted fields will be &#8220;deferred&#8221;</li>
+<li><strong>DO NOT</strong> use string formatting in <tt class="docutils literal"><span class="pre">raw()</span></tt> calls</li>
+</ul>
+</div>
+<div class="section" id="other-manager-operations">
+<h3>Other Manager Operations</h3>
+<p>Managers have some additional helpers for operating on the table or
+collection:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">get_or_create</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">update</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">delete</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">bulk_insert</span></tt></li>
+</ul>
+</div>
+<div class="section" id="read-repeatable">
+<h3>Read Repeatable</h3>
+<p>MySQL&#8217;s default transaction isolation for InnoDB <strong>breaks</strong>
+Django&#8217;s <tt class="docutils literal"><span class="pre">get_or_create</span></tt> when running at scale</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">get_or_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">**</span><span class="n">lookup</span><span class="p">),</span> <span class="bp">False</span>
+    <span class="k">except</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">force_insert</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">using</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">obj</span><span class="p">,</span> <span class="bp">True</span>
+        <span class="k">except</span> <span class="n">IntegrityError</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">**</span><span class="n">lookup</span><span class="p">),</span> <span class="bp">False</span>
+            <span class="k">except</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">e</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2012-2013, Nathan Yergler.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

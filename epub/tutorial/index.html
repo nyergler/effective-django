@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-188298-7']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    <title>Effective Django Tutorial</title>
+    
+    <link rel="stylesheet" href="../_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" /> 
+  </head>
+  <body>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="getting-started.html" title="Getting Started"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="../intro.html" title="Introduction"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Effective Django</a> &raquo;</li> 
+      </ul>
+    </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="effective-django-tutorial">
+<h1>Effective Django Tutorial</h1>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><a class="reference external" href="https://www.youtube.com/watch?v=NfsJDPm0X54">Video of this tutorial</a><span class="link-target"> [https://www.youtube.com/watch?v=NfsJDPm0X54]</span> from PyCon is available on YouTube.</p>
+</div>
+<p>Django is a popular, powerful web framework for Python. It has lots of
+&#8220;batteries&#8221; included, and makes it easy to get up and going. But all
+of the power means you can write low quality code that still seems to
+work. So what does <em>Effective Django</em> mean? It means using Django in a
+way that emphasizes writing code that&#8217;s cohesive, testable, and
+scalable. What do each of those words mean?</p>
+<p>Well, &#8220;cohesive&#8221; code is code that is focused on doing one thing, and
+one thing alone. It means that when you write a function or a method,
+that it does one thing and does it well.</p>
+<p>This is directly related to writing testable code: code that&#8217;s doing
+too much is often difficult to write tests for. When I find myself
+thinking, &#8220;Well, this piece of code is just too complex to write a
+test for, it&#8217;s not really worth all the effort,&#8221; that&#8217;s a signal that
+I need to step back and focus on simplifying it. Testable code is code
+that makes it straight-forward to write tests for, and that&#8217;s easy to
+diagnose problems with.</p>
+<p>Finally, we want to write scalable code. That doesn&#8217;t just mean it
+scales in terms of performance, but that it also scales in terms of
+your team and your team&#8217;s understanding. Applications that are well
+tested are easier for others to understand (and easier for them to
+modify), which means you&#8217;re more able to improve your application by
+adding engineers.</p>
+<p>My goal is to convince you of the importance of these principles, and
+provide examples of how to follow them to build more robust Django
+applications. I&#8217;m going to walk through building a contact management
+application iteratively, talking about the choices and testing
+strategy as I go.</p>
+<p>The sample code for this tutorial is available in the
+<a class="reference external" href="https://github.com/nyergler/effective-django-tutorial/">effective-django-tutorial</a><span class="link-target"> [https://github.com/nyergler/effective-django-tutorial/]</span> git repository.</p>
+<p>Slides for the tutorial are available at <a class="reference external" href="http://effectivedjango.com/slides/tutorial">http://effectivedjango.com/slides/tutorial</a></p>
+<span class="admonition-effective-django"></span><span class="admonition-goals"></span><span class="admonition-effective"></span><div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Using Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="views.html">Writing Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="static.html">Using Static Assets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="additional-views.html">Additional Generic Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="forms.html">Form Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="related.html">Related Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authzn.html">Handling Authentication &amp; Authorization</a></li>
+</ul>
+</div>
+<p>&#8220;Effective Django&#8221; is licensed under the Creative Commons
+<a class="reference external" href="http://creativecommons.org/licenses/by-sa/4.0/">Attribution-ShareAlike 4.0 International License</a><span class="link-target"> [http://creativecommons.org/licenses/by-sa/4.0/]</span>.</p>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2012-2013, Nathan Yergler.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

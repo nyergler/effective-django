@@ -1,0 +1,1142 @@
+<?xml version="1.0"?>
+<ncx version="2005-1" xmlns="http://www.daisy.org/z3986/2005/ncx/">
+  <head>
+    <meta name="dtb:uid" content="unknown"/>
+    <meta name="dtb:depth" content="3"/>
+    <meta name="dtb:totalPageCount" content="0"/>
+    <meta name="dtb:maxPageNumber" content="0"/>
+  </head>
+  <docTitle>
+    <text>Effective Django</text>
+  </docTitle>
+  <navMap>
+    <navPoint id="navPoint1" playOrder="1">
+      <navLabel>
+        <text>Effective Django</text>
+      </navLabel>
+      <content src="index.html" />
+    </navPoint>
+    <navPoint id="navPoint2" playOrder="2">
+      <navLabel>
+        <text>Introduction</text>
+      </navLabel>
+      <content src="intro.html" />
+    </navPoint>
+    <navPoint id="navPoint3" playOrder="3">
+      <navLabel>
+        <text>Effective Django Tutorial</text>
+      </navLabel>
+      <content src="tutorial/index.html" />
+      <navPoint id="navPoint4" playOrder="3">
+        <navLabel>
+          <text>Effective Django Tutorial</text>
+        </navLabel>
+        <content src="tutorial/index.html" />
+      </navPoint>
+      <navPoint id="navPoint5" playOrder="4">
+        <navLabel>
+          <text>Getting Started</text>
+        </navLabel>
+        <content src="tutorial/getting-started.html" />
+        <navPoint id="navPoint6" playOrder="4">
+          <navLabel>
+            <text>Getting Started</text>
+          </navLabel>
+          <content src="tutorial/getting-started.html" />
+        </navPoint>
+        <navPoint id="navPoint7" playOrder="5">
+          <navLabel>
+            <text>Your Development Environment</text>
+          </navLabel>
+          <content src="tutorial/getting-started.html#your-development-environment" />
+        </navPoint>
+        <navPoint id="navPoint8" playOrder="6">
+          <navLabel>
+            <text>Setting Up Your Environment</text>
+          </navLabel>
+          <content src="tutorial/getting-started.html#setting-up-your-environment" />
+        </navPoint>
+        <navPoint id="navPoint9" playOrder="7">
+          <navLabel>
+            <text>Beginning a Django Project</text>
+          </navLabel>
+          <content src="tutorial/getting-started.html#beginning-a-django-project" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint10" playOrder="8">
+        <navLabel>
+          <text>Using Models</text>
+        </navLabel>
+        <content src="tutorial/models.html" />
+        <navPoint id="navPoint11" playOrder="8">
+          <navLabel>
+            <text>Using Models</text>
+          </navLabel>
+          <content src="tutorial/models.html" />
+        </navPoint>
+        <navPoint id="navPoint12" playOrder="9">
+          <navLabel>
+            <text>Configuring the Database</text>
+          </navLabel>
+          <content src="tutorial/models.html#configuring-the-database" />
+        </navPoint>
+        <navPoint id="navPoint13" playOrder="10">
+          <navLabel>
+            <text>Creating a Model</text>
+          </navLabel>
+          <content src="tutorial/models.html#creating-a-model" />
+        </navPoint>
+        <navPoint id="navPoint14" playOrder="11">
+          <navLabel>
+            <text>Interacting with the Model</text>
+          </navLabel>
+          <content src="tutorial/models.html#interacting-with-the-model" />
+        </navPoint>
+        <navPoint id="navPoint15" playOrder="12">
+          <navLabel>
+            <text>Writing a Test</text>
+          </navLabel>
+          <content src="tutorial/models.html#writing-a-test" />
+        </navPoint>
+        <navPoint id="navPoint16" playOrder="13">
+          <navLabel>
+            <text>Review</text>
+          </navLabel>
+          <content src="tutorial/models.html#review" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint17" playOrder="14">
+        <navLabel>
+          <text>Writing Views</text>
+        </navLabel>
+        <content src="tutorial/views.html" />
+        <navPoint id="navPoint18" playOrder="14">
+          <navLabel>
+            <text>Writing Views</text>
+          </navLabel>
+          <content src="tutorial/views.html" />
+        </navPoint>
+        <navPoint id="navPoint19" playOrder="15">
+          <navLabel>
+            <text>View Basics</text>
+          </navLabel>
+          <content src="tutorial/views.html#view-basics" />
+        </navPoint>
+        <navPoint id="navPoint20" playOrder="16">
+          <navLabel>
+            <text>Generic &amp; Class Based Views</text>
+          </navLabel>
+          <content src="tutorial/views.html#generic-class-based-views" />
+        </navPoint>
+        <navPoint id="navPoint21" playOrder="17">
+          <navLabel>
+            <text>Class Based Views</text>
+          </navLabel>
+          <content src="tutorial/views.html#class-based-views" />
+        </navPoint>
+        <navPoint id="navPoint22" playOrder="18">
+          <navLabel>
+            <text>Listing Contacts</text>
+          </navLabel>
+          <content src="tutorial/views.html#listing-contacts" />
+        </navPoint>
+        <navPoint id="navPoint23" playOrder="19">
+          <navLabel>
+            <text>Defining URLs</text>
+          </navLabel>
+          <content src="tutorial/views.html#defining-urls" />
+        </navPoint>
+        <navPoint id="navPoint24" playOrder="20">
+          <navLabel>
+            <text>Creating the Template</text>
+          </navLabel>
+          <content src="tutorial/views.html#creating-the-template" />
+        </navPoint>
+        <navPoint id="navPoint25" playOrder="21">
+          <navLabel>
+            <text>Creating Contacts</text>
+          </navLabel>
+          <content src="tutorial/views.html#creating-contacts" />
+        </navPoint>
+        <navPoint id="navPoint26" playOrder="22">
+          <navLabel>
+            <text>Testing Your Views</text>
+          </navLabel>
+          <content src="tutorial/views.html#testing-your-views" />
+        </navPoint>
+        <navPoint id="navPoint27" playOrder="23">
+          <navLabel>
+            <text>Integration Tests</text>
+          </navLabel>
+          <content src="tutorial/views.html#integration-tests" />
+        </navPoint>
+        <navPoint id="navPoint28" playOrder="24">
+          <navLabel>
+            <text>Review</text>
+          </navLabel>
+          <content src="tutorial/views.html#review" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint29" playOrder="25">
+        <navLabel>
+          <text>Using Static Assets</text>
+        </navLabel>
+        <content src="tutorial/static.html" />
+        <navPoint id="navPoint30" playOrder="25">
+          <navLabel>
+            <text>Using Static Assets</text>
+          </navLabel>
+          <content src="tutorial/static.html" />
+        </navPoint>
+        <navPoint id="navPoint31" playOrder="26">
+          <navLabel>
+            <text>Adding Static Files</text>
+          </navLabel>
+          <content src="tutorial/static.html#adding-static-files" />
+        </navPoint>
+        <navPoint id="navPoint32" playOrder="27">
+          <navLabel>
+            <text>Referring to Static Files in Templates</text>
+          </navLabel>
+          <content src="tutorial/static.html#referring-to-static-files-in-templates" />
+        </navPoint>
+        <navPoint id="navPoint33" playOrder="28">
+          <navLabel>
+            <text>Simple Template Inclusion</text>
+          </navLabel>
+          <content src="tutorial/static.html#simple-template-inclusion" />
+        </navPoint>
+        <navPoint id="navPoint34" playOrder="29">
+          <navLabel>
+            <text>Serving Static Files</text>
+          </navLabel>
+          <content src="tutorial/static.html#serving-static-files" />
+        </navPoint>
+        <navPoint id="navPoint35" playOrder="30">
+          <navLabel>
+            <text>Review</text>
+          </navLabel>
+          <content src="tutorial/static.html#review" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint36" playOrder="31">
+        <navLabel>
+          <text>Additional Generic Views</text>
+        </navLabel>
+        <content src="tutorial/additional-views.html" />
+        <navPoint id="navPoint37" playOrder="31">
+          <navLabel>
+            <text>Additional Generic Views</text>
+          </navLabel>
+          <content src="tutorial/additional-views.html" />
+        </navPoint>
+        <navPoint id="navPoint38" playOrder="32">
+          <navLabel>
+            <text>Edit Views</text>
+          </navLabel>
+          <content src="tutorial/additional-views.html#edit-views" />
+        </navPoint>
+        <navPoint id="navPoint39" playOrder="33">
+          <navLabel>
+            <text>Deleting Contacts</text>
+          </navLabel>
+          <content src="tutorial/additional-views.html#deleting-contacts" />
+        </navPoint>
+        <navPoint id="navPoint40" playOrder="34">
+          <navLabel>
+            <text>Detail View</text>
+          </navLabel>
+          <content src="tutorial/additional-views.html#detail-view" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint41" playOrder="35">
+        <navLabel>
+          <text>Form Basics</text>
+        </navLabel>
+        <content src="tutorial/forms.html" />
+        <navPoint id="navPoint42" playOrder="35">
+          <navLabel>
+            <text>Form Basics</text>
+          </navLabel>
+          <content src="tutorial/forms.html" />
+        </navPoint>
+        <navPoint id="navPoint43" playOrder="36">
+          <navLabel>
+            <text>Adding Fields to the Form</text>
+          </navLabel>
+          <content src="tutorial/forms.html#adding-fields-to-the-form" />
+        </navPoint>
+        <navPoint id="navPoint44" playOrder="37">
+          <navLabel>
+            <text>Overriding the Default Form</text>
+          </navLabel>
+          <content src="tutorial/forms.html#overriding-the-default-form" />
+        </navPoint>
+        <navPoint id="navPoint45" playOrder="38">
+          <navLabel>
+            <text>Customizing Validation</text>
+          </navLabel>
+          <content src="tutorial/forms.html#customizing-validation" />
+        </navPoint>
+        <navPoint id="navPoint46" playOrder="39">
+          <navLabel>
+            <text>Controlling Form Rendering</text>
+          </navLabel>
+          <content src="tutorial/forms.html#controlling-form-rendering" />
+        </navPoint>
+        <navPoint id="navPoint47" playOrder="40">
+          <navLabel>
+            <text>Testing Forms</text>
+          </navLabel>
+          <content src="tutorial/forms.html#testing-forms" />
+        </navPoint>
+        <navPoint id="navPoint48" playOrder="41">
+          <navLabel>
+            <text>Review</text>
+          </navLabel>
+          <content src="tutorial/forms.html#review" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint49" playOrder="42">
+        <navLabel>
+          <text>Related Models</text>
+        </navLabel>
+        <content src="tutorial/related.html" />
+        <navPoint id="navPoint50" playOrder="42">
+          <navLabel>
+            <text>Related Models</text>
+          </navLabel>
+          <content src="tutorial/related.html" />
+        </navPoint>
+        <navPoint id="navPoint51" playOrder="43">
+          <navLabel>
+            <text>Adding Relationships</text>
+          </navLabel>
+          <content src="tutorial/related.html#adding-relationships" />
+        </navPoint>
+        <navPoint id="navPoint52" playOrder="44">
+          <navLabel>
+            <text>Editing Related Objects</text>
+          </navLabel>
+          <content src="tutorial/related.html#editing-related-objects" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint53" playOrder="45">
+        <navLabel>
+          <text>Handling Authentication &amp; Authorization</text>
+        </navLabel>
+        <content src="tutorial/authzn.html" />
+        <navPoint id="navPoint54" playOrder="45">
+          <navLabel>
+            <text>Handling Authentication &amp; Authorization</text>
+          </navLabel>
+          <content src="tutorial/authzn.html" />
+        </navPoint>
+        <navPoint id="navPoint55" playOrder="46">
+          <navLabel>
+            <text>Authentication</text>
+          </navLabel>
+          <content src="tutorial/authzn.html#authentication" />
+        </navPoint>
+        <navPoint id="navPoint56" playOrder="47">
+          <navLabel>
+            <text>Authorization</text>
+          </navLabel>
+          <content src="tutorial/authzn.html#authorization" />
+        </navPoint>
+        <navPoint id="navPoint57" playOrder="48">
+          <navLabel>
+            <text>Review</text>
+          </navLabel>
+          <content src="tutorial/authzn.html#review" />
+        </navPoint>
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint58" playOrder="49">
+      <navLabel>
+        <text>Testing in Django</text>
+      </navLabel>
+      <content src="testing.html" />
+      <navPoint id="navPoint59" playOrder="49">
+        <navLabel>
+          <text>Testing in Django</text>
+        </navLabel>
+        <content src="testing.html" />
+      </navPoint>
+      <navPoint id="navPoint60" playOrder="50">
+        <navLabel>
+          <text>Testing Django</text>
+        </navLabel>
+        <content src="testing.html#testing-django" />
+      </navPoint>
+      <navPoint id="navPoint61" playOrder="51">
+        <navLabel>
+          <text>Writing a Unit Test</text>
+        </navLabel>
+        <content src="testing.html#writing-a-unit-test" />
+      </navPoint>
+      <navPoint id="navPoint62" playOrder="52">
+        <navLabel>
+          <text>Test Client</text>
+        </navLabel>
+        <content src="testing.html#test-client" />
+      </navPoint>
+      <navPoint id="navPoint63" playOrder="53">
+        <navLabel>
+          <text>Request Factory</text>
+        </navLabel>
+        <content src="testing.html#request-factory" />
+      </navPoint>
+      <navPoint id="navPoint64" playOrder="54">
+        <navLabel>
+          <text>Running Tests</text>
+        </navLabel>
+        <content src="testing.html#running-tests" />
+      </navPoint>
+      <navPoint id="navPoint65" playOrder="55">
+        <navLabel>
+          <text>Further Reading</text>
+        </navLabel>
+        <content src="testing.html#further-reading" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint66" playOrder="56">
+      <navLabel>
+        <text>Understanding Middleware</text>
+      </navLabel>
+      <content src="middleware.html" />
+      <navPoint id="navPoint67" playOrder="56">
+        <navLabel>
+          <text>Understanding Middleware</text>
+        </navLabel>
+        <content src="middleware.html" />
+      </navPoint>
+      <navPoint id="navPoint68" playOrder="57">
+        <navLabel>
+          <text>Overview of Middleware</text>
+        </navLabel>
+        <content src="middleware.html#overview-of-middleware" />
+      </navPoint>
+      <navPoint id="navPoint69" playOrder="58">
+        <navLabel>
+          <text>Middleware Hooks</text>
+        </navLabel>
+        <content src="middleware.html#middleware-hooks" />
+      </navPoint>
+      <navPoint id="navPoint70" playOrder="59">
+        <navLabel>
+          <text>Typical Uses</text>
+        </navLabel>
+        <content src="middleware.html#typical-uses" />
+      </navPoint>
+      <navPoint id="navPoint71" playOrder="60">
+        <navLabel>
+          <text>Middleware Example</text>
+        </navLabel>
+        <content src="middleware.html#middleware-example" />
+      </navPoint>
+      <navPoint id="navPoint72" playOrder="61">
+        <navLabel>
+          <text>Request Middleware</text>
+        </navLabel>
+        <content src="middleware.html#request-middleware" />
+      </navPoint>
+      <navPoint id="navPoint73" playOrder="62">
+        <navLabel>
+          <text>Response Middleware</text>
+        </navLabel>
+        <content src="middleware.html#response-middleware" />
+      </navPoint>
+      <navPoint id="navPoint74" playOrder="63">
+        <navLabel>
+          <text>Writing Your Own</text>
+        </navLabel>
+        <content src="middleware.html#writing-your-own" />
+      </navPoint>
+      <navPoint id="navPoint75" playOrder="64">
+        <navLabel>
+          <text>WSGI Middleware</text>
+        </navLabel>
+        <content src="middleware.html#wsgi-middleware" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint76" playOrder="65">
+      <navLabel>
+        <text>Databases &amp; Models</text>
+      </navLabel>
+      <content src="orm.html" />
+      <navPoint id="navPoint77" playOrder="65">
+        <navLabel>
+          <text>Databases &amp; Models</text>
+        </navLabel>
+        <content src="orm.html" />
+      </navPoint>
+      <navPoint id="navPoint78" playOrder="66">
+        <navLabel>
+          <text>Configuring the Database</text>
+        </navLabel>
+        <content src="orm.html#configuring-the-database" />
+      </navPoint>
+      <navPoint id="navPoint79" playOrder="67">
+        <navLabel>
+          <text>Writing Models</text>
+        </navLabel>
+        <content src="orm.html#writing-models" />
+      </navPoint>
+      <navPoint id="navPoint80" playOrder="68">
+        <navLabel>
+          <text>Working with Models</text>
+        </navLabel>
+        <content src="orm.html#working-with-models" />
+      </navPoint>
+      <navPoint id="navPoint81" playOrder="69">
+        <navLabel>
+          <text>What Goes in Models</text>
+        </navLabel>
+        <content src="orm.html#what-goes-in-models" />
+      </navPoint>
+      <navPoint id="navPoint82" playOrder="70">
+        <navLabel>
+          <text>Saving Data</text>
+        </navLabel>
+        <content src="orm.html#saving-data" />
+      </navPoint>
+      <navPoint id="navPoint83" playOrder="71">
+        <navLabel>
+          <text>Managers</text>
+        </navLabel>
+        <content src="orm.html#managers" />
+        <navPoint id="navPoint84" playOrder="71">
+          <navLabel>
+            <text>Managers</text>
+          </navLabel>
+          <content src="orm.html#managers" />
+        </navPoint>
+        <navPoint id="navPoint85" playOrder="72">
+          <navLabel>
+            <text>Custom Managers</text>
+          </navLabel>
+          <content src="orm.html#custom-managers" />
+        </navPoint>
+        <navPoint id="navPoint86" playOrder="73">
+          <navLabel>
+            <text>Low-level Managers</text>
+          </navLabel>
+          <content src="orm.html#low-level-managers" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint87" playOrder="74">
+        <navLabel>
+          <text>Testing</text>
+        </navLabel>
+        <content src="orm.html#testing" />
+        <navPoint id="navPoint88" playOrder="74">
+          <navLabel>
+            <text>Testing</text>
+          </navLabel>
+          <content src="orm.html#testing" />
+        </navPoint>
+        <navPoint id="navPoint89" playOrder="75">
+          <navLabel>
+            <text>What to Test</text>
+          </navLabel>
+          <content src="orm.html#what-to-test" />
+        </navPoint>
+        <navPoint id="navPoint90" playOrder="76">
+          <navLabel>
+            <text>Writing a Test</text>
+          </navLabel>
+          <content src="orm.html#writing-a-test" />
+        </navPoint>
+        <navPoint id="navPoint91" playOrder="77">
+          <navLabel>
+            <text>Test Objects</text>
+          </navLabel>
+          <content src="orm.html#test-objects" />
+        </navPoint>
+        <navPoint id="navPoint92" playOrder="78">
+          <navLabel>
+            <text>FactoryBoy Example</text>
+          </navLabel>
+          <content src="orm.html#factoryboy-example" />
+        </navPoint>
+        <navPoint id="navPoint93" playOrder="79">
+          <navLabel>
+            <text>SubFactories for Related Objects</text>
+          </navLabel>
+          <content src="orm.html#subfactories-for-related-objects" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint94" playOrder="80">
+        <navLabel>
+          <text>Querying Your Data</text>
+        </navLabel>
+        <content src="orm.html#querying-your-data" />
+        <navPoint id="navPoint95" playOrder="80">
+          <navLabel>
+            <text>Querying Your Data</text>
+          </navLabel>
+          <content src="orm.html#querying-your-data" />
+        </navPoint>
+        <navPoint id="navPoint96" playOrder="81">
+          <navLabel>
+            <text>OR conditions in Queries</text>
+          </navLabel>
+          <content src="orm.html#or-conditions-in-queries" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint97" playOrder="82">
+        <navLabel>
+          <text>ORM Performance</text>
+        </navLabel>
+        <content src="orm.html#orm-performance" />
+        <navPoint id="navPoint98" playOrder="82">
+          <navLabel>
+            <text>ORM Performance</text>
+          </navLabel>
+          <content src="orm.html#orm-performance" />
+        </navPoint>
+        <navPoint id="navPoint99" playOrder="83">
+          <navLabel>
+            <text>Instantiation is Expensive</text>
+          </navLabel>
+          <content src="orm.html#instantiation-is-expensive" />
+        </navPoint>
+        <navPoint id="navPoint100" playOrder="84">
+          <navLabel>
+            <text>Avoiding Instantiation</text>
+          </navLabel>
+          <content src="orm.html#avoiding-instantiation" />
+        </navPoint>
+        <navPoint id="navPoint101" playOrder="85">
+          <navLabel>
+            <text>Traversing Relationships</text>
+          </navLabel>
+          <content src="orm.html#traversing-relationships" />
+        </navPoint>
+        <navPoint id="navPoint102" playOrder="86">
+          <navLabel>
+            <text>Query Performance</text>
+          </navLabel>
+          <content src="orm.html#query-performance" />
+        </navPoint>
+        <navPoint id="navPoint103" playOrder="87">
+          <navLabel>
+            <text>Falling Back to Raw SQL</text>
+          </navLabel>
+          <content src="orm.html#falling-back-to-raw-sql" />
+        </navPoint>
+        <navPoint id="navPoint104" playOrder="88">
+          <navLabel>
+            <text>Other Manager Operations</text>
+          </navLabel>
+          <content src="orm.html#other-manager-operations" />
+        </navPoint>
+        <navPoint id="navPoint105" playOrder="89">
+          <navLabel>
+            <text>Read Repeatable</text>
+          </navLabel>
+          <content src="orm.html#read-repeatable" />
+        </navPoint>
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint106" playOrder="90">
+      <navLabel>
+        <text>Class Based Views</text>
+      </navLabel>
+      <content src="classbasedviews.html" />
+      <navPoint id="navPoint107" playOrder="90">
+        <navLabel>
+          <text>Class Based Views</text>
+        </navLabel>
+        <content src="classbasedviews.html" />
+      </navPoint>
+      <navPoint id="navPoint108" playOrder="91">
+        <navLabel>
+          <text>Class Based Views</text>
+        </navLabel>
+        <content src="classbasedviews.html#id1" />
+      </navPoint>
+      <navPoint id="navPoint109" playOrder="92">
+        <navLabel>
+          <text>Using Class Based Views</text>
+        </navLabel>
+        <content src="classbasedviews.html#using-class-based-views" />
+        <navPoint id="navPoint110" playOrder="92">
+          <navLabel>
+            <text>Using Class Based Views</text>
+          </navLabel>
+          <content src="classbasedviews.html#using-class-based-views" />
+        </navPoint>
+        <navPoint id="navPoint111" playOrder="93">
+          <navLabel>
+            <text>Using a Template</text>
+          </navLabel>
+          <content src="classbasedviews.html#using-a-template" />
+        </navPoint>
+        <navPoint id="navPoint112" playOrder="94">
+          <navLabel>
+            <text>Configuring URLs</text>
+          </navLabel>
+          <content src="classbasedviews.html#configuring-urls" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint113" playOrder="95">
+        <navLabel>
+          <text>Idiomatic Class Based Views</text>
+        </navLabel>
+        <content src="classbasedviews.html#idiomatic-class-based-views" />
+        <navPoint id="navPoint114" playOrder="95">
+          <navLabel>
+            <text>Idiomatic Class Based Views</text>
+          </navLabel>
+          <content src="classbasedviews.html#idiomatic-class-based-views" />
+        </navPoint>
+        <navPoint id="navPoint115" playOrder="96">
+          <navLabel>
+            <text>Template Views</text>
+          </navLabel>
+          <content src="classbasedviews.html#template-views" />
+        </navPoint>
+        <navPoint id="navPoint116" playOrder="97">
+          <navLabel>
+            <text>Forms in Views</text>
+          </navLabel>
+          <content src="classbasedviews.html#forms-in-views" />
+        </navPoint>
+        <navPoint id="navPoint117" playOrder="98">
+          <navLabel>
+            <text>Editing Views</text>
+          </navLabel>
+          <content src="classbasedviews.html#editing-views" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint118" playOrder="99">
+        <navLabel>
+          <text>HTTP Methods</text>
+        </navLabel>
+        <content src="classbasedviews.html#http-methods" />
+      </navPoint>
+      <navPoint id="navPoint119" playOrder="100">
+        <navLabel>
+          <text>Writing Composable Views</text>
+        </navLabel>
+        <content src="classbasedviews.html#writing-composable-views" />
+        <navPoint id="navPoint120" playOrder="100">
+          <navLabel>
+            <text>Writing Composable Views</text>
+          </navLabel>
+          <content src="classbasedviews.html#writing-composable-views" />
+        </navPoint>
+        <navPoint id="navPoint121" playOrder="101">
+          <navLabel>
+            <text>Example</text>
+          </navLabel>
+          <content src="classbasedviews.html#example" />
+        </navPoint>
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint122" playOrder="102">
+      <navLabel>
+        <text>Forms</text>
+      </navLabel>
+      <content src="forms.html" />
+      <navPoint id="navPoint123" playOrder="102">
+        <navLabel>
+          <text>Forms</text>
+        </navLabel>
+        <content src="forms.html" />
+      </navPoint>
+      <navPoint id="navPoint124" playOrder="103">
+        <navLabel>
+          <text>Form Basics</text>
+        </navLabel>
+        <content src="forms.html#form-basics" />
+        <navPoint id="navPoint125" playOrder="103">
+          <navLabel>
+            <text>Form Basics</text>
+          </navLabel>
+          <content src="forms.html#form-basics" />
+        </navPoint>
+        <navPoint id="navPoint126" playOrder="104">
+          <navLabel>
+            <text>Forms in Context</text>
+          </navLabel>
+          <content src="forms.html#forms-in-context" />
+        </navPoint>
+        <navPoint id="navPoint127" playOrder="105">
+          <navLabel>
+            <text>Defining Forms</text>
+          </navLabel>
+          <content src="forms.html#defining-forms" />
+        </navPoint>
+        <navPoint id="navPoint128" playOrder="106">
+          <navLabel>
+            <text>Instantiating a Form</text>
+          </navLabel>
+          <content src="forms.html#instantiating-a-form" />
+        </navPoint>
+        <navPoint id="navPoint129" playOrder="107">
+          <navLabel>
+            <text>Accessing Fields</text>
+          </navLabel>
+          <content src="forms.html#accessing-fields" />
+        </navPoint>
+        <navPoint id="navPoint130" playOrder="108">
+          <navLabel>
+            <text>Initial Data</text>
+          </navLabel>
+          <content src="forms.html#initial-data" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint131" playOrder="109">
+        <navLabel>
+          <text>Validation</text>
+        </navLabel>
+        <content src="forms.html#validation" />
+        <navPoint id="navPoint132" playOrder="109">
+          <navLabel>
+            <text>Validation</text>
+          </navLabel>
+          <content src="forms.html#validation" />
+        </navPoint>
+        <navPoint id="navPoint133" playOrder="110">
+          <navLabel>
+            <text>Validating the Form</text>
+          </navLabel>
+          <content src="forms.html#validating-the-form" />
+        </navPoint>
+        <navPoint id="navPoint134" playOrder="111">
+          <navLabel>
+            <text>Field Validation</text>
+          </navLabel>
+          <content src="forms.html#field-validation" />
+        </navPoint>
+        <navPoint id="navPoint135" playOrder="112">
+          <navLabel>
+            <text>Field Cleaning</text>
+          </navLabel>
+          <content src="forms.html#field-cleaning" />
+        </navPoint>
+        <navPoint id="navPoint136" playOrder="113">
+          <navLabel>
+            <text>.clean_email()</text>
+          </navLabel>
+          <content src="forms.html#clean-email" />
+        </navPoint>
+        <navPoint id="navPoint137" playOrder="114">
+          <navLabel>
+            <text>Form Validation</text>
+          </navLabel>
+          <content src="forms.html#form-validation" />
+        </navPoint>
+        <navPoint id="navPoint138" playOrder="115">
+          <navLabel>
+            <text>.clean() example</text>
+          </navLabel>
+          <content src="forms.html#clean-example" />
+        </navPoint>
+        <navPoint id="navPoint139" playOrder="116">
+          <navLabel>
+            <text>Initial != Default Data</text>
+          </navLabel>
+          <content src="forms.html#initial-default-data" />
+        </navPoint>
+        <navPoint id="navPoint140" playOrder="117">
+          <navLabel>
+            <text>Passing Extra Information</text>
+          </navLabel>
+          <content src="forms.html#passing-extra-information" />
+        </navPoint>
+        <navPoint id="navPoint141" playOrder="118">
+          <navLabel>
+            <text>Tracking Changes</text>
+          </navLabel>
+          <content src="forms.html#tracking-changes" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint142" playOrder="119">
+        <navLabel>
+          <text>Testing</text>
+        </navLabel>
+        <content src="forms.html#testing" />
+        <navPoint id="navPoint143" playOrder="119">
+          <navLabel>
+            <text>Testing</text>
+          </navLabel>
+          <content src="forms.html#testing" />
+        </navPoint>
+        <navPoint id="navPoint144" playOrder="120">
+          <navLabel>
+            <text>Testing Forms</text>
+          </navLabel>
+          <content src="forms.html#testing-forms" />
+        </navPoint>
+        <navPoint id="navPoint145" playOrder="121">
+          <navLabel>
+            <text>Unit Tests</text>
+          </navLabel>
+          <content src="forms.html#unit-tests" />
+        </navPoint>
+        <navPoint id="navPoint146" playOrder="122">
+          <navLabel>
+            <text>Test Data</text>
+          </navLabel>
+          <content src="forms.html#test-data" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint147" playOrder="123">
+        <navLabel>
+          <text>Rendering Forms</text>
+        </navLabel>
+        <content src="forms.html#rendering-forms" />
+        <navPoint id="navPoint148" playOrder="123">
+          <navLabel>
+            <text>Rendering Forms</text>
+          </navLabel>
+          <content src="forms.html#rendering-forms" />
+        </navPoint>
+        <navPoint id="navPoint149" playOrder="124">
+          <navLabel>
+            <text>Idiomatic Form Usage</text>
+          </navLabel>
+          <content src="forms.html#idiomatic-form-usage" />
+        </navPoint>
+        <navPoint id="navPoint150" playOrder="125">
+          <navLabel>
+            <text>Form Output</text>
+          </navLabel>
+          <content src="forms.html#form-output" />
+        </navPoint>
+        <navPoint id="navPoint151" playOrder="126">
+          <navLabel>
+            <text>Controlling Form Output</text>
+          </navLabel>
+          <content src="forms.html#controlling-form-output" />
+        </navPoint>
+        <navPoint id="navPoint152" playOrder="127">
+          <navLabel>
+            <text>Customizing Rendering</text>
+          </navLabel>
+          <content src="forms.html#customizing-rendering" />
+        </navPoint>
+        <navPoint id="navPoint153" playOrder="128">
+          <navLabel>
+            <text>Customizing Error Messages</text>
+          </navLabel>
+          <content src="forms.html#customizing-error-messages" />
+        </navPoint>
+        <navPoint id="navPoint154" playOrder="129">
+          <navLabel>
+            <text>Error Class</text>
+          </navLabel>
+          <content src="forms.html#error-class" />
+        </navPoint>
+        <navPoint id="navPoint155" playOrder="130">
+          <navLabel>
+            <text>Error Class</text>
+          </navLabel>
+          <content src="forms.html#id1" />
+        </navPoint>
+        <navPoint id="navPoint156" playOrder="131">
+          <navLabel>
+            <text>Multiple Forms</text>
+          </navLabel>
+          <content src="forms.html#multiple-forms" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint157" playOrder="132">
+        <navLabel>
+          <text>Forms for Models</text>
+        </navLabel>
+        <content src="forms.html#forms-for-models" />
+        <navPoint id="navPoint158" playOrder="132">
+          <navLabel>
+            <text>Forms for Models</text>
+          </navLabel>
+          <content src="forms.html#forms-for-models" />
+        </navPoint>
+        <navPoint id="navPoint159" playOrder="133">
+          <navLabel>
+            <text>Model Forms</text>
+          </navLabel>
+          <content src="forms.html#model-forms" />
+        </navPoint>
+        <navPoint id="navPoint160" playOrder="134">
+          <navLabel>
+            <text>Model Forms</text>
+          </navLabel>
+          <content src="forms.html#id2" />
+        </navPoint>
+        <navPoint id="navPoint161" playOrder="135">
+          <navLabel>
+            <text>Limiting Fields</text>
+          </navLabel>
+          <content src="forms.html#limiting-fields" />
+        </navPoint>
+        <navPoint id="navPoint162" playOrder="136">
+          <navLabel>
+            <text>Overriding Fields</text>
+          </navLabel>
+          <content src="forms.html#overriding-fields" />
+        </navPoint>
+        <navPoint id="navPoint163" playOrder="137">
+          <navLabel>
+            <text>Instantiating Model Forms</text>
+          </navLabel>
+          <content src="forms.html#instantiating-model-forms" />
+        </navPoint>
+        <navPoint id="navPoint164" playOrder="138">
+          <navLabel>
+            <text>ModelForm.is_valid()</text>
+          </navLabel>
+          <content src="forms.html#modelform-is-valid" />
+        </navPoint>
+        <navPoint id="navPoint165" playOrder="139">
+          <navLabel>
+            <text>Testing</text>
+          </navLabel>
+          <content src="forms.html#id3" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint166" playOrder="140">
+        <navLabel>
+          <text>Form Sets</text>
+        </navLabel>
+        <content src="forms.html#form-sets" />
+        <navPoint id="navPoint167" playOrder="140">
+          <navLabel>
+            <text>Form Sets</text>
+          </navLabel>
+          <content src="forms.html#form-sets" />
+        </navPoint>
+        <navPoint id="navPoint168" playOrder="141">
+          <navLabel>
+            <text>Form Sets</text>
+          </navLabel>
+          <content src="forms.html#id4" />
+        </navPoint>
+        <navPoint id="navPoint169" playOrder="142">
+          <navLabel>
+            <text>Defining Form Sets</text>
+          </navLabel>
+          <content src="forms.html#defining-form-sets" />
+        </navPoint>
+        <navPoint id="navPoint170" playOrder="143">
+          <navLabel>
+            <text>Using Form Sets</text>
+          </navLabel>
+          <content src="forms.html#using-form-sets" />
+        </navPoint>
+        <navPoint id="navPoint171" playOrder="144">
+          <navLabel>
+            <text>Management Form</text>
+          </navLabel>
+          <content src="forms.html#management-form" />
+        </navPoint>
+        <navPoint id="navPoint172" playOrder="145">
+          <navLabel>
+            <text>formset.is_valid()</text>
+          </navLabel>
+          <content src="forms.html#formset-is-valid" />
+        </navPoint>
+        <navPoint id="navPoint173" playOrder="146">
+          <navLabel>
+            <text>FormSet.clean()</text>
+          </navLabel>
+          <content src="forms.html#formset-clean" />
+        </navPoint>
+        <navPoint id="navPoint174" playOrder="147">
+          <navLabel>
+            <text>Insertion</text>
+          </navLabel>
+          <content src="forms.html#insertion" />
+        </navPoint>
+        <navPoint id="navPoint175" playOrder="148">
+          <navLabel>
+            <text>Deletion</text>
+          </navLabel>
+          <content src="forms.html#deletion" />
+        </navPoint>
+        <navPoint id="navPoint176" playOrder="149">
+          <navLabel>
+            <text>Ordering Forms</text>
+          </navLabel>
+          <content src="forms.html#ordering-forms" />
+        </navPoint>
+        <navPoint id="navPoint177" playOrder="150">
+          <navLabel>
+            <text>Testing</text>
+          </navLabel>
+          <content src="forms.html#id5" />
+        </navPoint>
+        <navPoint id="navPoint178" playOrder="151">
+          <navLabel>
+            <text>Model Form Sets</text>
+          </navLabel>
+          <content src="forms.html#model-form-sets" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint179" playOrder="152">
+        <navLabel>
+          <text>Advanced &amp; Miscellaneous Detritus</text>
+        </navLabel>
+        <content src="forms.html#advanced-miscellaneous-detritus" />
+        <navPoint id="navPoint180" playOrder="152">
+          <navLabel>
+            <text>Advanced &amp; Miscellaneous Detritus</text>
+          </navLabel>
+          <content src="forms.html#advanced-miscellaneous-detritus" />
+        </navPoint>
+        <navPoint id="navPoint181" playOrder="153">
+          <navLabel>
+            <text>Localizing Fields</text>
+          </navLabel>
+          <content src="forms.html#localizing-fields" />
+        </navPoint>
+        <navPoint id="navPoint182" playOrder="154">
+          <navLabel>
+            <text>Localizing Fields Example</text>
+          </navLabel>
+          <content src="forms.html#localizing-fields-example" />
+        </navPoint>
+        <navPoint id="navPoint183" playOrder="155">
+          <navLabel>
+            <text>Dynamic Forms</text>
+          </navLabel>
+          <content src="forms.html#dynamic-forms" />
+        </navPoint>
+        <navPoint id="navPoint184" playOrder="156">
+          <navLabel>
+            <text>State Validators</text>
+          </navLabel>
+          <content src="forms.html#state-validators" />
+        </navPoint>
+        <navPoint id="navPoint185" playOrder="157">
+          <navLabel>
+            <text>State Validators</text>
+          </navLabel>
+          <content src="forms.html#id6" />
+        </navPoint>
+        <navPoint id="navPoint186" playOrder="158">
+          <navLabel>
+            <text>State Validators</text>
+          </navLabel>
+          <content src="forms.html#id7" />
+        </navPoint>
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint187" playOrder="159">
+      <navLabel>
+        <text>Acknowledgments</text>
+      </navLabel>
+      <content src="acknowledgments.html" />
+    </navPoint>
+    <navPoint id="navPoint188" playOrder="160">
+      <navLabel>
+        <text>Further Reading</text>
+      </navLabel>
+      <content src="further-reading.html" />
+    </navPoint>
+  </navMap>
+</ncx>

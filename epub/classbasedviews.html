@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-188298-7']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    <title>Class Based Views</title>
+    
+    <link rel="stylesheet" href="_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" /> 
+  </head>
+  <body>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="forms.html" title="Effective Django Forms"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="orm.html" title="Effective Django ORM"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Effective Django</a> &raquo;</li> 
+      </ul>
+    </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="class-based-views">
+<h1>Class Based Views</h1>
+<div class="section" id="id1">
+<h2>Class Based Views</h2>
+<ul class="simple">
+<li>New in Django 1.3 (generic views)</li>
+<li>Allow &#8220;composing&#8221; a View from pieces</li>
+<li>Intended to allow more flexible reuse</li>
+<li>Base View plus a set of &#8220;mixins&#8221; provide composable functionality</li>
+<li>Lots of power, lots of [potential] complexity</li>
+</ul>
+</div>
+<div class="section" id="using-class-based-views">
+<h2>Using Class Based Views</h2>
+<ul class="simple">
+<li>Subclass <tt class="docutils literal"><span class="pre">View</span></tt></li>
+<li>Define a method name that matches the HTTP method you&#8217;re
+implementing</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">View</span>
+
+<span class="k">class</span> <span class="nc">ContactList</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s">&quot;You have no contacts&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="using-a-template">
+<h3>Using a Template</h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">TemplateView</span>
+
+<span class="k">class</span> <span class="nc">ContactList</span><span class="p">(</span><span class="n">TemplateView</span><span class="p">):</span>
+
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;index.html&#39;</span> <span class="c"># or define get_template_names()</span>
+
+    <span class="k">def</span> <span class="nf">get_context_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="n">context</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">ContactList</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span>\
+            <span class="n">get_context_data</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">context</span><span class="p">[</span><span class="s">&#39;first_names&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;Nathan&#39;</span><span class="p">,</span> <span class="s">&#39;Richard&#39;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">context</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="configuring-urls">
+<h3>Configuring URLs</h3>
+<ul class="simple">
+<li>Django URLConf needs a callable, not a class</li>
+<li><tt class="docutils literal"><span class="pre">View</span></tt> provides as <tt class="docutils literal"><span class="pre">as_view</span></tt> method</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">patterns</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span>
+        <span class="p">(</span><span class="s">r&#39;^index/$&#39;</span><span class="p">,</span> <span class="n">ContactList</span><span class="o">.</span><span class="n">as_view</span><span class="p">()),</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">kwargs</span></tt> passed to <tt class="docutils literal"><span class="pre">as_view</span></tt> can override properties on the View
+class</li>
+<li>Arguments captured in the URL pattern are available as <tt class="docutils literal"><span class="pre">.args</span></tt> and
+<tt class="docutils literal"><span class="pre">.kwargs</span></tt> inside your class</li>
+</ul>
+</div>
+</div>
+<div class="section" id="idiomatic-class-based-views">
+<h2>Idiomatic Class Based Views</h2>
+<ul class="simple">
+<li>Number of mixins can be confusing</li>
+<li>However there are a few common idioms</li>
+<li>Many times you don&#8217;t wind up defining the HTTP methods directly,
+just the things you need</li>
+</ul>
+<div class="section" id="template-views">
+<h3>Template Views</h3>
+<p>TemplateView</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">get_context_data()</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">template_name</span></tt>, <tt class="docutils literal"><span class="pre">get_template_names()</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">response_class</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">render_to_response()</span></tt></li>
+</ul>
+</div>
+<div class="section" id="forms-in-views">
+<h3>Forms in Views</h3>
+<p>ProcessFormView</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">form_class</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">get_success_url()</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">form_valid(form)</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">form_invalid(form)</span></tt></li>
+</ul>
+</div>
+<div class="section" id="editing-views">
+<h3>Editing Views</h3>
+<p>CreateView, UpdateView</p>
+<ul class="simple">
+<li>Includes Form processing</li>
+<li><tt class="docutils literal"><span class="pre">model</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">get_object()</span></tt></li>
+</ul>
+</div>
+</div>
+<div class="section" id="http-methods">
+<h2>HTTP Methods</h2>
+<ul>
+<li><p class="first">The <tt class="docutils literal"><span class="pre">http_method_names</span></tt> property defines a list of supported
+methods</p>
+</li>
+<li><p class="first">In Django 1.5 this is:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">http_method_names</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;get&#39;</span><span class="p">,</span> <span class="s">&#39;post&#39;</span><span class="p">,</span> <span class="s">&#39;put&#39;</span><span class="p">,</span> <span class="s">&#39;delete&#39;</span><span class="p">,</span> <span class="s">&#39;head&#39;</span><span class="p">,</span>
+                     <span class="s">&#39;options&#39;</span><span class="p">,</span> <span class="s">&#39;trace&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">If you want to support something like HTTP <tt class="docutils literal"><span class="pre">PATCH</span></tt>, you need to
+add it to that list in your View subclass</p>
+</li>
+<li><p class="first">Views will look for a class method named for the HTTP method:
+<tt class="docutils literal"><span class="pre">get()</span></tt> is called for <tt class="docutils literal"><span class="pre">GET</span></tt>, etc.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="writing-composable-views">
+<h2>Writing Composable Views</h2>
+<ul class="simple">
+<li>Think about the extension points you need</li>
+<li>Call <tt class="docutils literal"><span class="pre">super()</span></tt> in your methods: this allows others to mix your
+View with others</li>
+</ul>
+<div class="section" id="example">
+<h3>Example</h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">EventsPageMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;View mixin to include the Event in template context.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">get_event</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;event&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">event</span> <span class="o">=</span> <span class="n">get_event</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">event</span>
+
+    <span class="k">def</span> <span class="nf">get_context_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="n">context</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">EventsPageMixin</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span>\
+            <span class="n">get_context_data</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="n">context</span><span class="p">[</span><span class="s">&#39;event&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_event</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">context</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>No actual view logic</li>
+<li>Subclasses <tt class="docutils literal"><span class="pre">object</span></tt>, not <tt class="docutils literal"><span class="pre">View</span></tt></li>
+<li>Calls <tt class="docutils literal"><span class="pre">super</span></tt> on overridden methods</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2012-2013, Nathan Yergler.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>
