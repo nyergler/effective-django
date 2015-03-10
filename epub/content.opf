@@ -9,7 +9,7 @@
     <dc:publisher>unknown</dc:publisher>
     <dc:rights>2012-2013, Nathan Yergler</dc:rights>
     <dc:identifier id="unknown" opf:scheme="unknown">unknown</dc:identifier>
-    <dc:date>2015-03-09</dc:date>
+    <dc:date>2015-03-10</dc:date>
   </metadata>
   <manifest>
     <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />

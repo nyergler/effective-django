@@ -247,6 +247,7 @@ we&#8217;ll override and decorate that.</p>
 user is logged in.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span>
 <span class="kn">from</span> <span class="nn">django.utils.decorators</span> <span class="kn">import</span> <span class="n">method_decorator</span>
+
 <span class="k">class</span> <span class="nc">LoggedInMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="nd">@method_decorator</span><span class="p">(</span><span class="n">login_required</span><span class="p">)</span>
@@ -342,25 +343,9 @@ displayed.</p>
 <p>The remaining views are responsible for showing only a single object
 &#8211; the Contact (or its addresses). For those we&#8217;ll create another
 mixin that enforces authorization.</p>
-<p><tt class="docutils literal"><span class="pre">ContactOwnerMixin</span></tt> overrides the <tt class="docutils literal"><span class="pre">get_object()</span></tt> method, which is
-responsible for getting the object for a view to operate on. If it
-can&#8217;t find one with the specified primary key and owner, it raises the
-<tt class="docutils literal"><span class="pre">PermissionDenied</span></tt> exception.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">This implementation will return HTTP 403 (Forbidden) whenever it
-cannot find the a Contact with the requested ID and owner. While
-this will mask a legitimate 404, you may not want to expose that
-the object with that ID exists at all in the system if the user
-does not have permission to access it.</p>
-</div>
-<p>We&#8217;ll use the <tt class="docutils literal"><span class="pre">ContactOwnerMixin</span></tt> in all of our views. For example,
-<tt class="docutils literal"><span class="pre">ContactView</span></tt> will look as follows:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ContactView</span><span class="p">(</span><span class="n">LoggedInMixin</span><span class="p">,</span> <span class="n">DetailView</span><span class="p">):</span>
-
-    <span class="n">model</span> <span class="o">=</span> <span class="n">Contact</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;contact.html&#39;</span>
-
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.core.exceptions</span> <span class="kn">import</span> <span class="n">PermissionDenied</span>
+<span class="o">...</span>
+<span class="k">class</span> <span class="nc">ContactOwnerMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">get_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns the object the view is displaying.</span>
@@ -379,10 +364,27 @@ does not have permission to access it.</p>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">obj</span> <span class="o">=</span> <span class="n">queryset</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
         <span class="k">except</span> <span class="n">ObjectDoesNotExist</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">Http404</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">u&quot;No </span><span class="si">%(verbose_name)s</span><span class="s"> found matching the query&quot;</span><span class="p">)</span> <span class="o">%</span>
-                          <span class="p">{</span><span class="s">&#39;verbose_name&#39;</span><span class="p">:</span> <span class="n">queryset</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">verbose_name</span><span class="p">})</span>
+            <span class="k">raise</span> <span class="n">PermissionDenied</span>
 
         <span class="k">return</span> <span class="n">obj</span>
+</pre></div>
+</div>
+<p><tt class="docutils literal"><span class="pre">ContactOwnerMixin</span></tt> overrides the <tt class="docutils literal"><span class="pre">get_object()</span></tt> method, which is
+responsible for getting the object for a view to operate on. If it
+can&#8217;t find one with the specified primary key and owner, it raises the
+<tt class="docutils literal"><span class="pre">PermissionDenied</span></tt> exception.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This implementation will return HTTP 403 (Forbidden) whenever it
+cannot find the a Contact with the requested ID and owner. This
+will mask legitimate 404 (Not Found) errors.</p>
+</div>
+<p>We&#8217;ll use the <tt class="docutils literal"><span class="pre">ContactOwnerMixin</span></tt> in all of our views. For example,
+<tt class="docutils literal"><span class="pre">ContactView</span></tt> will look as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ContactView</span><span class="p">(</span><span class="n">LoggedInMixin</span><span class="p">,</span> <span class="n">ContactOwnerMixin</span><span class="p">,</span> <span class="n">DetailView</span><span class="p">):</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Contact</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;contact.html&#39;</span>
 </pre></div>
 </div>
 <p>Note that the order of inheritance is important: the superclasses

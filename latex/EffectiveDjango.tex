@@ -14,11 +14,11 @@
 
 
 \title{Effective Django}
-\date{09 March 2015}
+\date{10 March 2015}
 \release{}
 \author{Nathan Yergler}
 \newcommand{\sphinxlogo}{}
-\renewcommand{\releasename}{Build 2015.03.09}
+\renewcommand{\releasename}{Build 2015.03.10}
 \makeindex
 
 \makeatletter
@@ -2613,6 +2613,7 @@ user is logged in.
 \begin{Verbatim}[commandchars=\\\{\}]
 \PYG{k+kn}{from} \PYG{n+nn}{django.contrib.auth.decorators} \PYG{k+kn}{import} \PYG{n}{login\PYGZus{}required}
 \PYG{k+kn}{from} \PYG{n+nn}{django.utils.decorators} \PYG{k+kn}{import} \PYG{n}{method\PYGZus{}decorator}
+
 \PYG{k}{class} \PYG{n+nc}{LoggedInMixin}\PYG{p}{(}\PYG{n+nb}{object}\PYG{p}{)}\PYG{p}{:}
 
     \PYG{n+nd}{@method\PYGZus{}decorator}\PYG{p}{(}\PYG{n}{login\PYGZus{}required}\PYG{p}{)}
@@ -2730,28 +2731,10 @@ The remaining views are responsible for showing only a single object
 -- the Contact (or its addresses). For those we'll create another
 mixin that enforces authorization.
 
-\code{ContactOwnerMixin} overrides the \code{get\_object()} method, which is
-responsible for getting the object for a view to operate on. If it
-can't find one with the specified primary key and owner, it raises the
-\code{PermissionDenied} exception.
-
-\begin{notice}{note}{Note:}
-This implementation will return HTTP 403 (Forbidden) whenever it
-cannot find the a Contact with the requested ID and owner. While
-this will mask a legitimate 404, you may not want to expose that
-the object with that ID exists at all in the system if the user
-does not have permission to access it.
-\end{notice}
-
-We'll use the \code{ContactOwnerMixin} in all of our views. For example,
-\code{ContactView} will look as follows:
-
 \begin{Verbatim}[commandchars=\\\{\}]
-\PYG{k}{class} \PYG{n+nc}{ContactView}\PYG{p}{(}\PYG{n}{LoggedInMixin}\PYG{p}{,} \PYG{n}{DetailView}\PYG{p}{)}\PYG{p}{:}
-
-    \PYG{n}{model} \PYG{o}{=} \PYG{n}{Contact}
-    \PYG{n}{template\PYGZus{}name} \PYG{o}{=} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{contact.html}\PYG{l+s}{\PYGZsq{}}
-
+\PYG{k+kn}{from} \PYG{n+nn}{django.core.exceptions} \PYG{k+kn}{import} \PYG{n}{PermissionDenied}
+\PYG{o}{.}\PYG{o}{.}\PYG{o}{.}
+\PYG{k}{class} \PYG{n+nc}{ContactOwnerMixin}\PYG{p}{(}\PYG{n+nb}{object}\PYG{p}{)}\PYG{p}{:}
 
     \PYG{k}{def} \PYG{n+nf}{get\PYGZus{}object}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{queryset}\PYG{o}{=}\PYG{n+nb+bp}{None}\PYG{p}{)}\PYG{p}{:}
         \PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}Returns the object the view is displaying.}
@@ -2770,10 +2753,30 @@ We'll use the \code{ContactOwnerMixin} in all of our views. For example,
         \PYG{k}{try}\PYG{p}{:}
             \PYG{n}{obj} \PYG{o}{=} \PYG{n}{queryset}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{p}{)}
         \PYG{k}{except} \PYG{n}{ObjectDoesNotExist}\PYG{p}{:}
-            \PYG{k}{raise} \PYG{n}{Http404}\PYG{p}{(}\PYG{n}{\PYGZus{}}\PYG{p}{(}\PYG{l+s}{u\PYGZdq{}}\PYG{l+s}{No }\PYG{l+s+si}{\PYGZpc{}(verbose\PYGZus{}name)s}\PYG{l+s}{ found matching the query}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)} \PYG{o}{\PYGZpc{}}
-                          \PYG{p}{\PYGZob{}}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{verbose\PYGZus{}name}\PYG{l+s}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{queryset}\PYG{o}{.}\PYG{n}{model}\PYG{o}{.}\PYG{n}{\PYGZus{}meta}\PYG{o}{.}\PYG{n}{verbose\PYGZus{}name}\PYG{p}{\PYGZcb{}}\PYG{p}{)}
+            \PYG{k}{raise} \PYG{n}{PermissionDenied}
 
         \PYG{k}{return} \PYG{n}{obj}
+\end{Verbatim}
+
+\code{ContactOwnerMixin} overrides the \code{get\_object()} method, which is
+responsible for getting the object for a view to operate on. If it
+can't find one with the specified primary key and owner, it raises the
+\code{PermissionDenied} exception.
+
+\begin{notice}{note}{Note:}
+This implementation will return HTTP 403 (Forbidden) whenever it
+cannot find the a Contact with the requested ID and owner. This
+will mask legitimate 404 (Not Found) errors.
+\end{notice}
+
+We'll use the \code{ContactOwnerMixin} in all of our views. For example,
+\code{ContactView} will look as follows:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{class} \PYG{n+nc}{ContactView}\PYG{p}{(}\PYG{n}{LoggedInMixin}\PYG{p}{,} \PYG{n}{ContactOwnerMixin}\PYG{p}{,} \PYG{n}{DetailView}\PYG{p}{)}\PYG{p}{:}
+
+    \PYG{n}{model} \PYG{o}{=} \PYG{n}{Contact}
+    \PYG{n}{template\PYGZus{}name} \PYG{o}{=} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{contact.html}\PYG{l+s}{\PYGZsq{}}
 \end{Verbatim}
 
 Note that the order of inheritance is important: the superclasses

@@ -220,6 +220,8 @@ The remaining views are responsible for showing only a single object
 mixin that enforces authorization.
 
 .. literalinclude:: /src/contacts/views.py
+   :prepend: from django.core.exceptions import PermissionDenied
+             ...
    :pyobject: ContactOwnerMixin
 
 ``ContactOwnerMixin`` overrides the ``get_object()`` method, which is
@@ -230,10 +232,8 @@ can't find one with the specified primary key and owner, it raises the
 .. note::
 
    This implementation will return HTTP 403 (Forbidden) whenever it
-   cannot find the a Contact with the requested ID and owner. While
-   this will mask a legitimate 404, you may not want to expose that
-   the object with that ID exists at all in the system if the user
-   does not have permission to access it.
+   cannot find the a Contact with the requested ID and owner. This
+   will mask legitimate 404 (Not Found) errors.
 
 We'll use the ``ContactOwnerMixin`` in all of our views. For example,
 ``ContactView`` will look as follows:

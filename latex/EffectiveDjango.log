@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.3.9)  9 MAR 2015 22:39
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.3.9)  10 MAR 2015 07:59
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1163,29 +1163,29 @@ Underfull \hbox (badness 10000) in paragraph at lines 2597--2603
 iews re-mains [][]a lit-tle cum-ber-some[][]
  []
 
-[44]
-Underfull \hbox (badness 10000) in paragraph at lines 2714--2717
+[44] [45]
+Underfull \hbox (badness 10000) in paragraph at lines 2715--2718
 []\T1/ptm/m/n/10 For the list of Con-tacts, we'll want to over-ride the \T1/pcr
 /m/n/10 get_queryset \T1/ptm/m/n/10 method, which re-turns
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2714--2717
+Underfull \hbox (badness 10000) in paragraph at lines 2715--2718
 \T1/ptm/m/n/10 the [][]Django Query-Set[][] (https://docs.djangoproject.com/en/
 1.6/ref/class-based-views/mixins-multiple-
  []
 
-[45] [46] (./EffectiveDjango.ind)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 2801.
+[46] (./EffectiveDjango.ind)
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 2804.
  [47]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 2801.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 2804.
  (./EffectiveDjango.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 2801.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 2801.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 2804.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 2804.
 
 Package rerunfilecheck Info: File `EffectiveDjango.out' has not changed.
 (rerunfilecheck)             Checksum: D9C982B25168B2900F6A1904B895397F;2843.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 2801.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 2804.
  ) 
 Here is how much of TeX's memory you used:
  9378 strings out of 495028
@@ -1203,7 +1203,7 @@ uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvbo8a.pfb>
 </usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/tex
 live/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist
 /fonts/type1/urw/times/utmri8a.pfb>
-Output written on EffectiveDjango.pdf (51 pages, 489462 bytes).
+Output written on EffectiveDjango.pdf (51 pages, 489132 bytes).
 PDF statistics:
  601 PDF objects out of 1000 (max. 8388607)
  525 compressed objects within 6 object streams
