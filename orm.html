@@ -5,18 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-188298-7']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
+    
     <title>Effective Django ORM &mdash; Effective Django</title>
     
     <link rel="stylesheet" href="_static/nature.css" type="text/css" />
@@ -36,10 +25,17 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Effective Django" href="index.html" />
     <link rel="next" title="Class Based Views" href="classbasedviews.html" />
-    <link rel="prev" title="Understanding Middleware" href="middleware.html" /> 
+    <link rel="prev" title="Understanding Middleware" href="middleware.html" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-188298-7']);
+  _gaq.push(['_trackPageview']);
+</script>
+
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -48,14 +44,14 @@
         <li class="right" >
           <a href="middleware.html" title="Understanding Middleware"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Effective Django</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Effective Django</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="effective-django-orm">
 <h1>Effective Django ORM<a class="headerlink" href="#effective-django-orm" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/orm.html#effective-django-orm" title="Slides">§</a></h1>
@@ -106,21 +102,21 @@
 <div class="section" id="saving-data">
 <h2>Saving Data<a class="headerlink" href="#saving-data" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/orm.html#saving-data" title="Slides">§</a></h2>
 <ul class="simple">
-<li>Starting in Django 1.5, calling <tt class="docutils literal"><span class="pre">.save()</span></tt> only updates the fields
+<li>Starting in Django 1.5, calling <code class="docutils literal"><span class="pre">.save()</span></code> only updates the fields
 that have changed.</li>
-<li>Prior to 1.5, <tt class="docutils literal"><span class="pre">.save()</span></tt> updated the entire model, making it easy
+<li>Prior to 1.5, <code class="docutils literal"><span class="pre">.save()</span></code> updated the entire model, making it easy
 to overwrite changes</li>
 <li><a class="reference external" href="http://pypi.python.org/pypi/django-dirtyfields/">django-dirtyfields</a> lets you track which fields have been changed
 if you&#8217;re stuck on an older version of Django (but does not change
-<tt class="docutils literal"><span class="pre">.save()</span></tt> behavior on its own)</li>
+<code class="docutils literal"><span class="pre">.save()</span></code> behavior on its own)</li>
 </ul>
 </div>
 <div class="section" id="managers">
 <h2>Managers<a class="headerlink" href="#managers" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/orm.html#managers" title="Slides">§</a></h2>
 <ul class="simple">
-<li>Models get a manager injected as <tt class="docutils literal"><span class="pre">.objects</span></tt></li>
+<li>Models get a manager injected as <code class="docutils literal"><span class="pre">.objects</span></code></li>
 <li>Managers allow you to operate over collections of your model</li>
-<li>Default manager emulates part of the <tt class="docutils literal"><span class="pre">QuerySet</span></tt> API for
+<li>Default manager emulates part of the <code class="docutils literal"><span class="pre">QuerySet</span></code> API for
 convenience</li>
 </ul>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">Contact</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">last_name__iexact</span><span class="o">=</span><span class="s">&#39;yergler&#39;</span><span class="p">)</span>
@@ -132,7 +128,7 @@ convenience</li>
 <ul class="simple">
 <li>You can override the default Manager, or add additional ones</li>
 <li>Operations on sets of Model instances belongs here</li>
-<li>Subclass from <tt class="docutils literal"><span class="pre">models.Manager</span></tt> to get queryset emulation</li>
+<li>Subclass from <code class="docutils literal"><span class="pre">models.Manager</span></code> to get queryset emulation</li>
 </ul>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ContactManager</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Manager</span><span class="p">):</span>
 
@@ -154,7 +150,7 @@ convenience</li>
 <ul class="simple">
 <li>Sometimes you want to heavily customize the manager without
 re-implementing everything</li>
-<li><tt class="docutils literal"><span class="pre">Manager.get_query_set()</span></tt>
+<li><code class="docutils literal"><span class="pre">Manager.get_query_set()</span></code>
 allows you to customize the basic QuerySet used by Manager methods</li>
 </ul>
 </div>
@@ -240,7 +236,7 @@ allows you to customize the basic QuerySet used by Manager methods</li>
 </ul>
 <div class="section" id="or-conditions-in-queries">
 <h3>OR conditions in Queries<a class="headerlink" href="#or-conditions-in-queries" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/orm.html#or-conditions-in-queries" title="Slides">§</a></h3>
-<p>If you need to do &#8220;or&#8221; conditions, you can use <tt class="docutils literal"><span class="pre">Q</span></tt> objects</p>
+<p>If you need to do &#8220;or&#8221; conditions, you can use <code class="docutils literal"><span class="pre">Q</span></code> objects</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span>
 
 <span class="n">Contact</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
@@ -261,7 +257,7 @@ allows you to customize the basic QuerySet used by Manager methods</li>
 <ul class="simple">
 <li>QuerySets are lazy, but have non-trivial overhead when evaluated</li>
 <li>If a query returns 1000s of rows, users will notice this</li>
-<li><tt class="docutils literal"><span class="pre">.values()</span></tt> and <tt class="docutils literal"><span class="pre">.values_list()</span></tt> avoid instantiation</li>
+<li><code class="docutils literal"><span class="pre">.values()</span></code> and <code class="docutils literal"><span class="pre">.values_list()</span></code> avoid instantiation</li>
 </ul>
 </div>
 <div class="section" id="avoiding-instantiation">
@@ -279,7 +275,7 @@ allows you to customize the basic QuerySet used by Manager methods</li>
 <h3>Traversing Relationships<a class="headerlink" href="#traversing-relationships" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/orm.html#traversing-relationships" title="Slides">§</a></h3>
 <ul class="simple">
 <li>Traversing foreign keys can incur additional queries</li>
-<li><tt class="docutils literal"><span class="pre">select_related</span></tt> queries for foreign keys in the initial query</li>
+<li><code class="docutils literal"><span class="pre">select_related</span></code> queries for foreign keys in the initial query</li>
 </ul>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">Contact</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span>\
     <span class="n">select_related</span><span class="p">(</span><span class="s">&#39;address&#39;</span><span class="p">)</span><span class="o">.</span>\
@@ -301,7 +297,7 @@ allows you to customize the basic QuerySet used by Manager methods</li>
 <ul class="simple">
 <li>Django has to be database agnostic, you don&#8217;t</li>
 <li>Sometimes the clearest thing to do is write a SQL statement</li>
-<li>The <tt class="docutils literal"><span class="pre">.raw()</span></tt> method lets you do this</li>
+<li>The <code class="docutils literal"><span class="pre">.raw()</span></code> method lets you do this</li>
 </ul>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">Contact</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">raw</span><span class="p">(</span><span class="s">&#39;SELECT * FROM contacts WHERE last_name = </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">lname</span><span class="p">])</span>
 </pre></div>
@@ -309,7 +305,7 @@ allows you to customize the basic QuerySet used by Manager methods</li>
 <ul class="simple">
 <li>Must retrieve the primary key</li>
 <li>Omitted fields will be &#8220;deferred&#8221;</li>
-<li><strong>DO NOT</strong> use string formatting in <tt class="docutils literal"><span class="pre">raw()</span></tt> calls</li>
+<li><strong>DO NOT</strong> use string formatting in <code class="docutils literal"><span class="pre">raw()</span></code> calls</li>
 </ul>
 </div>
 <div class="section" id="other-manager-operations">
@@ -317,16 +313,16 @@ allows you to customize the basic QuerySet used by Manager methods</li>
 <p>Managers have some additional helpers for operating on the table or
 collection:</p>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">get_or_create</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">update</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">delete</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">bulk_insert</span></tt></li>
+<li><code class="docutils literal"><span class="pre">get_or_create</span></code></li>
+<li><code class="docutils literal"><span class="pre">update</span></code></li>
+<li><code class="docutils literal"><span class="pre">delete</span></code></li>
+<li><code class="docutils literal"><span class="pre">bulk_insert</span></code></li>
 </ul>
 </div>
 <div class="section" id="read-repeatable">
 <h3>Read Repeatable<a class="headerlink" href="#read-repeatable" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/orm.html#read-repeatable" title="Slides">§</a></h3>
 <p>MySQL&#8217;s default transaction isolation for InnoDB <strong>breaks</strong>
-Django&#8217;s <tt class="docutils literal"><span class="pre">get_or_create</span></tt> when running at scale</p>
+Django&#8217;s <code class="docutils literal"><span class="pre">get_or_create</span></code> when running at scale</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">get_or_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
     <span class="k">try</span><span class="p">:</span>
@@ -351,7 +347,7 @@ Django&#8217;s <tt class="docutils literal"><span class="pre">get_or_create</spa
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
@@ -398,17 +394,19 @@ Django&#8217;s <tt class="docutils literal"><span class="pre">get_or_create</spa
   <h4>Next topic</h4>
   <p class="topless"><a href="classbasedviews.html"
                         title="next chapter">Class Based Views</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/orm.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/orm.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
   <h3>Slides</h3>
   <ul class="this-page-menu">
     <li><a href="./slides/orm.html"
            rel="nofollow">View as slides</a></li>
   </ul>
-<div id="searchbox" style="display: none">
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
@@ -425,7 +423,7 @@ Django&#8217;s <tt class="docutils literal"><span class="pre">get_or_create</spa
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -434,12 +432,23 @@ Django&#8217;s <tt class="docutils literal"><span class="pre">get_or_create</spa
         <li class="right" >
           <a href="middleware.html" title="Understanding Middleware"
              >previous</a> |</li>
-        <li><a href="index.html">Effective Django</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Effective Django</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2012-2013, Nathan Yergler.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
+<script type="text/javascript">
+  (function() {
+    var ga = document.createElement('script');
+    ga.src = ('https:' == document.location.protocol ?
+              'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+  })();
+</script>
+
   </body>
 </html>

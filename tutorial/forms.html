@@ -5,18 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-188298-7']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
+    
     <title>Form Basics &mdash; Effective Django</title>
     
     <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
@@ -37,10 +26,17 @@
     <link rel="top" title="Effective Django" href="../index.html" />
     <link rel="up" title="Effective Django Tutorial" href="index.html" />
     <link rel="next" title="Related Models" href="related.html" />
-    <link rel="prev" title="Additional Generic Views" href="additional-views.html" /> 
+    <link rel="prev" title="Additional Generic Views" href="additional-views.html" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-188298-7']);
+  _gaq.push(['_trackPageview']);
+</script>
+
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -49,15 +45,15 @@
         <li class="right" >
           <a href="additional-views.html" title="Additional Generic Views"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">Effective Django</a> &raquo;</li>
-          <li><a href="index.html" accesskey="U">Effective Django Tutorial</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">Effective Django</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Effective Django Tutorial</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="form-basics">
 <h1>Form Basics<a class="headerlink" href="#form-basics" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/forms.html#form-basics" title="Slides">§</a></h1>
@@ -88,8 +84,8 @@ completely different implementations. But the analogy holds.</td></tr>
 <p>So what if we want to add a field to our form? Say, we want to require
 confirmation of the email address. In that case we can create a new
 form, and override the default used by our views.</p>
-<p>First, in the <tt class="docutils literal"><span class="pre">contacts</span></tt> app directory, we&#8217;ll create a new file,
-<tt class="docutils literal"><span class="pre">forms.py</span></tt>.</p>
+<p>First, in the <code class="docutils literal"><span class="pre">contacts</span></code> app directory, we&#8217;ll create a new file,
+<code class="docutils literal"><span class="pre">forms.py</span></code>.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
 <span class="kn">from</span> <span class="nn">django.core.exceptions</span> <span class="kn">import</span> <span class="n">ValidationError</span>
 
@@ -115,24 +111,24 @@ form, and override the default used by our views.</p>
         <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">ContactForm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Here we&#8217;re creating a new <tt class="docutils literal"><span class="pre">ModelForm</span></tt>; we associate the form with
-our model in the <tt class="docutils literal"><span class="pre">Meta</span></tt> inner class.</p>
-<p>We&#8217;re also adding an additional field, <tt class="docutils literal"><span class="pre">confirm_email</span></tt>. This is an
+<p>Here we&#8217;re creating a new <code class="docutils literal"><span class="pre">ModelForm</span></code>; we associate the form with
+our model in the <code class="docutils literal"><span class="pre">Meta</span></code> inner class.</p>
+<p>We&#8217;re also adding an additional field, <code class="docutils literal"><span class="pre">confirm_email</span></code>. This is an
 example of a field declaration in a model. The first argument is the
 label, and then there are additional keyword arguments; in this case,
 we simply mark it required.</p>
-<p>Finally, in the constructor we mutate the <tt class="docutils literal"><span class="pre">initial</span></tt> kwarg.
-<tt class="docutils literal"><span class="pre">initial</span></tt> is a dictionary of values that will be used as the default
+<p>Finally, in the constructor we mutate the <code class="docutils literal"><span class="pre">initial</span></code> kwarg.
+<code class="docutils literal"><span class="pre">initial</span></code> is a dictionary of values that will be used as the default
 values for an <a class="reference external" href="https://docs.djangoproject.com/en/1.5/ref/forms/api/#ref-forms-api-bound-unbound">unbound form</a>. Model Forms have another kwarg,
-<tt class="docutils literal"><span class="pre">instance</span></tt>, that holds the instance we&#8217;re editing.</p>
+<code class="docutils literal"><span class="pre">instance</span></code>, that holds the instance we&#8217;re editing.</p>
 </div>
 <div class="section" id="overriding-the-default-form">
 <h2>Overriding the Default Form<a class="headerlink" href="#overriding-the-default-form" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/forms.html#overriding-the-default-form" title="Slides">§</a></h2>
 <p>We&#8217;ve defined a form with the extra field, but we still need to tell
 our view to use it. You can do this in a couple of ways, but the
-simplest is to set the <tt class="docutils literal"><span class="pre">form_class</span></tt> property on the View class.
-We&#8217;ll add that property to our <tt class="docutils literal"><span class="pre">CreateContactView</span></tt> and
-<tt class="docutils literal"><span class="pre">UpdateContactView</span></tt> in <tt class="docutils literal"><span class="pre">views.py</span></tt>.</p>
+simplest is to set the <code class="docutils literal"><span class="pre">form_class</span></code> property on the View class.
+We&#8217;ll add that property to our <code class="docutils literal"><span class="pre">CreateContactView</span></code> and
+<code class="docutils literal"><span class="pre">UpdateContactView</span></code> in <code class="docutils literal"><span class="pre">views.py</span></code>.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">forms</span>
 <span class="o">...</span>
 <span class="k">class</span> <span class="nc">CreateContactView</span><span class="p">(</span><span class="n">CreateView</span><span class="p">):</span>
@@ -169,7 +165,7 @@ phase.</p>
 validated and converted to Python objects, and gives you the
 opportunity to do things like make sure passwords match, or in this
 case, email addresses.</p>
-<p>Form validation takes place in a form&#8217;s <tt class="docutils literal"><span class="pre">clean()</span></tt> method.</p>
+<p>Form validation takes place in a form&#8217;s <code class="docutils literal"><span class="pre">clean()</span></code> method.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ContactForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
 <span class="o">...</span>
     <span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -184,17 +180,17 @@ case, email addresses.</p>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cleaned_data</span>
 </pre></div>
 </div>
-<p>When you enter the <tt class="docutils literal"><span class="pre">clean</span></tt> method, all of the fields that validated
-are available in the <tt class="docutils literal"><span class="pre">cleaned_data</span></tt> dictionary. The <tt class="docutils literal"><span class="pre">clean</span></tt> method
+<p>When you enter the <code class="docutils literal"><span class="pre">clean</span></code> method, all of the fields that validated
+are available in the <code class="docutils literal"><span class="pre">cleaned_data</span></code> dictionary. The <code class="docutils literal"><span class="pre">clean</span></code> method
 may add, remove, or modify values, but <strong>must</strong> return the dictionary
-of cleaned data. <tt class="docutils literal"><span class="pre">clean</span></tt> may also raise a <tt class="docutils literal"><span class="pre">ValidationError</span></tt> if it
+of cleaned data. <code class="docutils literal"><span class="pre">clean</span></code> may also raise a <code class="docutils literal"><span class="pre">ValidationError</span></code> if it
 encounters an error. This will be available as part of the forms&#8217;
-<tt class="docutils literal"><span class="pre">errors</span></tt> property, and is shown by default when you render the form.</p>
-<p>Note that I said <tt class="docutils literal"><span class="pre">cleaned_data</span></tt> contains all the fields <em>that
+<code class="docutils literal"><span class="pre">errors</span></code> property, and is shown by default when you render the form.</p>
+<p>Note that I said <code class="docutils literal"><span class="pre">cleaned_data</span></code> contains all the fields <em>that
 validated</em>. That&#8217;s because form-level validation <strong>always</strong> happens,
 even if no fields were successfully validated. That&#8217;s why in the clean
-method we use <tt class="docutils literal"><span class="pre">cleaned_data.get('email')</span></tt> instead of
-<tt class="docutils literal"><span class="pre">cleaned_data['email']</span></tt>.</p>
+method we use <code class="docutils literal"><span class="pre">cleaned_data.get('email')</span></code> instead of
+<code class="docutils literal"><span class="pre">cleaned_data['email']</span></code>.</p>
 <p>If you visit the create or update views now, we&#8217;ll see an extra field
 there. Try to make a change, or create a contact, without entering the
 email address twice.</p>
@@ -212,23 +208,23 @@ the extent of our HTML tags has been something like:</p>
 &lt;/form&gt;
 </pre></div>
 </div>
-<p>We&#8217;re living at the whim of <tt class="docutils literal"><span class="pre">form.as_ul</span></tt>, and it&#8217;s likely we want
+<p>We&#8217;re living at the whim of <code class="docutils literal"><span class="pre">form.as_ul</span></code>, and it&#8217;s likely we want
 something different.</p>
-<p>Forms have three pre-baked output formats: <tt class="docutils literal"><span class="pre">as_ul</span></tt>, <tt class="docutils literal"><span class="pre">as_p</span></tt>, and
-<tt class="docutils literal"><span class="pre">as_table</span></tt>. If <tt class="docutils literal"><span class="pre">as_ul</span></tt> outputs the form elements as the items in
-an unordered list, it&#8217;s not too mysterious what <tt class="docutils literal"><span class="pre">as_p</span></tt> and
-<tt class="docutils literal"><span class="pre">as_table</span></tt> do.</p>
+<p>Forms have three pre-baked output formats: <code class="docutils literal"><span class="pre">as_ul</span></code>, <code class="docutils literal"><span class="pre">as_p</span></code>, and
+<code class="docutils literal"><span class="pre">as_table</span></code>. If <code class="docutils literal"><span class="pre">as_ul</span></code> outputs the form elements as the items in
+an unordered list, it&#8217;s not too mysterious what <code class="docutils literal"><span class="pre">as_p</span></code> and
+<code class="docutils literal"><span class="pre">as_table</span></code> do.</p>
 <span class="admonition-controlling-form-output"></span><p>Often, though, you need more control. For those cases, you can take
 full control. First, a form is iterable; try replacing your call to
-<tt class="docutils literal"><span class="pre">{{form.as_ul}}</span></tt> with this:</p>
+<code class="docutils literal"><span class="pre">{{form.as_ul}}</span></code> with this:</p>
 <div class="highlight-python"><div class="highlight"><pre>{% for field in form %}
 {{ field }}
 {% endfor %}
 </pre></div>
 </div>
-<p>As you can see, <tt class="docutils literal"><span class="pre">field</span></tt> renders as the input for each field in the
+<p>As you can see, <code class="docutils literal"><span class="pre">field</span></code> renders as the input for each field in the
 form. When you iterate over a Form, you&#8217;re iterating over a sequence
-of <a class="reference external" href="https://docs.djangoproject.com/en/1.5/ref/forms/api/#django.forms.BoundField">BoundField</a> objects. A <tt class="docutils literal"><span class="pre">BoundField</span></tt> wraps the field definition
+of <a class="reference external" href="https://docs.djangoproject.com/en/1.5/ref/forms/api/#django.forms.BoundField">BoundField</a> objects. A <code class="docutils literal"><span class="pre">BoundField</span></code> wraps the field definition
 from your Form (or derived from the ModelForm) along with any data and
 error state it may be bound to. This means it has some properties that
 are handy for customizing rendering.</p>
@@ -240,13 +236,13 @@ BoundField directly, treating the Form like a dictionary:</p>
 <div class="sidebar">
 <p class="first sidebar-title">Dictionary!?!</p>
 <p class="last">That may not look like a dictionary access, but remember that Django
-templates are quite restrictive in their syntax. Writing <tt class="docutils literal"><span class="pre">foo.bar</span></tt>
-will look for a property <tt class="docutils literal"><span class="pre">bar</span></tt> on <tt class="docutils literal"><span class="pre">foo</span></tt>, and if it&#8217;s callable,
+templates are quite restrictive in their syntax. Writing <code class="docutils literal"><span class="pre">foo.bar</span></code>
+will look for a property <code class="docutils literal"><span class="pre">bar</span></code> on <code class="docutils literal"><span class="pre">foo</span></code>, and if it&#8217;s callable,
 call it. If it doesn&#8217;t find a property, it&#8217;ll map that to something
-like <tt class="docutils literal"><span class="pre">foo['bar']</span></tt>. So when it comes to writing Django templates,
+like <code class="docutils literal"><span class="pre">foo['bar']</span></code>. So when it comes to writing Django templates,
 dictionary elements act just like properties.</p>
 </div>
-<p>Consider the following alternative to <tt class="docutils literal"><span class="pre">edit_contact.html</span></tt>.</p>
+<p>Consider the following alternative to <code class="docutils literal"><span class="pre">edit_contact.html</span></code>.</p>
 <div class="highlight-html"><div class="highlight"><pre>{% extends &quot;base.html&quot; %}
 
 {% block content %}
@@ -295,23 +291,23 @@ dictionary elements act just like properties.</p>
 </div>
 <p>In this example we see a few different things at work:</p>
 <ul>
-<li><p class="first"><tt class="docutils literal"><span class="pre">field.auto_id</span></tt> to get the automatically generated field ID</p>
+<li><p class="first"><code class="docutils literal"><span class="pre">field.auto_id</span></code> to get the automatically generated field ID</p>
 </li>
-<li><p class="first">Combining that ID with <tt class="docutils literal"><span class="pre">_container</span></tt> and <tt class="docutils literal"><span class="pre">_errors</span></tt> to give our
+<li><p class="first">Combining that ID with <code class="docutils literal"><span class="pre">_container</span></code> and <code class="docutils literal"><span class="pre">_errors</span></code> to give our
 related elements names that consistently match</p>
 </li>
-<li><p class="first">Using <tt class="docutils literal"><span class="pre">field.label_tag</span></tt> to generate the label. <tt class="docutils literal"><span class="pre">label_tag</span></tt> adds
-the appropriate <tt class="docutils literal"><span class="pre">for</span></tt> property to the tag, too. For the
-<tt class="docutils literal"><span class="pre">last_name</span></tt> field, this looks like:</p>
+<li><p class="first">Using <code class="docutils literal"><span class="pre">field.label_tag</span></code> to generate the label. <code class="docutils literal"><span class="pre">label_tag</span></code> adds
+the appropriate <code class="docutils literal"><span class="pre">for</span></code> property to the tag, too. For the
+<code class="docutils literal"><span class="pre">last_name</span></code> field, this looks like:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;label for=&quot;id_last_name&quot;&gt;Last name&lt;/label&gt;
 </pre></div>
 </div>
 </li>
-<li><p class="first">Using <tt class="docutils literal"><span class="pre">field.errors</span></tt> to show the errors in a specific place. The
+<li><p class="first">Using <code class="docutils literal"><span class="pre">field.errors</span></code> to show the errors in a specific place. The
 Django Form documentation has details on further customizing <a class="reference external" href="https://docs.djangoproject.com/en/1.5/ref/forms/api/#how-errors-are-displayed">how
 errors are displayed</a>.</p>
 </li>
-<li><p class="first">Finally, <tt class="docutils literal"><span class="pre">field.help_text</span></tt>. You can specify a <tt class="docutils literal"><span class="pre">help_text</span></tt>
+<li><p class="first">Finally, <code class="docutils literal"><span class="pre">field.help_text</span></code>. You can specify a <code class="docutils literal"><span class="pre">help_text</span></code>
 keyword argument to each field when creating your form, which is
 accessible here. Defining that text in the Form definition is
 desirable because you can easily mark it up for translation.</p>
@@ -320,7 +316,7 @@ desirable because you can easily mark it up for translation.</p>
 </div>
 <div class="section" id="testing-forms">
 <h2>Testing Forms<a class="headerlink" href="#testing-forms" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/forms.html#testing-forms" title="Slides">§</a></h2>
-<p>It&#8217;s easy to imagine how you&#8217;d use the <tt class="docutils literal"><span class="pre">LiveServerTestCase</span></tt> to write
+<p>It&#8217;s easy to imagine how you&#8217;d use the <code class="docutils literal"><span class="pre">LiveServerTestCase</span></code> to write
 an integration test for a Form. But that wouldn&#8217;t just be testing the
 Form, that&#8217;d be testing the View, the URL configuration, and probably
 the Model (in this case, at least). We&#8217;ve built some custom logic into
@@ -366,8 +362,8 @@ addresses match) and failure (they do not).</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">bound_form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">())</span>
 </pre></div>
 </div>
-<p>An interesting thing to note here is the use of the <tt class="docutils literal"><span class="pre">is_valid()</span></tt>
-method. We could just as easily introspect the <tt class="docutils literal"><span class="pre">errors</span></tt> property
+<p>An interesting thing to note here is the use of the <code class="docutils literal"><span class="pre">is_valid()</span></code>
+method. We could just as easily introspect the <code class="docutils literal"><span class="pre">errors</span></code> property
 that we used in our template above, but in this case we just need a
 Boolean answer: is the form valid, or not? Note that we do need to
 provide a first and last name, as well, since those are required
@@ -381,7 +377,7 @@ fields.</p>
 <li>Fields have validation built in</li>
 <li>You can customize per-field validation, as well as form validation</li>
 <li>If you need to compare fields to one another, you need to implement
-the <tt class="docutils literal"><span class="pre">clean</span></tt> method</li>
+the <code class="docutils literal"><span class="pre">clean</span></code> method</li>
 <li>Forms are iterable over, and support dictionary-like access to, the
 bound fields</li>
 <li>A Bound Field has properties and methods for performing fine-grained
@@ -396,7 +392,7 @@ testing large forms.</li>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
@@ -417,17 +413,19 @@ testing large forms.</li>
   <h4>Next topic</h4>
   <p class="topless"><a href="related.html"
                         title="next chapter">Related Models</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="../_sources/tutorial/forms.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/tutorial/forms.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
   <h3>Slides</h3>
   <ul class="this-page-menu">
     <li><a href="../.././slides/tutorial/forms.html"
            rel="nofollow">View as slides</a></li>
   </ul>
-<div id="searchbox" style="display: none">
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
       <input type="text" name="q" />
@@ -444,7 +442,7 @@ testing large forms.</li>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -453,13 +451,24 @@ testing large forms.</li>
         <li class="right" >
           <a href="additional-views.html" title="Additional Generic Views"
              >previous</a> |</li>
-        <li><a href="../index.html">Effective Django</a> &raquo;</li>
-          <li><a href="index.html" >Effective Django Tutorial</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">Effective Django</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Effective Django Tutorial</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2012-2013, Nathan Yergler.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
+<script type="text/javascript">
+  (function() {
+    var ga = document.createElement('script');
+    ga.src = ('https:' == document.location.protocol ?
+              'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+  })();
+</script>
+
   </body>
 </html>

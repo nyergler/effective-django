@@ -4,18 +4,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-188298-7']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
+    
     <title>Related Models &mdash; Effective Django</title>
     
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
@@ -24,8 +13,9 @@
     
     <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
     
-
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -40,12 +30,21 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <script type="text/javascript" src="../_static/common.js"></script>
+    
     <script type="text/javascript" src="../_static/slides.js"></script>
     <script type="text/javascript" src="../_static/sync.js"></script>
     <script type="text/javascript" src="../_static/controller.js"></script>
     <script type="text/javascript" src="../_static/init.js"></script>
     
-    <link rel="top" title="Effective Django" href="../index.html" /> 
+    
+    <link rel="top" title="Effective Django" href="../index.html" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-188298-7']);
+  _gaq.push(['_trackPageview']);
+</script>
+
   </head>
   <body>
 
@@ -54,12 +53,20 @@
    class='slides layout-regular'>
 
 
-  <article class="slide level-1" id="related-models">
+  
+<article class="slide level-1" id="related-models">
+
 <h1>Related Models<a class="headerlink" href="../../tutorial/related.html#related-models" title="View HTML">§</a></h1>
+
+
+
+
 
 </article>
 <article class="slide level-2" id="adding-relationships">
+
 <h2>Adding Relationships<a class="headerlink" href="../../tutorial/related.html#adding-relationships" title="View HTML">§</a></h2>
+
 <p>We have a basic email address book at this point, but there's other
 information we might want to track for our contacts. Mailing
 addresses, for example. A single Contact may have multiple addresses
@@ -90,8 +97,8 @@ allowing us to have multiple addresses for each Contact.</p>
 </pre></div>
 </div>
 <p>Django provides three types of fields for relating objects to each
-other: <tt class="docutils literal"><span class="pre">ForeignKey</span></tt> for creating one to many relationships,
-<tt class="docutils literal"><span class="pre">ManyToManyField</span></tt> for relating many to many, and <tt class="docutils literal"><span class="pre">OneToOneField</span></tt>
+other: <code class="docutils literal"><span class="pre">ForeignKey</span></code> for creating one to many relationships,
+<code class="docutils literal"><span class="pre">ManyToManyField</span></code> for relating many to many, and <code class="docutils literal"><span class="pre">OneToOneField</span></code>
 for creating a one to one relationship. You define the relationship in
 one model, but it's accessible from the other side, as well.</p>
 <p>Sync up the database to create the table, and then start the shell so
@@ -136,7 +143,7 @@ access things in the reverse direction. We can also use the double
 underscore notation to filter Addresses or Contacts based on the
 related objects.</p>
 <p>Let's go ahead and add address display to our contacts. We'll add the
-list of all Addresses to the Contact detail view in <tt class="docutils literal"><span class="pre">contact.html</span></tt>.</p>
+list of all Addresses to the Contact detail view in <code class="docutils literal"><span class="pre">contact.html</span></code>.</p>
 <div class="highlight-python"><div class="highlight"><pre>{% extends &quot;base.html&quot; %}
 
 {% block content %}
@@ -158,9 +165,14 @@ list of all Addresses to the Contact detail view in <tt class="docutils literal"
 </pre></div>
 </div>
 
+
+
+
 </article>
 <article class="slide level-2" id="editing-related-objects">
+
 <h2>Editing Related Objects<a class="headerlink" href="../../tutorial/related.html#editing-related-objects" title="View HTML">§</a></h2>
+
 <p>So how do we go about editing addresses for our contacts? You can
 imagine creating another CreateView like we did for Contacts, but the
 question remains: how do we wire the new Address to our Contact? We
@@ -178,7 +190,7 @@ FormSet</a> does this for a set of objects (in this case Addresses) that
 share a common related object (in this case the Contact).</p>
 <p>Because formsets are somewhat complex objects, Django provides factory
 functions that create the class for you. We'll add a call to the
-factory to our <tt class="docutils literal"><span class="pre">forms.py</span></tt> file.</p>
+factory to our <code class="docutils literal"><span class="pre">forms.py</span></code> file.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.forms.models</span> <span class="kn">import</span> <span class="n">inlineformset_factory</span>
 
 <span class="kn">from</span> <span class="nn">contacts.models</span> <span class="kn">import</span> <span class="p">(</span>
@@ -209,7 +221,7 @@ we want to use, instead of having Django create one for us.</p>
 </pre></div>
 </div>
 <p>Note that even though we're editing Addresses with this view, we still
-have <tt class="docutils literal"><span class="pre">model</span></tt> set to <tt class="docutils literal"><span class="pre">Contact</span></tt>. This is because an inline formset
+have <code class="docutils literal"><span class="pre">model</span></code> set to <code class="docutils literal"><span class="pre">Contact</span></code>. This is because an inline formset
 takes the parent object as its starting point.</p>
 <p>Once again, this needs to be wired up into the URL configuration.</p>
 <div class="highlight-python"><div class="highlight"><pre>    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^edit/(?P&lt;pk&gt;\d+)/addresses$&#39;</span><span class="p">,</span> <span class="n">contacts</span><span class="o">.</span><span class="n">views</span><span class="o">.</span><span class="n">EditContactAddressView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span>
@@ -245,19 +257,21 @@ takes the parent object as its starting point.</p>
 </div>
 <p>There are two new things in this template, both related to the fact
 we're using a formset instead of a form. First, there's a reference to
-<tt class="docutils literal"><span class="pre">form.management_form</span></tt>. This is a set of hidden fields that provide
+<code class="docutils literal"><span class="pre">form.management_form</span></code>. This is a set of hidden fields that provide
 some accounting information to Django: how many forms did we start
 with, how many empty ones are there, etc. If Django can't find this
 information when you POST the form, it will raise an exception.</p>
-<p>Second, we're iterating over form instead of just outputting it (<tt class="docutils literal"><span class="pre">for</span>
-<span class="pre">address_form</span> <span class="pre">in</span> <span class="pre">form</span></tt>). Again, this is because <tt class="docutils literal"><span class="pre">form</span></tt> here is a
+<p>Second, we're iterating over form instead of just outputting it (<code class="docutils literal"><span class="pre">for</span>
+<span class="pre">address_form</span> <span class="pre">in</span> <span class="pre">form</span></code>). Again, this is because <code class="docutils literal"><span class="pre">form</span></code> here is a
 formset instead of a single form. When you iterate over a formset,
 you're iterating over the individual forms in it. These individual
-forms are just &quot;normal&quot; <tt class="docutils literal"><span class="pre">ModelForm</span></tt> instances for each Address, so
+forms are just &quot;normal&quot; <code class="docutils literal"><span class="pre">ModelForm</span></code> instances for each Address, so
 you can apply the same output techniques you would normally use.</p>
 
-</article>
 
+
+
+</article>
 
 </section>
 

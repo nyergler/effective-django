@@ -5,26 +5,22 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-188298-7']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
+    
     <title>Additional Generic Views</title>
     
     <link rel="stylesheet" href="../_static/epub.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" /> 
-  </head>
-  <body>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-188298-7']);
+  _gaq.push(['_trackPageview']);
+</script>
 
-    <div class="related">
+  </head>
+  <body role="document">
+
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -33,14 +29,14 @@
         <li class="right" >
           <a href="static.html" title="Using Static Assets"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">Effective Django</a> &raquo;</li>
-          <li><a href="index.html" accesskey="U">Effective Django Tutorial</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">Effective Django</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Effective Django Tutorial</a> &raquo;</li> 
       </ul>
     </div>
 
     <div class="document">
       <div class="documentwrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="additional-generic-views">
 <h1>Additional Generic Views</h1>
@@ -89,13 +85,13 @@ contact.</p>
 {% endblock %}
 </pre></div>
 </div>
-<p>Note the use of <tt class="docutils literal"><span class="pre">pk=contact.id</span></tt> in the <tt class="docutils literal"><span class="pre">{%</span> <span class="pre">url</span> <span class="pre">%}</span></tt> tag to specify
+<p>Note the use of <code class="docutils literal"><span class="pre">pk=contact.id</span></code> in the <code class="docutils literal"><span class="pre">{%</span> <span class="pre">url</span> <span class="pre">%}</span></code> tag to specify
 the arguments to fill into the URL pattern.</p>
 <p>If you run the server now, you&#8217;ll see an edit link. Go ahead and click
 it, and try to make a change. You&#8217;ll notice that instead of editing
 the existing record, it creates a new one. Sad face.</p>
 <p>If we look at the source of the edit HTML, we can easily see the
-reason: the form targets <tt class="docutils literal"><span class="pre">/new</span></tt>, not our edit URL. To fix this &#8211;
+reason: the form targets <code class="docutils literal"><span class="pre">/new</span></code>, not our edit URL. To fix this &#8211;
 and still allow re-using the template &#8211; we&#8217;re going to add some
 information to the template context.</p>
 <p>The template context is the information available to a template when
@@ -149,16 +145,16 @@ change the title based on whether or not we&#8217;ve previously saved.</p>
 <span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">&quot;{{ action }}&quot;</span> <span class="na">method=</span><span class="s">&quot;POST&quot;</span><span class="nt">&gt;</span>
 </pre></div>
 </div>
-<p>You may wonder where the <tt class="docutils literal"><span class="pre">contact</span></tt> value in the contact comes from:
+<p>You may wonder where the <code class="docutils literal"><span class="pre">contact</span></code> value in the contact comes from:
 the class based views that wrap a single object (those that take
 a primary key or slug) expose that to the context in two different
-ways: as a variable named <tt class="docutils literal"><span class="pre">object</span></tt>, and as a variable named after
+ways: as a variable named <code class="docutils literal"><span class="pre">object</span></code>, and as a variable named after
 the model class. The latter often makes your templates easier to read
 and understand later. You can customize this name by overriding
-<tt class="docutils literal"><span class="pre">get_context_object_name</span></tt> on your view.</p>
+<code class="docutils literal"><span class="pre">get_context_object_name</span></code> on your view.</p>
 <div class="sidebar">
 <p class="first sidebar-title">Made a Change? Run the Tests.</p>
-<p>We&#8217;ve just made a change to our <tt class="docutils literal"><span class="pre">CreateContactView</span></tt>, which means
+<p>We&#8217;ve just made a change to our <code class="docutils literal"><span class="pre">CreateContactView</span></code>, which means
 this is a perfect time to run the tests we wrote. Do they still pass?
 If not, did we introduce a bug, or did the behavior change in a way
 that we expected?</p>
@@ -176,7 +172,7 @@ object and requires that you provide a URL to redirect to on success.
 When it processes a HTTP GET request, it displays a confirmation page,
 and when it receives an HTTP DELETE or POST, it deletes the object and
 redirects to the success URL.</p>
-<p>We add the view definition to <tt class="docutils literal"><span class="pre">views.py</span></tt>:</p>
+<p>We add the view definition to <code class="docutils literal"><span class="pre">views.py</span></code>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">DeleteView</span>
 <span class="o">...</span>
 <span class="k">class</span> <span class="nc">DeleteContactView</span><span class="p">(</span><span class="n">DeleteView</span><span class="p">):</span>
@@ -188,7 +184,7 @@ redirects to the success URL.</p>
         <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s">&#39;contacts-list&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>And create the template, <tt class="docutils literal"><span class="pre">delete_contact.html</span></tt>, in our <tt class="docutils literal"><span class="pre">templates</span></tt>
+<p>And create the template, <code class="docutils literal"><span class="pre">delete_contact.html</span></code>, in our <code class="docutils literal"><span class="pre">templates</span></code>
 directory.</p>
 <div class="highlight-html"><div class="highlight"><pre>{% extends &quot;base.html&quot; %}
 
@@ -224,8 +220,8 @@ directory.</p>
 <h2>Detail View</h2>
 <p>Finally, let&#8217;s go ahead and add a detail view for our Contacts. This
 will show the details of the Contact: not much right now, but we&#8217;ll
-build on this shortly. Django includes a generic <tt class="docutils literal"><span class="pre">DetailView</span></tt>: think
-of it as the single serving <tt class="docutils literal"><span class="pre">ListView</span></tt>.</p>
+build on this shortly. Django includes a generic <code class="docutils literal"><span class="pre">DetailView</span></code>: think
+of it as the single serving <code class="docutils literal"><span class="pre">ListView</span></code>.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">DetailView</span>
 <span class="o">...</span>
 <span class="k">class</span> <span class="nc">ContactView</span><span class="p">(</span><span class="n">DetailView</span><span class="p">):</span>
@@ -235,7 +231,7 @@ of it as the single serving <tt class="docutils literal"><span class="pre">ListV
 </pre></div>
 </div>
 <p>Again, the template is pretty straight forward; we create
-<tt class="docutils literal"><span class="pre">contact.html</span></tt> in the <tt class="docutils literal"><span class="pre">templates</span></tt> directory.</p>
+<code class="docutils literal"><span class="pre">contact.html</span></code> in the <code class="docutils literal"><span class="pre">templates</span></code> directory.</p>
 <div class="highlight-html"><div class="highlight"><pre>{% extends &quot;base.html&quot; %}
 
 {% block content %}
@@ -253,9 +249,9 @@ of it as the single serving <tt class="docutils literal"><span class="pre">ListV
 </pre></div>
 </div>
 <p>We&#8217;re also going to add a method to our Contact model,
-<tt class="docutils literal"><span class="pre">get_absolute_url</span></tt>. <tt class="docutils literal"><span class="pre">get_absolute_url</span></tt> is a Django convention for
+<code class="docutils literal"><span class="pre">get_absolute_url</span></code>. <code class="docutils literal"><span class="pre">get_absolute_url</span></code> is a Django convention for
 obtaining the URL of a single model instance. In this case it&#8217;s just
-going to be a call to <tt class="docutils literal"><span class="pre">reverse</span></tt>, but by providing this method, our
+going to be a call to <code class="docutils literal"><span class="pre">reverse</span></code>, but by providing this method, our
 model will play nicely with other parts of Django.</p>
 <div class="highlight-python"><div class="highlight"><pre>class Contact(models.Model):
 ...
@@ -282,9 +278,20 @@ model will play nicely with other parts of Django.</p>
       <div class="clearer"></div>
     </div>
 
-    <div class="footer">
+
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2012-2013, Nathan Yergler.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
+<script type="text/javascript">
+  (function() {
+    var ga = document.createElement('script');
+    ga.src = ('https:' == document.location.protocol ?
+              'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+  })();
+</script>
+
   </body>
 </html>

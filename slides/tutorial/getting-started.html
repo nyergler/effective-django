@@ -4,18 +4,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-188298-7']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
+    
     <title>Getting Started &mdash; Effective Django</title>
     
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
@@ -24,8 +13,9 @@
     
     <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
     
-
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -40,12 +30,21 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <script type="text/javascript" src="../_static/common.js"></script>
+    
     <script type="text/javascript" src="../_static/slides.js"></script>
     <script type="text/javascript" src="../_static/sync.js"></script>
     <script type="text/javascript" src="../_static/controller.js"></script>
     <script type="text/javascript" src="../_static/init.js"></script>
     
-    <link rel="top" title="Effective Django" href="../index.html" /> 
+    
+    <link rel="top" title="Effective Django" href="../index.html" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-188298-7']);
+  _gaq.push(['_trackPageview']);
+</script>
+
   </head>
   <body>
 
@@ -54,16 +53,29 @@
    class='slides layout-regular'>
 
 
-  <article class="slide level-1" id="getting-started">
+  
+<article class="slide level-1" id="getting-started">
+
 <h1>Getting Started<a class="headerlink" href="../../tutorial/getting-started.html#getting-started" title="View HTML">§</a></h1>
+
+
+
+
 
 </article>
 <article class="slide level-2" id="your-development-environment">
+
 <h2>Your Development Environment<a class="headerlink" href="../../tutorial/getting-started.html#your-development-environment" title="View HTML">§</a></h2>
+
+
+
+
 
 </article>
 <article class="admonition-the-environment slide level-3">
+
 <h3>The Environment</h3>
+
 <p>Three important factors for your environment:</p>
 <blockquote>
 <div><ul class="simple">
@@ -73,18 +85,28 @@
 </ul>
 </div></blockquote>
 
+
+
+
 </article>
 <article class="slide level-3" id="isolation">
+
 <h3>Isolation<a class="headerlink" href="../../tutorial/getting-started.html#isolation" title="View HTML">§</a></h3>
+
 <ul class="simple">
 <li>We want to avoid using unknown dependencies, or unknown versions</li>
 <li><a class="reference external" href="http://www.virtualenv.org/">virtualenv</a> provides an easy way to work on a project without your
-system's <tt class="docutils literal"><span class="pre">site-packages</span></tt></li>
+system's <code class="docutils literal"><span class="pre">site-packages</span></code></li>
 </ul>
+
+
+
 
 </article>
 <article class="slide level-3" id="determinism">
+
 <h3>Determinism<a class="headerlink" href="../../tutorial/getting-started.html#determinism" title="View HTML">§</a></h3>
+
 <ul class="simple">
 <li>Determinism is all about dependency management</li>
 <li>Choose a tool, use it in development and production<ul>
@@ -96,9 +118,14 @@ system's <tt class="docutils literal"><span class="pre">site-packages</span></tt
 <li>Identify specific versions of dependencies</li>
 </ul>
 
+
+
+
 </article>
 <article class="slide level-3" id="similarity">
+
 <h3>Similarity<a class="headerlink" href="../../tutorial/getting-started.html#similarity" title="View HTML">§</a></h3>
+
 <ul class="simple">
 <li>Working in an environment similar to where you deploy eliminates
 variables when trying to diagnose an issue</li>
@@ -108,13 +135,23 @@ becomes even more important.</li>
 create an environment separate from your day to day work.</li>
 </ul>
 
+
+
+
 </article>
 <article class="slide level-2" id="setting-up-your-environment">
+
 <h2>Setting Up Your Environment<a class="headerlink" href="../../tutorial/getting-started.html#setting-up-your-environment" title="View HTML">§</a></h2>
+
+
+
+
 
 </article>
 <article class="slide level-3" id="create-a-clean-workspace">
+
 <h3>Create a Clean Workspace<a class="headerlink" href="../../tutorial/getting-started.html#create-a-clean-workspace" title="View HTML">§</a></h3>
+
 <div class="highlight-python"><div class="highlight"><pre>$ mkdir tutorial
 $ virtualenv ./tutorial/
 New python executable in ./tutorial/bin/python
@@ -125,18 +162,28 @@ $ source ./tutorial/bin/activate
 </pre></div>
 </div>
 
+
+
+
 </article>
 <article class="slide level-3" id="start-a-requirements-file">
+
 <h3>Start a Requirements File<a class="headerlink" href="../../tutorial/getting-started.html#start-a-requirements-file" title="View HTML">§</a></h3>
-<p>Create a <tt class="docutils literal"><span class="pre">requirements.txt</span></tt> in the <tt class="docutils literal"><span class="pre">tutorial</span></tt> directory with a
+
+<p>Create a <code class="docutils literal"><span class="pre">requirements.txt</span></code> in the <code class="docutils literal"><span class="pre">tutorial</span></code> directory with a
 single requirement in it.</p>
 <div class="highlight-python"><div class="highlight"><pre>Django==1.5.1
 </pre></div>
 </div>
 
+
+
+
 </article>
 <article class="slide level-3" id="installing-requirements">
+
 <h3>Installing Requirements<a class="headerlink" href="../../tutorial/getting-started.html#installing-requirements" title="View HTML">§</a></h3>
+
 <p>And then we can use <a class="reference external" href="http://www.pip-installer.org/">pip</a> to install the dependencies.</p>
 <div class="highlight-python"><div class="highlight"><pre>(tutorial)$ pip install -U -r requirements.txt
 
@@ -158,13 +205,23 @@ Cleaning up...
 </pre></div>
 </div>
 
+
+
+
 </article>
 <article class="slide level-2" id="beginning-a-django-project">
+
 <h2>Beginning a Django Project<a class="headerlink" href="../../tutorial/getting-started.html#beginning-a-django-project" title="View HTML">§</a></h2>
+
+
+
+
 
 </article>
 <article class="admonition-scaffolding slide level-3">
+
 <h3>Scaffolding</h3>
+
 <ul class="simple">
 <li>Django provides file system scaffolding just like HTTP scaffolding</li>
 <li>Helps engineers understand where to find things when they go looking</li>
@@ -173,9 +230,14 @@ Cleaning up...
 <strong>applications</strong>.</li>
 </ul>
 
+
+
+
 </article>
 <article class="slide level-3" id="creating-the-project">
+
 <h3>Creating the Project<a class="headerlink" href="../../tutorial/getting-started.html#creating-the-project" title="View HTML">§</a></h3>
+
 <div class="highlight-python"><div class="highlight"><pre>(tutorial)$ django-admin.py startproject addressbook .
 </pre></div>
 </div>
@@ -188,12 +250,17 @@ Cleaning up...
 </pre></div>
 </div>
 
+
+
+
 </article>
 <article class="slide level-3" id="project-scaffolding">
+
 <h3>Project Scaffolding<a class="headerlink" href="../../tutorial/getting-started.html#project-scaffolding" title="View HTML">§</a></h3>
+
 <dl class="docutils">
 <dt>manage.py</dt>
-<dd>Wrapper around <tt class="docutils literal"><span class="pre">django-admin.py</span></tt> that operates on your project. You
+<dd>Wrapper around <code class="docutils literal"><span class="pre">django-admin.py</span></code> that operates on your project. You
 can run the tests or the development server using this.</dd>
 <dt>settings.py</dt>
 <dd>Your project configuration.</dd>
@@ -203,9 +270,14 @@ can run the tests or the development server using this.</dd>
 <dd>A wrapper for running your project in a <a class="reference external" href="https://en.wikipedia.org/wiki/Web_Server_Gateway_Interface">WSGI</a> server.</dd>
 </dl>
 
+
+
+
 </article>
 <article class="slide level-3" id="creating-the-app">
+
 <h3>Creating the &quot;App&quot;<a class="headerlink" href="../../tutorial/getting-started.html#creating-the-app" title="View HTML">§</a></h3>
+
 <div class="highlight-python"><div class="highlight"><pre>(tutorial)$ python ./manage.py startapp contacts
 </pre></div>
 </div>
@@ -218,9 +290,14 @@ can run the tests or the development server using this.</dd>
 </pre></div>
 </div>
 
+
+
+
 </article>
 <article class="admonition-review slide level-3">
+
 <h3>Review</h3>
+
 <ul class="simple">
 <li>Make sure your development environment is deterministic and as
 similar to where you'll deploy as possible</li>
@@ -230,8 +307,10 @@ similar to where you'll deploy as possible</li>
 <li>Next: <a class="reference internal" href="models.html"><em>Using Models</em></a></li>
 </ul>
 
-</article>
 
+
+
+</article>
 
 </section>
 

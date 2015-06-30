@@ -4,18 +4,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-188298-7']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
+    
     <title>Understanding Middleware &mdash; Effective Django</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
@@ -24,8 +13,9 @@
     
     <link rel="stylesheet" href="_static/custom.css" type="text/css" />
     
-
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -40,14 +30,23 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/common.js"></script>
+    
     <script type="text/javascript" src="_static/slides.js"></script>
     <script type="text/javascript" src="_static/sync.js"></script>
     <script type="text/javascript" src="_static/controller.js"></script>
     <script type="text/javascript" src="_static/init.js"></script>
     
+    
     <link rel="top" title="Effective Django" href="index.html" />
     <link rel="next" title="Effective Django ORM" href="orm.html" />
-    <link rel="prev" title="Testing in Django" href="testing.html" /> 
+    <link rel="prev" title="Testing in Django" href="testing.html" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-188298-7']);
+  _gaq.push(['_trackPageview']);
+</script>
+
   </head>
   <body>
 
@@ -56,17 +55,25 @@
    class='slides layout-regular'>
 
 
-  <article class="slide level-1" id="understanding-middleware">
+  
+<article class="slide level-1" id="understanding-middleware">
+
 <h1>Understanding Middleware<a class="headerlink" href="../middleware.html#understanding-middleware" title="View HTML">§</a></h1>
+
+
+
+
 
 </article>
 <article class="slide level-2" id="overview-of-middleware">
+
 <h2>Overview of Middleware<a class="headerlink" href="../middleware.html#overview-of-middleware" title="View HTML">§</a></h2>
+
 <ul class="simple">
 <li>Lightweight &quot;plug-ins&quot; for Django</li>
 <li>Allows modifying the Request or Response, or mutating the View
 parameters</li>
-<li>Defined as a sequence (tuple) of classes in <tt class="docutils literal"><span class="pre">settings</span></tt></li>
+<li>Defined as a sequence (tuple) of classes in <code class="docutils literal"><span class="pre">settings</span></code></li>
 </ul>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">MIDDLEWARE_CLASSES</span> <span class="o">=</span> <span class="p">(</span>
     <span class="s">&#39;django.middleware.common.CommonMiddleware&#39;</span><span class="p">,</span>
@@ -78,24 +85,34 @@ parameters</li>
 </pre></div>
 </div>
 
+
+
+
 </article>
 <article class="slide level-2" id="middleware-hooks">
+
 <h2>Middleware Hooks<a class="headerlink" href="../middleware.html#middleware-hooks" title="View HTML">§</a></h2>
+
 <ul class="simple">
 <li>Middleware classes have hooks for processing:<ul>
-<li><tt class="docutils literal"><span class="pre">request</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">response</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">view</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">template_response</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">exception</span></tt></li>
+<li><code class="docutils literal"><span class="pre">request</span></code></li>
+<li><code class="docutils literal"><span class="pre">response</span></code></li>
+<li><code class="docutils literal"><span class="pre">view</span></code></li>
+<li><code class="docutils literal"><span class="pre">template_response</span></code></li>
+<li><code class="docutils literal"><span class="pre">exception</span></code></li>
 </ul>
 </li>
 <li>Individual middleware may implement some or all</li>
 </ul>
 
+
+
+
 </article>
 <article class="slide level-2" id="typical-uses">
+
 <h2>Typical Uses<a class="headerlink" href="../middleware.html#typical-uses" title="View HTML">§</a></h2>
+
 <ul class="simple">
 <li>Sessions</li>
 <li>Authentication</li>
@@ -103,9 +120,14 @@ parameters</li>
 <li>GZipping Content</li>
 </ul>
 
+
+
+
 </article>
 <article class="slide level-2" id="middleware-example">
+
 <h2>Middleware Example<a class="headerlink" href="../middleware.html#middleware-example" title="View HTML">§</a></h2>
+
 <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">LocaleMiddleware</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">process_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
@@ -122,45 +144,67 @@ parameters</li>
 </pre></div>
 </div>
 
+
+
+
 </article>
 <article class="slide level-2" id="request-middleware">
+
 <h2>Request Middleware<a class="headerlink" href="../middleware.html#request-middleware" title="View HTML">§</a></h2>
+
 <ul class="simple">
 <li>On ingress, middleware is executed in order</li>
-<li>Request middleware returns <tt class="docutils literal"><span class="pre">None</span></tt> to continue processing</li>
-<li>Returning an <tt class="docutils literal"><span class="pre">HttpResponse</span></tt> short circuits additional middleware</li>
+<li>Request middleware returns <code class="docutils literal"><span class="pre">None</span></code> to continue processing</li>
+<li>Returning an <code class="docutils literal"><span class="pre">HttpResponse</span></code> short circuits additional middleware</li>
 </ul>
+
+
+
 
 </article>
 <article class="slide level-2" id="response-middleware">
+
 <h2>Response Middleware<a class="headerlink" href="../middleware.html#response-middleware" title="View HTML">§</a></h2>
+
 <ul class="simple">
 <li>On egress, middleware is executed in reverse order</li>
 <li>Response middleware is executed <em>even if corresponding request
 middleware not executed</em></li>
 </ul>
 
+
+
+
 </article>
 <article class="slide level-2" id="writing-your-own">
+
 <h2>Writing Your Own<a class="headerlink" href="../middleware.html#writing-your-own" title="View HTML">§</a></h2>
+
 <ul class="simple">
 <li>Simple Python Classes</li>
 <li>Can implement all or part of the interface</li>
 <li>Middleware is long-lived</li>
 <li>The place for storing request-specific information is cunningly
-named <tt class="docutils literal"><span class="pre">request</span></tt></li>
+named <code class="docutils literal"><span class="pre">request</span></code></li>
 </ul>
+
+
+
 
 </article>
 <article class="slide level-2" id="wsgi-middleware">
+
 <h2>WSGI Middleware<a class="headerlink" href="../middleware.html#wsgi-middleware" title="View HTML">§</a></h2>
+
 <ul class="simple">
 <li><a class="reference external" href="http://wsgi.org">WSGI</a> also defines a middleware interface</li>
 <li>The two have similar functions, but are <strong>not</strong> the same</li>
 </ul>
 
-</article>
 
+
+
+</article>
 
 </section>
 

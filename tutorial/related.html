@@ -5,18 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-188298-7']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
+    
     <title>Related Models &mdash; Effective Django</title>
     
     <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
@@ -37,10 +26,17 @@
     <link rel="top" title="Effective Django" href="../index.html" />
     <link rel="up" title="Effective Django Tutorial" href="index.html" />
     <link rel="next" title="Handling Authentication &amp; Authorization" href="authzn.html" />
-    <link rel="prev" title="Form Basics" href="forms.html" /> 
+    <link rel="prev" title="Form Basics" href="forms.html" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-188298-7']);
+  _gaq.push(['_trackPageview']);
+</script>
+
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -49,15 +45,15 @@
         <li class="right" >
           <a href="forms.html" title="Form Basics"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">Effective Django</a> &raquo;</li>
-          <li><a href="index.html" accesskey="U">Effective Django Tutorial</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">Effective Django</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Effective Django Tutorial</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="related-models">
 <h1>Related Models<a class="headerlink" href="#related-models" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/related.html#related-models" title="Slides">§</a></h1>
@@ -93,8 +89,8 @@ allowing us to have multiple addresses for each Contact.</p>
 </pre></div>
 </div>
 <p>Django provides three types of fields for relating objects to each
-other: <tt class="docutils literal"><span class="pre">ForeignKey</span></tt> for creating one to many relationships,
-<tt class="docutils literal"><span class="pre">ManyToManyField</span></tt> for relating many to many, and <tt class="docutils literal"><span class="pre">OneToOneField</span></tt>
+other: <code class="docutils literal"><span class="pre">ForeignKey</span></code> for creating one to many relationships,
+<code class="docutils literal"><span class="pre">ManyToManyField</span></code> for relating many to many, and <code class="docutils literal"><span class="pre">OneToOneField</span></code>
 for creating a one to one relationship. You define the relationship in
 one model, but it&#8217;s accessible from the other side, as well.</p>
 <p>Sync up the database to create the table, and then start the shell so
@@ -139,7 +135,7 @@ access things in the reverse direction. We can also use the double
 underscore notation to filter Addresses or Contacts based on the
 related objects.</p>
 <p>Let&#8217;s go ahead and add address display to our contacts. We&#8217;ll add the
-list of all Addresses to the Contact detail view in <tt class="docutils literal"><span class="pre">contact.html</span></tt>.</p>
+list of all Addresses to the Contact detail view in <code class="docutils literal"><span class="pre">contact.html</span></code>.</p>
 <div class="highlight-python"><div class="highlight"><pre>{% extends &quot;base.html&quot; %}
 
 {% block content %}
@@ -180,7 +176,7 @@ FormSet</a> does this for a set of objects (in this case Addresses) that
 share a common related object (in this case the Contact).</p>
 <p>Because formsets are somewhat complex objects, Django provides factory
 functions that create the class for you. We&#8217;ll add a call to the
-factory to our <tt class="docutils literal"><span class="pre">forms.py</span></tt> file.</p>
+factory to our <code class="docutils literal"><span class="pre">forms.py</span></code> file.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.forms.models</span> <span class="kn">import</span> <span class="n">inlineformset_factory</span>
 
 <span class="kn">from</span> <span class="nn">contacts.models</span> <span class="kn">import</span> <span class="p">(</span>
@@ -211,7 +207,7 @@ we want to use, instead of having Django create one for us.</p>
 </pre></div>
 </div>
 <p>Note that even though we&#8217;re editing Addresses with this view, we still
-have <tt class="docutils literal"><span class="pre">model</span></tt> set to <tt class="docutils literal"><span class="pre">Contact</span></tt>. This is because an inline formset
+have <code class="docutils literal"><span class="pre">model</span></code> set to <code class="docutils literal"><span class="pre">Contact</span></code>. This is because an inline formset
 takes the parent object as its starting point.</p>
 <p>Once again, this needs to be wired up into the URL configuration.</p>
 <div class="highlight-python"><div class="highlight"><pre>    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^edit/(?P&lt;pk&gt;\d+)/addresses$&#39;</span><span class="p">,</span> <span class="n">contacts</span><span class="o">.</span><span class="n">views</span><span class="o">.</span><span class="n">EditContactAddressView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span>
@@ -247,15 +243,15 @@ takes the parent object as its starting point.</p>
 </div>
 <p>There are two new things in this template, both related to the fact
 we&#8217;re using a formset instead of a form. First, there&#8217;s a reference to
-<tt class="docutils literal"><span class="pre">form.management_form</span></tt>. This is a set of hidden fields that provide
+<code class="docutils literal"><span class="pre">form.management_form</span></code>. This is a set of hidden fields that provide
 some accounting information to Django: how many forms did we start
 with, how many empty ones are there, etc. If Django can&#8217;t find this
 information when you POST the form, it will raise an exception.</p>
-<p>Second, we&#8217;re iterating over form instead of just outputting it (<tt class="docutils literal"><span class="pre">for</span>
-<span class="pre">address_form</span> <span class="pre">in</span> <span class="pre">form</span></tt>). Again, this is because <tt class="docutils literal"><span class="pre">form</span></tt> here is a
+<p>Second, we&#8217;re iterating over form instead of just outputting it (<code class="docutils literal"><span class="pre">for</span>
+<span class="pre">address_form</span> <span class="pre">in</span> <span class="pre">form</span></code>). Again, this is because <code class="docutils literal"><span class="pre">form</span></code> here is a
 formset instead of a single form. When you iterate over a formset,
 you&#8217;re iterating over the individual forms in it. These individual
-forms are just &#8220;normal&#8221; <tt class="docutils literal"><span class="pre">ModelForm</span></tt> instances for each Address, so
+forms are just &#8220;normal&#8221; <code class="docutils literal"><span class="pre">ModelForm</span></code> instances for each Address, so
 you can apply the same output techniques you would normally use.</p>
 </div>
 </div>
@@ -264,7 +260,7 @@ you can apply the same output techniques you would normally use.</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
@@ -281,17 +277,19 @@ you can apply the same output techniques you would normally use.</p>
   <h4>Next topic</h4>
   <p class="topless"><a href="authzn.html"
                         title="next chapter">Handling Authentication &amp; Authorization</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="../_sources/tutorial/related.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/tutorial/related.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
   <h3>Slides</h3>
   <ul class="this-page-menu">
     <li><a href="../.././slides/tutorial/related.html"
            rel="nofollow">View as slides</a></li>
   </ul>
-<div id="searchbox" style="display: none">
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
       <input type="text" name="q" />
@@ -308,7 +306,7 @@ you can apply the same output techniques you would normally use.</p>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -317,13 +315,24 @@ you can apply the same output techniques you would normally use.</p>
         <li class="right" >
           <a href="forms.html" title="Form Basics"
              >previous</a> |</li>
-        <li><a href="../index.html">Effective Django</a> &raquo;</li>
-          <li><a href="index.html" >Effective Django Tutorial</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">Effective Django</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Effective Django Tutorial</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2012-2013, Nathan Yergler.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
+<script type="text/javascript">
+  (function() {
+    var ga = document.createElement('script');
+    ga.src = ('https:' == document.location.protocol ?
+              'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+  })();
+</script>
+
   </body>
 </html>

@@ -5,26 +5,22 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-188298-7']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
+    
     <title>Using Models</title>
     
     <link rel="stylesheet" href="../_static/epub.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" /> 
-  </head>
-  <body>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-188298-7']);
+  _gaq.push(['_trackPageview']);
+</script>
 
-    <div class="related">
+  </head>
+  <body role="document">
+
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -33,14 +29,14 @@
         <li class="right" >
           <a href="getting-started.html" title="Getting Started"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">Effective Django</a> &raquo;</li>
-          <li><a href="index.html" accesskey="U">Effective Django Tutorial</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">Effective Django</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Effective Django Tutorial</a> &raquo;</li> 
       </ul>
     </div>
 
     <div class="document">
       <div class="documentwrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="using-models">
 <h1>Using Models</h1>
@@ -50,16 +46,16 @@
 and Oracle. <a class="reference external" href="http://docs.python.org/2/library/sqlite3.html">SQLite3</a><span class="link-target"> [http://docs.python.org/2/library/sqlite3.html]</span> is included with Python starting with version
 2.5, so we&#8217;ll use it for our project for simplicity. If you were going
 to use MySQL, for example, you&#8217;d need to add <a class="reference external" href="https://pypi.python.org/pypi/MySQL-python">mysql-python</a><span class="link-target"> [https://pypi.python.org/pypi/MySQL-python]</span> to your
-<tt class="docutils literal"><span class="pre">requirements.txt</span></tt> file.</p>
-<p>To enable SQLite as the database, edit the <tt class="docutils literal"><span class="pre">DATABASES</span></tt> definition in
-<tt class="docutils literal"><span class="pre">addressbook/settings.py</span></tt>. The <tt class="docutils literal"><span class="pre">settings.py</span></tt> file contains the
+<code class="docutils literal"><span class="pre">requirements.txt</span></code> file.</p>
+<p>To enable SQLite as the database, edit the <code class="docutils literal"><span class="pre">DATABASES</span></code> definition in
+<code class="docutils literal"><span class="pre">addressbook/settings.py</span></code>. The <code class="docutils literal"><span class="pre">settings.py</span></code> file contains the
 Django configuration for our project. There are some settings that you
-must specify &#8211; like the <tt class="docutils literal"><span class="pre">DATABASES</span></tt> configuration &#8211; and others
+must specify &#8211; like the <code class="docutils literal"><span class="pre">DATABASES</span></code> configuration &#8211; and others
 that are optional. Django fills in some defaults when it generates the
 project scaffolding, and the documentation contains a <a class="reference external" href="https://docs.djangoproject.com/en/1.5/ref/settings/">full list of
 settings</a><span class="link-target"> [https://docs.djangoproject.com/en/1.5/ref/settings/]</span>. You can also add your own settings here, if needed.</p>
 <p>For SQLite we need to set the engine and then give it a name. The
-SQLite backend uses the <tt class="docutils literal"><span class="pre">NAME</span></tt> as the filename for the database.</p>
+SQLite backend uses the <code class="docutils literal"><span class="pre">NAME</span></code> as the filename for the database.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">DATABASES</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s">&#39;ENGINE&#39;</span><span class="p">:</span> <span class="s">&#39;django.db.backends.sqlite3&#39;</span><span class="p">,</span>  <span class="c"># &#39;postgresql_psycopg2&#39;, &#39;mysql&#39;, &#39;sqlite3&#39; or &#39;oracle&#39;.</span>
@@ -77,8 +73,8 @@ direct reference to the Python object. This is because the settings
 file needs to be easily importable, without triggering any side
 effects. You should avoid adding imports to the settings file.</p>
 <p>You rarely need to import the settings file directly; Django imports
-it for you, and makes it available as <tt class="docutils literal"><span class="pre">django.conf.settings</span></tt>. You
-typically import your settings from <tt class="docutils literal"><span class="pre">django.conf</span></tt>:</p>
+it for you, and makes it available as <code class="docutils literal"><span class="pre">django.conf.settings</span></code>. You
+typically import your settings from <code class="docutils literal"><span class="pre">django.conf</span></code>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
 </pre></div>
 </div>
@@ -88,7 +84,7 @@ typically import your settings from <tt class="docutils literal"><span class="pr
 <span class="admonition-defining-models"></span><p>Django models map (roughly) to a database table, and provide a place
 to encapsulate business logic. All models subclass the base <a class="reference external" href="https://docs.djangoproject.com/en/1.5/ref/models/instances/#django.db.models.Model">Model</a><span class="link-target"> [https://docs.djangoproject.com/en/1.5/ref/models/instances/#django.db.models.Model]</span>
 class, and contain field definitions. Let&#8217;s start by creating a simple
-Contact model for our application in <tt class="docutils literal"><span class="pre">contacts/models.py</span></tt>.</p>
+Contact model for our application in <code class="docutils literal"><span class="pre">contacts/models.py</span></code>.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
 
 
@@ -113,11 +109,11 @@ Contact model for our application in <tt class="docutils literal"><span class="p
 </pre></div>
 </div>
 <p>Django provides a set of <a class="reference external" href="https://docs.djangoproject.com/en/1.5/ref/models/fields/">fields</a><span class="link-target"> [https://docs.djangoproject.com/en/1.5/ref/models/fields/]</span> that map to data types and different
-validation rules. For example, the <tt class="docutils literal"><span class="pre">EmailField</span></tt> here maps to the
-same column type as the <tt class="docutils literal"><span class="pre">CharField</span></tt>, but adds validation for the
+validation rules. For example, the <code class="docutils literal"><span class="pre">EmailField</span></code> here maps to the
+same column type as the <code class="docutils literal"><span class="pre">CharField</span></code>, but adds validation for the
 data.</p>
 <p>Once you&#8217;ve created a model, you need to update your database with the
-new tables. Django&#8217;s <tt class="docutils literal"><span class="pre">syncdb</span></tt> command looks for models that are
+new tables. Django&#8217;s <code class="docutils literal"><span class="pre">syncdb</span></code> command looks for models that are
 installed and creates tables for them if needed.</p>
 <div class="highlight-python"><div class="highlight"><pre>(tutorial)$ python ./manage.py syncdb
 
@@ -137,10 +133,10 @@ Creating table django_site
 </div>
 <p>Our contact table isn&#8217;t anywhere to be seen. The reason is that we
 need to tell the Project to use the Application.</p>
-<p>The <tt class="docutils literal"><span class="pre">INSTALLED_APPS</span></tt> setting lists the applications that the project
+<p>The <code class="docutils literal"><span class="pre">INSTALLED_APPS</span></code> setting lists the applications that the project
 uses. These are listed as strings that map to Python packages. Django
-will import each and looks for a <tt class="docutils literal"><span class="pre">models</span></tt> module there. Add our
-Contacts app to the project&#8217;s <tt class="docutils literal"><span class="pre">INSTALLED_APPS</span></tt> setting:</p>
+will import each and looks for a <code class="docutils literal"><span class="pre">models</span></code> module there. Add our
+Contacts app to the project&#8217;s <code class="docutils literal"><span class="pre">INSTALLED_APPS</span></code> setting:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">(</span>
     <span class="s">&#39;django.contrib.auth&#39;</span><span class="p">,</span>
     <span class="s">&#39;django.contrib.contenttypes&#39;</span><span class="p">,</span>
@@ -156,7 +152,7 @@ Contacts app to the project&#8217;s <tt class="docutils literal"><span class="pr
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>Then run <tt class="docutils literal"><span class="pre">syncdb</span></tt> again:</p>
+<p>Then run <code class="docutils literal"><span class="pre">syncdb</span></code> again:</p>
 <div class="highlight-python"><div class="highlight"><pre>(tutorial)$ python ./manage.py syncdb
 Creating tables ...
 Creating table contacts_contact
@@ -165,7 +161,7 @@ Installing indexes ...
 Installed 0 object(s) from 0 fixture(s)
 </pre></div>
 </div>
-<p>Note that Django created a table named <tt class="docutils literal"><span class="pre">contacts_contact</span></tt>: by
+<p>Note that Django created a table named <code class="docutils literal"><span class="pre">contacts_contact</span></code>: by
 default Django will name your tables using a combination of the
 application name and model name. You can override that with the
 <a class="reference external" href="https://docs.djangoproject.com/en/1.5/ref/models/options/">model Meta</a><span class="link-target"> [https://docs.djangoproject.com/en/1.5/ref/models/options/]</span> options.</p>
@@ -195,30 +191,30 @@ Nathan Yergler
 1
 </pre></div>
 </div>
-<p>There are a few new things here. First, the <tt class="docutils literal"><span class="pre">manage.py</span> <span class="pre">shell</span></tt>
+<p>There are a few new things here. First, the <code class="docutils literal"><span class="pre">manage.py</span> <span class="pre">shell</span></code>
 command gives us a interactive shell with the Python path set up
 correctly for Django. If you try to run Python and just import your
 application, an Exception will be raised because Django doesn&#8217;t know
-which <tt class="docutils literal"><span class="pre">settings</span></tt> to use, and therefore can&#8217;t map Model instances to
+which <code class="docutils literal"><span class="pre">settings</span></code> to use, and therefore can&#8217;t map Model instances to
 the database.</p>
-<p>Second, there&#8217;s this <tt class="docutils literal"><span class="pre">objects</span></tt> property on our model class. That&#8217;s
+<p>Second, there&#8217;s this <code class="docutils literal"><span class="pre">objects</span></code> property on our model class. That&#8217;s
 the model&#8217;s <a class="reference external" href="https://docs.djangoproject.com/en/1.5/topics/db/managers/">Manager</a><span class="link-target"> [https://docs.djangoproject.com/en/1.5/topics/db/managers/]</span>. If a single instance of a Model is analogous to
 a row in the database, the Manager is analogous to the table. The
 default model manager provides querying functionality, and can be
-customized. When we call <tt class="docutils literal"><span class="pre">all()</span></tt> or <tt class="docutils literal"><span class="pre">filter()</span></tt> or the Manager, a
+customized. When we call <code class="docutils literal"><span class="pre">all()</span></code> or <code class="docutils literal"><span class="pre">filter()</span></code> or the Manager, a
 QuerySet is returned. A QuerySet is iterable, and loads data from the
 database as needed.</p>
-<p>Finally, there&#8217;s this <tt class="docutils literal"><span class="pre">id</span></tt> field that we didn&#8217;t define. Django adds
-an <tt class="docutils literal"><span class="pre">id</span></tt> field as the primary key for your model, unless you <a class="reference external" href="https://docs.djangoproject.com/en/1.5/topics/db/models/#automatic-primary-key-fields">specify
+<p>Finally, there&#8217;s this <code class="docutils literal"><span class="pre">id</span></code> field that we didn&#8217;t define. Django adds
+an <code class="docutils literal"><span class="pre">id</span></code> field as the primary key for your model, unless you <a class="reference external" href="https://docs.djangoproject.com/en/1.5/topics/db/models/#automatic-primary-key-fields">specify
 a primary key</a><span class="link-target"> [https://docs.djangoproject.com/en/1.5/topics/db/models/#automatic-primary-key-fields]</span>.</p>
 <span class="admonition-model-managers"></span><span class="admonition-querying-with-managers"></span></div>
 <div class="section" id="writing-a-test">
 <h2>Writing a Test</h2>
-<span class="admonition-testing-models"></span><p>We have one method defined on our model, <tt class="docutils literal"><span class="pre">__str__</span></tt>, and this is a
-good time to start writing tests. The <tt class="docutils literal"><span class="pre">__str__</span></tt> method of a model
+<span class="admonition-testing-models"></span><p>We have one method defined on our model, <code class="docutils literal"><span class="pre">__str__</span></code>, and this is a
+good time to start writing tests. The <code class="docutils literal"><span class="pre">__str__</span></code> method of a model
 will get used in quite a few places, and it&#8217;s entirely conceivable
 it&#8217;d be exposed to end users. It&#8217;s worth writing a test so we
-understand how we expect it to operate. Django creates a <tt class="docutils literal"><span class="pre">tests.py</span></tt>
+understand how we expect it to operate. Django creates a <code class="docutils literal"><span class="pre">tests.py</span></code>
 file when it creates the application, so we&#8217;ll add our first test to
 that file in the contacts app.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">contacts.models</span> <span class="kn">import</span> <span class="n">Contact</span>
@@ -236,14 +232,14 @@ that file in the contacts app.</p>
         <span class="p">)</span>
 </pre></div>
 </div>
-<span class="admonition-running-the-tests"></span><p>You can run the tests for your application using <tt class="docutils literal"><span class="pre">manage.py</span></tt>:</p>
+<span class="admonition-running-the-tests"></span><p>You can run the tests for your application using <code class="docutils literal"><span class="pre">manage.py</span></code>:</p>
 <div class="highlight-python"><div class="highlight"><pre>(tutorial)$ python manage.py test
 </pre></div>
 </div>
 <p>If you run this now, you&#8217;ll see that around 420 tests run. That&#8217;s
 surprising, since we&#8217;ve only written one. That&#8217;s because by default
 Django runs the tests for all installed applications. When we added
-the <tt class="docutils literal"><span class="pre">contacts</span></tt> app to our project, there were several Django apps
+the <code class="docutils literal"><span class="pre">contacts</span></code> app to our project, there were several Django apps
 there by default. The extra 419 tests come from those.</p>
 <p>If you want to run the tests for a specific app, just specify the app
 name on the command line:</p>
@@ -264,8 +260,8 @@ database&#8221;. Some tests need access to a database, and because we don&#8217;
 want to mingle test data with &#8220;real&#8221; data (for a variety of reasons,
 not the least of which is determinism), Django helpfully creates a
 test database for us before running the tests. Essentially it creates
-a new database, and runs <tt class="docutils literal"><span class="pre">syncdb</span></tt> on it. If you subclass from
-Django&#8217;s <tt class="docutils literal"><span class="pre">TestCase</span></tt> (which we are), Django also resets any default
+a new database, and runs <code class="docutils literal"><span class="pre">syncdb</span></code> on it. If you subclass from
+Django&#8217;s <code class="docutils literal"><span class="pre">TestCase</span></code> (which we are), Django also resets any default
 data after running each TestCase, so that changes in one test won&#8217;t
 break or influence another.</p>
 </div>
@@ -273,12 +269,12 @@ break or influence another.</p>
 <h2>Review</h2>
 <ul class="simple">
 <li>Models define the fields in a table, and can contain business logic.</li>
-<li>The <tt class="docutils literal"><span class="pre">syncdb</span></tt> manage command creates the tables in your database from
+<li>The <code class="docutils literal"><span class="pre">syncdb</span></code> manage command creates the tables in your database from
 models</li>
 <li>The model Manager allows you to operate on the collection of
 instances: querying, creating, etc.</li>
 <li>Write unit tests for methods you add to the model</li>
-<li>The <tt class="docutils literal"><span class="pre">test</span></tt> manage command runs the unit tests</li>
+<li>The <code class="docutils literal"><span class="pre">test</span></code> manage command runs the unit tests</li>
 </ul>
 </div>
 </div>
@@ -289,9 +285,20 @@ instances: querying, creating, etc.</li>
       <div class="clearer"></div>
     </div>
 
-    <div class="footer">
+
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2012-2013, Nathan Yergler.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
+<script type="text/javascript">
+  (function() {
+    var ga = document.createElement('script');
+    ga.src = ('https:' == document.location.protocol ?
+              'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+  })();
+</script>
+
   </body>
 </html>

@@ -4,18 +4,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-188298-7']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
+    
     <title>Writing Views &mdash; Effective Django</title>
     
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
@@ -24,8 +13,9 @@
     
     <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
     
-
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -40,12 +30,21 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <script type="text/javascript" src="../_static/common.js"></script>
+    
     <script type="text/javascript" src="../_static/slides.js"></script>
     <script type="text/javascript" src="../_static/sync.js"></script>
     <script type="text/javascript" src="../_static/controller.js"></script>
     <script type="text/javascript" src="../_static/init.js"></script>
     
-    <link rel="top" title="Effective Django" href="../index.html" /> 
+    
+    <link rel="top" title="Effective Django" href="../index.html" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-188298-7']);
+  _gaq.push(['_trackPageview']);
+</script>
+
   </head>
   <body>
 
@@ -54,20 +53,28 @@
    class='slides layout-regular'>
 
 
-  <article class="admonition-writing-views slide level-1" id="writing-views">
+  
+<article class="admonition-writing-views slide level-1" id="writing-views">
+
 <h1>Writing Views<a class="headerlink" href="../../tutorial/views.html#writing-views" title="View HTML">§</a></h1>
+
 <p>Handling HTTP Requests from users.</p>
+
+
+
 
 </article>
 <article class="include-as-slide slide-level-2 slide level-2" id="view-basics">
+
 <h2>View Basics<a class="headerlink" href="../../tutorial/views.html#view-basics" title="View HTML">§</a></h2>
+
 <p>Django Views take an <a class="reference external" href="https://docs.djangoproject.com/en/1.5/ref/request-response/#httprequest-objects">HTTP Request</a> and return an <a class="reference external" href="https://docs.djangoproject.com/en/1.5/ref/request-response/#httpresponse-objects">HTTP Response</a> to
 the user.</p>
 <blockquote>
 <div><img alt="../_images/blockdiag-73065eaf0b801e69ef10fe246919a0006f946ae2.png" src="../_images/blockdiag-73065eaf0b801e69ef10fe246919a0006f946ae2.png" />
 </div></blockquote>
 <p>Any Python callable can be a view. The only hard and fast requirement
-is that it takes the request object (customarily named <tt class="docutils literal"><span class="pre">request</span></tt>) as
+is that it takes the request object (customarily named <code class="docutils literal"><span class="pre">request</span></code>) as
 its first argument. This means that a minimalist view is super
 simple:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span>
@@ -80,9 +87,14 @@ simple:</p>
 arguments to the view from the URL. We'll cover this as we build up
 our application.</p>
 
+
+
+
 </article>
 <article class="include-as-slide slide-level-2 slide level-2" id="generic-class-based-views">
+
 <h2>Generic &amp; Class Based Views<a class="headerlink" href="../../tutorial/views.html#generic-class-based-views" title="View HTML">§</a></h2>
+
 <ul class="simple">
 <li><a class="reference external" href="https://docs.djangoproject.com/en/1.5/topics/class-based-views/generic-display/">Generic Views</a> have always provided some basic functionality:
 render a template, redirect, create or edit a model, etc.</li>
@@ -93,9 +105,14 @@ newcomer</li>
 <li>Luckily the documentation is <strong>much</strong> better with Django 1.5</li>
 </ul>
 
+
+
+
 </article>
 <article class="include-as-slide slide-level-2 slide level-2" id="class-based-views">
+
 <h2>Class Based Views<a class="headerlink" href="../../tutorial/views.html#class-based-views" title="View HTML">§</a></h2>
+
 <p>The minimal class based view subclasses <a class="reference external" href="https://docs.djangoproject.com/en/1.5/ref/class-based-views/base/#view">View</a> and implements methods
 for the HTTP methods it supports. Here's the class-based version of
 the minimalist &quot;Hello, World&quot; view we previously wrote.</p>
@@ -109,14 +126,14 @@ the minimalist &quot;Hello, World&quot; view we previously wrote.</p>
 </pre></div>
 </div>
 <p>In a class based view, HTTP methods map to class method names. In this
-case, we've defined a handler for <tt class="docutils literal"><span class="pre">GET</span></tt> requests with the <tt class="docutils literal"><span class="pre">get</span></tt>
-method. Just like the function implementation, it takes <tt class="docutils literal"><span class="pre">request</span></tt> as
+case, we've defined a handler for <code class="docutils literal"><span class="pre">GET</span></code> requests with the <code class="docutils literal"><span class="pre">get</span></code>
+method. Just like the function implementation, it takes <code class="docutils literal"><span class="pre">request</span></code> as
 its first argument, and returns an HTTP Response.</p>
 <div class="sidebar">
 <p class="first sidebar-title">Permissive Signatures</p>
 <p class="last">You may notice that it has a couple of extra arguments in its
 signature, compared to the view we saw previously, specifically
-<tt class="docutils literal"><span class="pre">*args</span></tt> and <tt class="docutils literal"><span class="pre">**kwargs</span></tt>. Class based views were first introduced
+<code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code>. Class based views were first introduced
 as a way to make Django's &quot;generic&quot; views more flexible. That meant
 they were used in many different contexts, with potentially
 different arguments extracted from the URLs. As I've been writing
@@ -125,9 +142,14 @@ with permissive signatures, as I've found they're often useful in
 ways I didn't initially expect.</p>
 </div>
 
+
+
+
 </article>
 <article class="admonition-list-views slide level-2">
+
 <h2>List Views</h2>
+
 <p><a class="reference external" href="https://docs.djangoproject.com/en/1.5/ref/class-based-views/generic-display/#listview">ListView</a> provides a view of a set of objects.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ContactsList</span><span class="p">(</span><span class="n">ListView</span><span class="p">):</span>
 
@@ -148,9 +170,14 @@ ways I didn't initially expect.</p>
 </pre></div>
 </div>
 
+
+
+
 </article>
 <article class="admonition-edit-views slide level-2">
+
 <h2>Edit Views</h2>
+
 <p><a class="reference external" href="https://docs.djangoproject.com/en/1.5/ref/class-based-views/generic-editing/#createview">CreateView</a>, <a class="reference external" href="https://docs.djangoproject.com/en/1.5/ref/class-based-views/generic-editing/#updateview">UpdateView</a>, <a class="reference external" href="https://docs.djangoproject.com/en/1.5/ref/class-based-views/generic-editing/#deleteview">DeleteView</a> work on a model instance.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">UpdateContact</span><span class="p">(</span><span class="n">UpdateView</span><span class="p">):</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">Contact</span>
@@ -171,9 +198,14 @@ ways I didn't initially expect.</p>
 </pre></div>
 </div>
 
+
+
+
 </article>
 <article class="admonition-detail-views slide level-2">
+
 <h2>Detail Views</h2>
+
 <p><a class="reference external" href="https://docs.djangoproject.com/en/1.5/ref/class-based-views/generic-display/#detailview">DetailView</a> provides a view of a single object</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ContactView</span><span class="p">(</span><span class="n">DetailView</span><span class="p">):</span>
 
@@ -192,14 +224,19 @@ ways I didn't initially expect.</p>
 </pre></div>
 </div>
 
+
+
+
 </article>
 <article class="include-as-slide slide-level-2 slide level-2" id="defining-urls">
+
 <h2>Defining URLs<a class="headerlink" href="../../tutorial/views.html#defining-urls" title="View HTML">§</a></h2>
+
 <p>The URL configuration tells Django how to match a request's path to
 your Python code. Django looks for the URL configuration, defined as
-<tt class="docutils literal"><span class="pre">urlpatterns</span></tt>, in the <tt class="docutils literal"><span class="pre">urls.py</span></tt> file in your project.</p>
+<code class="docutils literal"><span class="pre">urlpatterns</span></code>, in the <code class="docutils literal"><span class="pre">urls.py</span></code> file in your project.</p>
 <p>Let's add a URL mapping for our contact list view in
-<tt class="docutils literal"><span class="pre">addressbook/urls.py</span></tt>.</p>
+<code class="docutils literal"><span class="pre">addressbook/urls.py</span></code>.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="kn">import</span> <span class="n">patterns</span><span class="p">,</span> <span class="n">include</span><span class="p">,</span> <span class="n">url</span>
 
 <span class="kn">import</span> <span class="nn">contacts.views</span>
@@ -212,28 +249,28 @@ your Python code. Django looks for the URL configuration, defined as
 </pre></div>
 </div>
 <ul class="simple">
-<li>Use of the <tt class="docutils literal"><span class="pre">url()</span></tt> function is not strictly required, but I like
+<li>Use of the <code class="docutils literal"><span class="pre">url()</span></code> function is not strictly required, but I like
 it: when you start adding more information to the URL pattern, it
 lets you use named parameters, making everything more clear.</li>
 <li>The first parameter is a regular expression. Note the trailing
-<tt class="docutils literal"><span class="pre">$</span></tt>; why might that be important?</li>
+<code class="docutils literal"><span class="pre">$</span></code>; why might that be important?</li>
 <li>The second parameter is the view callable. It can either be the
 actual callable (imported manually), or a string describing it. If
 it's a string, Django will import the module (up to the final dot),
 and then calls the final segment when a request matches.</li>
 <li>Note that when we're using a class based view, we <em>must</em> use the
 real object here, and not the string notation. That's because we
-have to call the class method <tt class="docutils literal"><span class="pre">as_view()</span></tt>, which returns a wrapper
+have to call the class method <code class="docutils literal"><span class="pre">as_view()</span></code>, which returns a wrapper
 around our class that Django's URL dispatch can call.</li>
 <li>Giving a URL pattern a name allows you to do a reverse lookup</li>
 <li>The URL name is useful when linking from one View to another, or
 redirecting, as it allows you to manage your URL structure in one
 place</li>
 </ul>
-<p>While the <tt class="docutils literal"><span class="pre">urlpatterns</span></tt> name <strong>must</strong> be defined, Django also allows
+<p>While the <code class="docutils literal"><span class="pre">urlpatterns</span></code> name <strong>must</strong> be defined, Django also allows
 you to define a few other values in the URL configuration for
-exceptional cases. These include <tt class="docutils literal"><span class="pre">handler403</span></tt>, <tt class="docutils literal"><span class="pre">handler404</span></tt>, and
-<tt class="docutils literal"><span class="pre">handler500</span></tt>, which tell Django what view to use when an HTTP error
+exceptional cases. These include <code class="docutils literal"><span class="pre">handler403</span></code>, <code class="docutils literal"><span class="pre">handler404</span></code>, and
+<code class="docutils literal"><span class="pre">handler500</span></code>, which tell Django what view to use when an HTTP error
 occurs. See the <a class="reference external" href="https://docs.djangoproject.com/en/1.5/ref/urls/#handler403">Django urlconf documentation</a> for details.</p>
 <div class="admonition-url-configuration-import-errors admonition">
 <p class="first admonition-title">URL Configuration Import Errors</p>
@@ -245,31 +282,46 @@ import the URL configuration in the interactive shell. That usually
 makes it clear where the problem lies.</p>
 </div>
 
+
+
+
 </article>
 <article class="admonition-django-templates slide level-2">
+
 <h2>Django Templates</h2>
+
 <ul class="simple">
-<li>Django allows you to specify <tt class="docutils literal"><span class="pre">TEMPLATE_DIRS</span></tt> to look for templates
+<li>Django allows you to specify <code class="docutils literal"><span class="pre">TEMPLATE_DIRS</span></code> to look for templates
 in</li>
-<li>By default it looks for a <tt class="docutils literal"><span class="pre">template</span></tt> subdirectory in each app</li>
+<li>By default it looks for a <code class="docutils literal"><span class="pre">template</span></code> subdirectory in each app</li>
 <li>Keeping templates within an app makes creating reusable apps easier</li>
 </ul>
 
+
+
+
 </article>
 <article class="admonition-test-client-requestfactory slide level-2">
+
 <h2>Test Client &amp; RequestFactory</h2>
+
 <ul class="simple">
 <li>Views transform a Request into a Response, but still have logic</li>
-<li>Test <tt class="docutils literal"><span class="pre">Client</span></tt> and <tt class="docutils literal"><span class="pre">RequestFactory</span></tt> are tools to help test them</li>
+<li>Test <code class="docutils literal"><span class="pre">Client</span></code> and <code class="docutils literal"><span class="pre">RequestFactory</span></code> are tools to help test them</li>
 <li>They share a common API, but work slightly differently</li>
-<li>Test <tt class="docutils literal"><span class="pre">Client</span></tt> resolves a URL to the view, returns a Response</li>
-<li><tt class="docutils literal"><span class="pre">RequestFactory</span></tt> generates a Request which you can pass to the View
+<li>Test <code class="docutils literal"><span class="pre">Client</span></code> resolves a URL to the view, returns a Response</li>
+<li><code class="docutils literal"><span class="pre">RequestFactory</span></code> generates a Request which you can pass to the View
 directly</li>
 </ul>
 
+
+
+
 </article>
 <article class="admonition-test-client-vs-requestfactory slide level-2">
+
 <h2>Test Client vs. RequestFactory</h2>
+
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.test.client</span> <span class="kn">import</span> <span class="n">Client</span>
 <span class="kn">from</span> <span class="nn">django.test.client</span> <span class="kn">import</span> <span class="n">RequestFactory</span>
 
@@ -284,19 +336,26 @@ directly</li>
 </pre></div>
 </div>
 
+
+
+
 </article>
 <article class="admonition-live-server-tests slide level-2">
+
 <h2>Live Server Tests</h2>
+
 <ul class="simple">
 <li>Django 1.4 added the <a class="reference external" href="https://docs.djangoproject.com/en/1.5/topics/testing/overview/#liveservertestcase">LiveServerTestCase</a></li>
 <li>Makes writing integration tests with something like <a class="reference external" href="http://seleniumhq.org/">Selenium</a>
 easier</li>
-<li>By default it spins up the server for you (similar to <tt class="docutils literal"><span class="pre">runserver</span></tt>)</li>
+<li>By default it spins up the server for you (similar to <code class="docutils literal"><span class="pre">runserver</span></code>)</li>
 <li>You can also point it to a deployed instance elsewhere</li>
 </ul>
 
-</article>
 
+
+
+</article>
 
 </section>
 

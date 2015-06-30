@@ -5,18 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-188298-7']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
+    
     <title>Understanding Middleware &mdash; Effective Django</title>
     
     <link rel="stylesheet" href="_static/nature.css" type="text/css" />
@@ -36,10 +25,17 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Effective Django" href="index.html" />
     <link rel="next" title="Effective Django ORM" href="orm.html" />
-    <link rel="prev" title="Testing in Django" href="testing.html" /> 
+    <link rel="prev" title="Testing in Django" href="testing.html" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-188298-7']);
+  _gaq.push(['_trackPageview']);
+</script>
+
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -48,14 +44,14 @@
         <li class="right" >
           <a href="testing.html" title="Testing in Django"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Effective Django</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Effective Django</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="understanding-middleware">
 <h1>Understanding Middleware<a class="headerlink" href="#understanding-middleware" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/middleware.html#understanding-middleware" title="Slides">§</a></h1>
@@ -65,7 +61,7 @@
 <li>Lightweight &#8220;plug-ins&#8221; for Django</li>
 <li>Allows modifying the Request or Response, or mutating the View
 parameters</li>
-<li>Defined as a sequence (tuple) of classes in <tt class="docutils literal"><span class="pre">settings</span></tt></li>
+<li>Defined as a sequence (tuple) of classes in <code class="docutils literal"><span class="pre">settings</span></code></li>
 </ul>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">MIDDLEWARE_CLASSES</span> <span class="o">=</span> <span class="p">(</span>
     <span class="s">&#39;django.middleware.common.CommonMiddleware&#39;</span><span class="p">,</span>
@@ -81,11 +77,11 @@ parameters</li>
 <h2>Middleware Hooks<a class="headerlink" href="#middleware-hooks" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/middleware.html#middleware-hooks" title="Slides">§</a></h2>
 <ul class="simple">
 <li>Middleware classes have hooks for processing:<ul>
-<li><tt class="docutils literal"><span class="pre">request</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">response</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">view</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">template_response</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">exception</span></tt></li>
+<li><code class="docutils literal"><span class="pre">request</span></code></li>
+<li><code class="docutils literal"><span class="pre">response</span></code></li>
+<li><code class="docutils literal"><span class="pre">view</span></code></li>
+<li><code class="docutils literal"><span class="pre">template_response</span></code></li>
+<li><code class="docutils literal"><span class="pre">exception</span></code></li>
 </ul>
 </li>
 <li>Individual middleware may implement some or all</li>
@@ -122,8 +118,8 @@ parameters</li>
 <h2>Request Middleware<a class="headerlink" href="#request-middleware" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/middleware.html#request-middleware" title="Slides">§</a></h2>
 <ul class="simple">
 <li>On ingress, middleware is executed in order</li>
-<li>Request middleware returns <tt class="docutils literal"><span class="pre">None</span></tt> to continue processing</li>
-<li>Returning an <tt class="docutils literal"><span class="pre">HttpResponse</span></tt> short circuits additional middleware</li>
+<li>Request middleware returns <code class="docutils literal"><span class="pre">None</span></code> to continue processing</li>
+<li>Returning an <code class="docutils literal"><span class="pre">HttpResponse</span></code> short circuits additional middleware</li>
 </ul>
 </div>
 <div class="section" id="response-middleware">
@@ -141,7 +137,7 @@ middleware not executed</em></li>
 <li>Can implement all or part of the interface</li>
 <li>Middleware is long-lived</li>
 <li>The place for storing request-specific information is cunningly
-named <tt class="docutils literal"><span class="pre">request</span></tt></li>
+named <code class="docutils literal"><span class="pre">request</span></code></li>
 </ul>
 </div>
 <div class="section" id="wsgi-middleware">
@@ -157,7 +153,7 @@ named <tt class="docutils literal"><span class="pre">request</span></tt></li>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
@@ -180,17 +176,19 @@ named <tt class="docutils literal"><span class="pre">request</span></tt></li>
   <h4>Next topic</h4>
   <p class="topless"><a href="orm.html"
                         title="next chapter">Effective Django ORM</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/middleware.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/middleware.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
   <h3>Slides</h3>
   <ul class="this-page-menu">
     <li><a href="./slides/middleware.html"
            rel="nofollow">View as slides</a></li>
   </ul>
-<div id="searchbox" style="display: none">
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
@@ -207,7 +205,7 @@ named <tt class="docutils literal"><span class="pre">request</span></tt></li>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -216,12 +214,23 @@ named <tt class="docutils literal"><span class="pre">request</span></tt></li>
         <li class="right" >
           <a href="testing.html" title="Testing in Django"
              >previous</a> |</li>
-        <li><a href="index.html">Effective Django</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Effective Django</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2012-2013, Nathan Yergler.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
+<script type="text/javascript">
+  (function() {
+    var ga = document.createElement('script');
+    ga.src = ('https:' == document.location.protocol ?
+              'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+  })();
+</script>
+
   </body>
 </html>

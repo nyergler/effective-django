@@ -4,18 +4,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-188298-7']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
+    
     <title>Class Based Views &mdash; Effective Django</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
@@ -24,8 +13,9 @@
     
     <link rel="stylesheet" href="_static/custom.css" type="text/css" />
     
-
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -40,14 +30,23 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/common.js"></script>
+    
     <script type="text/javascript" src="_static/slides.js"></script>
     <script type="text/javascript" src="_static/sync.js"></script>
     <script type="text/javascript" src="_static/controller.js"></script>
     <script type="text/javascript" src="_static/init.js"></script>
     
+    
     <link rel="top" title="Effective Django" href="index.html" />
     <link rel="next" title="Effective Django Forms" href="forms.html" />
-    <link rel="prev" title="Effective Django ORM" href="orm.html" /> 
+    <link rel="prev" title="Effective Django ORM" href="orm.html" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-188298-7']);
+  _gaq.push(['_trackPageview']);
+</script>
+
   </head>
   <body>
 
@@ -56,12 +55,20 @@
    class='slides layout-regular'>
 
 
-  <article class="slide level-1" id="class-based-views">
+  
+<article class="slide level-1" id="class-based-views">
+
 <h1>Class Based Views<a class="headerlink" href="../classbasedviews.html#class-based-views" title="View HTML">§</a></h1>
+
+
+
+
 
 </article>
 <article class="slide level-2" id="id1">
+
 <h2>Class Based Views<a class="headerlink" href="../classbasedviews.html#id1" title="View HTML">§</a></h2>
+
 <ul class="simple">
 <li>New in Django 1.3 (generic views)</li>
 <li>Allow &quot;composing&quot; a View from pieces</li>
@@ -70,11 +77,16 @@
 <li>Lots of power, lots of [potential] complexity</li>
 </ul>
 
+
+
+
 </article>
 <article class="slide level-2" id="using-class-based-views">
+
 <h2>Using Class Based Views<a class="headerlink" href="../classbasedviews.html#using-class-based-views" title="View HTML">§</a></h2>
+
 <ul class="simple">
-<li>Subclass <tt class="docutils literal"><span class="pre">View</span></tt></li>
+<li>Subclass <code class="docutils literal"><span class="pre">View</span></code></li>
 <li>Define a method name that matches the HTTP method you're
 implementing</li>
 </ul>
@@ -88,9 +100,14 @@ implementing</li>
 </pre></div>
 </div>
 
+
+
+
 </article>
 <article class="slide level-3" id="using-a-template">
+
 <h3>Using a Template<a class="headerlink" href="../classbasedviews.html#using-a-template" title="View HTML">§</a></h3>
+
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">TemplateView</span>
 
 <span class="k">class</span> <span class="nc">ContactList</span><span class="p">(</span><span class="n">TemplateView</span><span class="p">):</span>
@@ -107,12 +124,17 @@ implementing</li>
 </pre></div>
 </div>
 
+
+
+
 </article>
 <article class="slide level-3" id="configuring-urls">
+
 <h3>Configuring URLs<a class="headerlink" href="../classbasedviews.html#configuring-urls" title="View HTML">§</a></h3>
+
 <ul class="simple">
 <li>Django URLConf needs a callable, not a class</li>
-<li><tt class="docutils literal"><span class="pre">View</span></tt> provides as <tt class="docutils literal"><span class="pre">as_view</span></tt> method</li>
+<li><code class="docutils literal"><span class="pre">View</span></code> provides as <code class="docutils literal"><span class="pre">as_view</span></code> method</li>
 </ul>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">patterns</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span>
         <span class="p">(</span><span class="s">r&#39;^index/$&#39;</span><span class="p">,</span> <span class="n">ContactList</span><span class="o">.</span><span class="n">as_view</span><span class="p">()),</span>
@@ -120,15 +142,20 @@ implementing</li>
 </pre></div>
 </div>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">kwargs</span></tt> passed to <tt class="docutils literal"><span class="pre">as_view</span></tt> can override properties on the View
+<li><code class="docutils literal"><span class="pre">kwargs</span></code> passed to <code class="docutils literal"><span class="pre">as_view</span></code> can override properties on the View
 class</li>
-<li>Arguments captured in the URL pattern are available as <tt class="docutils literal"><span class="pre">.args</span></tt> and
-<tt class="docutils literal"><span class="pre">.kwargs</span></tt> inside your class</li>
+<li>Arguments captured in the URL pattern are available as <code class="docutils literal"><span class="pre">.args</span></code> and
+<code class="docutils literal"><span class="pre">.kwargs</span></code> inside your class</li>
 </ul>
+
+
+
 
 </article>
 <article class="slide level-2" id="idiomatic-class-based-views">
+
 <h2>Idiomatic Class Based Views<a class="headerlink" href="../classbasedviews.html#idiomatic-class-based-views" title="View HTML">§</a></h2>
+
 <ul class="simple">
 <li>Number of mixins can be confusing</li>
 <li>However there are a few common idioms</li>
@@ -136,43 +163,63 @@ class</li>
 just the things you need</li>
 </ul>
 
+
+
+
 </article>
 <article class="slide level-3" id="template-views">
+
 <h3>Template Views<a class="headerlink" href="../classbasedviews.html#template-views" title="View HTML">§</a></h3>
+
 <p>TemplateView</p>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">get_context_data()</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">template_name</span></tt>, <tt class="docutils literal"><span class="pre">get_template_names()</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">response_class</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">render_to_response()</span></tt></li>
+<li><code class="docutils literal"><span class="pre">get_context_data()</span></code></li>
+<li><code class="docutils literal"><span class="pre">template_name</span></code>, <code class="docutils literal"><span class="pre">get_template_names()</span></code></li>
+<li><code class="docutils literal"><span class="pre">response_class</span></code></li>
+<li><code class="docutils literal"><span class="pre">render_to_response()</span></code></li>
 </ul>
+
+
+
 
 </article>
 <article class="slide level-3" id="forms-in-views">
+
 <h3>Forms in Views<a class="headerlink" href="../classbasedviews.html#forms-in-views" title="View HTML">§</a></h3>
+
 <p>ProcessFormView</p>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">form_class</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">get_success_url()</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">form_valid(form)</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">form_invalid(form)</span></tt></li>
+<li><code class="docutils literal"><span class="pre">form_class</span></code></li>
+<li><code class="docutils literal"><span class="pre">get_success_url()</span></code></li>
+<li><code class="docutils literal"><span class="pre">form_valid(form)</span></code></li>
+<li><code class="docutils literal"><span class="pre">form_invalid(form)</span></code></li>
 </ul>
+
+
+
 
 </article>
 <article class="slide level-3" id="editing-views">
+
 <h3>Editing Views<a class="headerlink" href="../classbasedviews.html#editing-views" title="View HTML">§</a></h3>
+
 <p>CreateView, UpdateView</p>
 <ul class="simple">
 <li>Includes Form processing</li>
-<li><tt class="docutils literal"><span class="pre">model</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">get_object()</span></tt></li>
+<li><code class="docutils literal"><span class="pre">model</span></code></li>
+<li><code class="docutils literal"><span class="pre">get_object()</span></code></li>
 </ul>
+
+
+
 
 </article>
 <article class="slide level-2" id="http-methods">
+
 <h2>HTTP Methods<a class="headerlink" href="../classbasedviews.html#http-methods" title="View HTML">§</a></h2>
+
 <ul>
-<li><p class="first">The <tt class="docutils literal"><span class="pre">http_method_names</span></tt> property defines a list of supported
+<li><p class="first">The <code class="docutils literal"><span class="pre">http_method_names</span></code> property defines a list of supported
 methods</p>
 </li>
 <li><p class="first">In Django 1.5 this is:</p>
@@ -181,26 +228,36 @@ methods</p>
 </pre></div>
 </div>
 </li>
-<li><p class="first">If you want to support something like HTTP <tt class="docutils literal"><span class="pre">PATCH</span></tt>, you need to
+<li><p class="first">If you want to support something like HTTP <code class="docutils literal"><span class="pre">PATCH</span></code>, you need to
 add it to that list in your View subclass</p>
 </li>
 <li><p class="first">Views will look for a class method named for the HTTP method:
-<tt class="docutils literal"><span class="pre">get()</span></tt> is called for <tt class="docutils literal"><span class="pre">GET</span></tt>, etc.</p>
+<code class="docutils literal"><span class="pre">get()</span></code> is called for <code class="docutils literal"><span class="pre">GET</span></code>, etc.</p>
 </li>
 </ul>
 
+
+
+
 </article>
 <article class="slide level-2" id="writing-composable-views">
+
 <h2>Writing Composable Views<a class="headerlink" href="../classbasedviews.html#writing-composable-views" title="View HTML">§</a></h2>
+
 <ul class="simple">
 <li>Think about the extension points you need</li>
-<li>Call <tt class="docutils literal"><span class="pre">super()</span></tt> in your methods: this allows others to mix your
+<li>Call <code class="docutils literal"><span class="pre">super()</span></code> in your methods: this allows others to mix your
 View with others</li>
 </ul>
 
+
+
+
 </article>
 <article class="slide level-3" id="example">
+
 <h3>Example<a class="headerlink" href="../classbasedviews.html#example" title="View HTML">§</a></h3>
+
 <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">EventsPageMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;View mixin to include the Event in template context.&quot;&quot;&quot;</span>
 
@@ -222,8 +279,10 @@ View with others</li>
 </pre></div>
 </div>
 
-</article>
 
+
+
+</article>
 
 </section>
 

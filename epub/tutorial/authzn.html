@@ -5,26 +5,22 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-188298-7']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
+    
     <title>Handling Authentication &amp; Authorization</title>
     
     <link rel="stylesheet" href="../_static/epub.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" /> 
-  </head>
-  <body>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-188298-7']);
+  _gaq.push(['_trackPageview']);
+</script>
 
-    <div class="related">
+  </head>
+  <body role="document">
+
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -33,14 +29,14 @@
         <li class="right" >
           <a href="related.html" title="Related Models"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">Effective Django</a> &raquo;</li>
-          <li><a href="index.html" accesskey="U">Effective Django Tutorial</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">Effective Django</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Effective Django Tutorial</a> &raquo;</li> 
       </ul>
     </div>
 
     <div class="document">
       <div class="documentwrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="handling-authentication-authorization">
 <h1>Handling Authentication &amp; Authorization</h1>
@@ -58,10 +54,10 @@ which is what we&#8217;ll use.</p>
 <div class="section" id="authentication">
 <h2>Authentication</h2>
 <p>In order to use the included authentication support, the
-<tt class="docutils literal"><span class="pre">django.contrib.auth</span></tt> and <tt class="docutils literal"><span class="pre">django.contrib.sessions</span></tt> applications
+<code class="docutils literal"><span class="pre">django.contrib.auth</span></code> and <code class="docutils literal"><span class="pre">django.contrib.sessions</span></code> applications
 needs to be included in your project.</p>
 <p>Django enables thes by default when you create a project, as you can
-see in <tt class="docutils literal"><span class="pre">addressbook/settings.py</span></tt>.</p>
+see in <code class="docutils literal"><span class="pre">addressbook/settings.py</span></code>.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">(</span>
     <span class="s">&#39;django.contrib.auth&#39;</span><span class="p">,</span>
     <span class="s">&#39;django.contrib.contenttypes&#39;</span><span class="p">,</span>
@@ -90,33 +86,33 @@ installed, as well.</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>If you&#8217;ll recall, during the first run of <tt class="docutils literal"><span class="pre">syncdb</span></tt>, Django asked if
+<p>If you&#8217;ll recall, during the first run of <code class="docutils literal"><span class="pre">syncdb</span></code>, Django asked if
 we wanted to create a superuser account. It did so because we had the
 application installed already.</p>
 <p>The stock Django auth model supports <a class="reference external" href="https://docs.djangoproject.com/en/1.6/topics/auth/default/#user-objects">Users</a><span class="link-target"> [https://docs.djangoproject.com/en/1.6/topics/auth/default/#user-objects]</span>, <a class="reference external" href="https://docs.djangoproject.com/en/1.6/topics/auth/default/#groups">Groups</a><span class="link-target"> [https://docs.djangoproject.com/en/1.6/topics/auth/default/#groups]</span>, and
 <a class="reference external" href="https://docs.djangoproject.com/en/1.6/topics/auth/default/#permissions-and-authorization">Permissions</a><span class="link-target"> [https://docs.djangoproject.com/en/1.6/topics/auth/default/#permissions-and-authorization]</span>. This is usually sufficient unless you&#8217;re integrating
 with an existing authentication backend.</p>
-<p><tt class="docutils literal"><span class="pre">django.contrib.auth</span></tt> provides a set of views to support the basic
+<p><code class="docutils literal"><span class="pre">django.contrib.auth</span></code> provides a set of views to support the basic
 authentication actions such as login, logout, password reset, etc.
 Note that it includes <em>views</em>, but not <em>templates</em>. We&#8217;ll need to
 provide those for our project.</p>
 <p>For this example we&#8217;ll just add support for login and logout views in
-our project. First, add the views to <tt class="docutils literal"><span class="pre">addressbook/urls.py</span></tt>.</p>
+our project. First, add the views to <code class="docutils literal"><span class="pre">addressbook/urls.py</span></code>.</p>
 <div class="highlight-python"><div class="highlight"><pre>urlpatterns = patterns(&#39;&#39;,
     url(r&#39;^login/$&#39;, &#39;django.contrib.auth.views.login&#39;),
     url(r&#39;^logout/$&#39;, &#39;django.contrib.auth.views.logout&#39;),
 </pre></div>
 </div>
 <p>Both the <a class="reference external" href="https://docs.djangoproject.com/en/1.6/topics/auth/default/#django.contrib.auth.views.login">login</a><span class="link-target"> [https://docs.djangoproject.com/en/1.6/topics/auth/default/#django.contrib.auth.views.login]</span> and <a class="reference external" href="https://docs.djangoproject.com/en/1.6/topics/auth/default/#django.contrib.auth.views.login">logout</a><span class="link-target"> [https://docs.djangoproject.com/en/1.6/topics/auth/default/#django.contrib.auth.views.login]</span> view have default template names
-(<tt class="docutils literal"><span class="pre">registration/login.html</span></tt> and <tt class="docutils literal"><span class="pre">registration/logged_out.html</span></tt>,
+(<code class="docutils literal"><span class="pre">registration/login.html</span></code> and <code class="docutils literal"><span class="pre">registration/logged_out.html</span></code>,
 respectively). Because these views are specific to our project and not
 our re-usable Contacts application, we&#8217;ll create a new
-<tt class="docutils literal"><span class="pre">templates/registration</span></tt> directory inside of <tt class="docutils literal"><span class="pre">addressbook</span></tt>:</p>
+<code class="docutils literal"><span class="pre">templates/registration</span></code> directory inside of <code class="docutils literal"><span class="pre">addressbook</span></code>:</p>
 <div class="highlight-python"><div class="highlight"><pre>$ mkdir -p addressbook/templates/registration
 </pre></div>
 </div>
 <p>And tell Django to look in that directory for templates by setting
-<tt class="docutils literal"><span class="pre">TEMPLATE_DIRS</span></tt> in <tt class="docutils literal"><span class="pre">addressbook/settings.py</span></tt>.</p>
+<code class="docutils literal"><span class="pre">TEMPLATE_DIRS</span></code> in <code class="docutils literal"><span class="pre">addressbook/settings.py</span></code>.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">TEMPLATE_DIRS</span> <span class="o">=</span> <span class="p">(</span>
     <span class="c"># Put strings here, like &quot;/home/html/django_templates&quot; or &quot;C:/www/django/templates&quot;.</span>
     <span class="c"># Always use forward slashes, even on Windows.</span>
@@ -125,7 +121,7 @@ our re-usable Contacts application, we&#8217;ll create a new
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>Within that directory, first create <tt class="docutils literal"><span class="pre">login.html</span></tt>.</p>
+<p>Within that directory, first create <code class="docutils literal"><span class="pre">login.html</span></code>.</p>
 <div class="highlight-html"><div class="highlight"><pre>{% extends &quot;base.html&quot; %}
 
 {% block content %}
@@ -154,15 +150,15 @@ our re-usable Contacts application, we&#8217;ll create a new
 {% endblock %}
 </pre></div>
 </div>
-<p>The login template inherits from our <tt class="docutils literal"><span class="pre">base.html</span></tt> template, and shows
-the login form provided by the view. The hidden <tt class="docutils literal"><span class="pre">next</span></tt> field allows
+<p>The login template inherits from our <code class="docutils literal"><span class="pre">base.html</span></code> template, and shows
+the login form provided by the view. The hidden <code class="docutils literal"><span class="pre">next</span></code> field allows
 the view to redirect the user to the page requested, if the login
 request was triggered by a permission failure.</p>
 <div class="sidebar">
 <p class="first sidebar-title">Why no name for the URL patterns?</p>
 <p class="last">XXX</p>
 </div>
-<p>The logout template, <tt class="docutils literal"><span class="pre">logged_out.html</span></tt>, is simpler.</p>
+<p>The logout template, <code class="docutils literal"><span class="pre">logged_out.html</span></code>, is simpler.</p>
 <div class="highlight-html"><div class="highlight"><pre>{% extends &quot;base.html&quot; %}
 
 {% block content %}
@@ -178,23 +174,23 @@ logout was successful.</p>
 <p class="first sidebar-title">Creating an Admin User</p>
 <p class="last">XXX</p>
 </div>
-<p>If you run your development server now using <tt class="docutils literal"><span class="pre">runserver</span></tt> and visit
-<tt class="docutils literal"><span class="pre">http://localhost:8000/login</span></tt>, you&#8217;ll see the login page. If you
+<p>If you run your development server now using <code class="docutils literal"><span class="pre">runserver</span></code> and visit
+<code class="docutils literal"><span class="pre">http://localhost:8000/login</span></code>, you&#8217;ll see the login page. If you
 login with bogus credentials, you should see an error message. So
 let&#8217;s try logging in with the super user credential you created earlier.</p>
 <img alt="../_images/authz-login-pagenotfound.png" src="../_images/authz-login-pagenotfound.png" />
-<p>Wait, what? Why is it visiitng <tt class="docutils literal"><span class="pre">/accounts/profile</span></tt>? We never typed
+<p>Wait, what? Why is it visiitng <code class="docutils literal"><span class="pre">/accounts/profile</span></code>? We never typed
 that. The login view wants to redirect the user to a fixed URL after a
-successful login, and the default is <tt class="docutils literal"><span class="pre">/accounts/profile</span></tt>. To
-override that, we&#8217;ll set the <tt class="docutils literal"><span class="pre">LOGIN_REDIRECT_URL</span></tt> value in
-<tt class="docutils literal"><span class="pre">addressbook/settings.py</span></tt> so that once a user logs in they&#8217;ll be
+successful login, and the default is <code class="docutils literal"><span class="pre">/accounts/profile</span></code>. To
+override that, we&#8217;ll set the <code class="docutils literal"><span class="pre">LOGIN_REDIRECT_URL</span></code> value in
+<code class="docutils literal"><span class="pre">addressbook/settings.py</span></code> so that once a user logs in they&#8217;ll be
 redirected to the list of contacts.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">LOGIN_REDIRECT_URL</span> <span class="o">=</span> <span class="s">&#39;/&#39;</span>
 </pre></div>
 </div>
 <p>Now that we can log in and log out, it&#8217;d be nice to show the logged in
 user in the header and links to login/logout in the header. We&#8217;ll add
-that to our <tt class="docutils literal"><span class="pre">base.html</span></tt> template, since we want that to show up
+that to our <code class="docutils literal"><span class="pre">base.html</span></code> template, since we want that to show up
 everywhere.</p>
 <div class="highlight-html"><div class="highlight"><pre>  <span class="nt">&lt;body&gt;</span>
     <span class="nt">&lt;div&gt;</span>
@@ -221,12 +217,12 @@ used is <a class="reference external" href="https://docs.djangoproject.com/en/1.
 class based views remains <a class="reference external" href="https://docs.djangoproject.com/en/1.5/topics/class-based-views/intro/#decorating-class-based-views">a little cumbersome</a><span class="link-target"> [https://docs.djangoproject.com/en/1.5/topics/class-based-views/intro/#decorating-class-based-views]</span>. There are
 essentially two methods: decorating the URL configuration, and
 decorating the class. I&#8217;ll show how to decorate the class.</p>
-<p>Class based views have a <tt class="docutils literal"><span class="pre">dispatch()</span></tt> method that&#8217;s called when an
-URL pattern matches. The <tt class="docutils literal"><span class="pre">dispatch()</span></tt> method looks up the
+<p>Class based views have a <code class="docutils literal"><span class="pre">dispatch()</span></code> method that&#8217;s called when an
+URL pattern matches. The <code class="docutils literal"><span class="pre">dispatch()</span></code> method looks up the
 appropriate method on the class based on the HTTP method and then
 calls it. Because we want to protect the views for all HTTP methods,
 we&#8217;ll override and decorate that.</p>
-<p>In <tt class="docutils literal"><span class="pre">contacts/views.py</span></tt> we&#8217;ll create a class mixin that ensures the
+<p>In <code class="docutils literal"><span class="pre">contacts/views.py</span></code> we&#8217;ll create a class mixin that ensures the
 user is logged in.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span>
 <span class="kn">from</span> <span class="nn">django.utils.decorators</span> <span class="kn">import</span> <span class="n">method_decorator</span>
@@ -242,8 +238,8 @@ user is logged in.</p>
 a view on its own; it needs to be <em>mixed</em> with another view to have an
 effect.</p>
 <p>Once we have it, we can add it to the class declarations in
-<tt class="docutils literal"><span class="pre">contacts/views.py</span></tt>. Each view will have our new <tt class="docutils literal"><span class="pre">LoggedInMixin</span></tt>
-added as the first superclass. For example, <tt class="docutils literal"><span class="pre">ListContactView</span></tt> will
+<code class="docutils literal"><span class="pre">contacts/views.py</span></code>. Each view will have our new <code class="docutils literal"><span class="pre">LoggedInMixin</span></code>
+added as the first superclass. For example, <code class="docutils literal"><span class="pre">ListContactView</span></code> will
 look as follows.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ListContactView</span><span class="p">(</span><span class="n">LoggedInMixin</span><span class="p">,</span> <span class="n">ListView</span><span class="p">):</span>
 
@@ -255,7 +251,7 @@ look as follows.</p>
         <span class="k">return</span> <span class="n">Contact</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">owner</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Just as <tt class="docutils literal"><span class="pre">LOGIN_REDIRECT_URL</span></tt> tells Django where to send people
+<p>Just as <code class="docutils literal"><span class="pre">LOGIN_REDIRECT_URL</span></code> tells Django where to send people
 <em>after</em> they log in, there&#8217;s a setting to control where to send them
 when they <em>need</em> to login. However, this can also be a view name, so
 we don&#8217;t have to bake an explicit URL into the settings.</p>
@@ -274,7 +270,7 @@ There are three steps for</p>
 </ol>
 <p>First, we&#8217;ll go ahead and add the concept of an Owner to the Contact
 model.</p>
-<p>In <tt class="docutils literal"><span class="pre">contacts/models.py</span></tt>, we add an import and another field to our
+<p>In <code class="docutils literal"><span class="pre">contacts/models.py</span></code>, we add an import and another field to our
 model.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
 <span class="o">...</span>
@@ -310,7 +306,7 @@ to blow away the database and re-run syncdb.</p>
 <p>Now we need to limit the contact list to only the contacts the logged
 in User owns. This gets us into overriding methods that the base view
 classes have been handling for us.</p>
-<p>For the list of Contacts, we&#8217;ll want to override the <tt class="docutils literal"><span class="pre">get_queryset</span></tt>
+<p>For the list of Contacts, we&#8217;ll want to override the <code class="docutils literal"><span class="pre">get_queryset</span></code>
 method, which returns the <a class="reference external" href="https://docs.djangoproject.com/en/1.6/ref/class-based-views/mixins-multiple-object/#django.views.generic.list.MultipleObjectMixin.get_queryset">Django QuerySet</a><span class="link-target"> [https://docs.djangoproject.com/en/1.6/ref/class-based-views/mixins-multiple-object/#django.views.generic.list.MultipleObjectMixin.get_queryset]</span> of objects to be
 displayed.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ListContactView</span><span class="p">(</span><span class="n">LoggedInMixin</span><span class="p">,</span> <span class="n">ListView</span><span class="p">):</span>
@@ -352,18 +348,18 @@ mixin that enforces authorization.</p>
         <span class="k">return</span> <span class="n">obj</span>
 </pre></div>
 </div>
-<p><tt class="docutils literal"><span class="pre">ContactOwnerMixin</span></tt> overrides the <tt class="docutils literal"><span class="pre">get_object()</span></tt> method, which is
+<p><code class="docutils literal"><span class="pre">ContactOwnerMixin</span></code> overrides the <code class="docutils literal"><span class="pre">get_object()</span></code> method, which is
 responsible for getting the object for a view to operate on. If it
 can&#8217;t find one with the specified primary key and owner, it raises the
-<tt class="docutils literal"><span class="pre">PermissionDenied</span></tt> exception.</p>
+<code class="docutils literal"><span class="pre">PermissionDenied</span></code> exception.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This implementation will return HTTP 403 (Forbidden) whenever it
 cannot find the a Contact with the requested ID and owner. This
 will mask legitimate 404 (Not Found) errors.</p>
 </div>
-<p>We&#8217;ll use the <tt class="docutils literal"><span class="pre">ContactOwnerMixin</span></tt> in all of our views. For example,
-<tt class="docutils literal"><span class="pre">ContactView</span></tt> will look as follows:</p>
+<p>We&#8217;ll use the <code class="docutils literal"><span class="pre">ContactOwnerMixin</span></code> in all of our views. For example,
+<code class="docutils literal"><span class="pre">ContactView</span></code> will look as follows:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ContactView</span><span class="p">(</span><span class="n">LoggedInMixin</span><span class="p">,</span> <span class="n">ContactOwnerMixin</span><span class="p">,</span> <span class="n">DetailView</span><span class="p">):</span>
 
     <span class="n">model</span> <span class="o">=</span> <span class="n">Contact</span>
@@ -371,10 +367,10 @@ will mask legitimate 404 (Not Found) errors.</p>
 </pre></div>
 </div>
 <p>Note that the order of inheritance is important: the superclasses
-(<tt class="docutils literal"><span class="pre">LoggedInMixin</span></tt>, <tt class="docutils literal"><span class="pre">ContactOwnerMixin</span></tt>, <tt class="docutils literal"><span class="pre">DetailView</span></tt>) will be
-checked in the order listed for methods. By placing <tt class="docutils literal"><span class="pre">LoggedInMixin</span></tt>
+(<code class="docutils literal"><span class="pre">LoggedInMixin</span></code>, <code class="docutils literal"><span class="pre">ContactOwnerMixin</span></code>, <code class="docutils literal"><span class="pre">DetailView</span></code>) will be
+checked in the order listed for methods. By placing <code class="docutils literal"><span class="pre">LoggedInMixin</span></code>
 first, you&#8217;re guaranteed that by the time execution reaches
-<tt class="docutils literal"><span class="pre">ContactOwnerMixin</span></tt> and <tt class="docutils literal"><span class="pre">DetailView</span></tt>, you have a logged in,
+<code class="docutils literal"><span class="pre">ContactOwnerMixin</span></code> and <code class="docutils literal"><span class="pre">DetailView</span></code>, you have a logged in,
 authenticated user.</p>
 </div>
 </div>
@@ -392,9 +388,20 @@ authenticated user.</p>
       <div class="clearer"></div>
     </div>
 
-    <div class="footer">
+
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2012-2013, Nathan Yergler.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
+<script type="text/javascript">
+  (function() {
+    var ga = document.createElement('script');
+    ga.src = ('https:' == document.location.protocol ?
+              'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+  })();
+</script>
+
   </body>
 </html>

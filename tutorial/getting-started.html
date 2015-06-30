@@ -5,18 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-188298-7']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
+    
     <title>Getting Started &mdash; Effective Django</title>
     
     <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
@@ -37,10 +26,17 @@
     <link rel="top" title="Effective Django" href="../index.html" />
     <link rel="up" title="Effective Django Tutorial" href="index.html" />
     <link rel="next" title="Using Models" href="models.html" />
-    <link rel="prev" title="Effective Django Tutorial" href="index.html" /> 
+    <link rel="prev" title="Effective Django Tutorial" href="index.html" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-188298-7']);
+  _gaq.push(['_trackPageview']);
+</script>
+
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -49,15 +45,15 @@
         <li class="right" >
           <a href="index.html" title="Effective Django Tutorial"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">Effective Django</a> &raquo;</li>
-          <li><a href="index.html" accesskey="U">Effective Django Tutorial</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">Effective Django</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Effective Django Tutorial</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="getting-started">
 <h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/getting-started.html#getting-started" title="Slides">§</a></h1>
@@ -91,7 +87,7 @@ to code you wrote.</p>
 <ul class="simple">
 <li>We want to avoid using unknown dependencies, or unknown versions</li>
 <li><a class="reference external" href="http://www.virtualenv.org/">virtualenv</a> provides an easy way to work on a project without your
-system&#8217;s <tt class="docutils literal"><span class="pre">site-packages</span></tt></li>
+system&#8217;s <code class="docutils literal"><span class="pre">site-packages</span></code></li>
 </ul>
 </div>
 <div class="section" id="determinism">
@@ -139,7 +135,7 @@ $ source ./tutorial/bin/activate
 </div>
 <div class="section" id="start-a-requirements-file">
 <h3>Start a Requirements File<a class="headerlink" href="#start-a-requirements-file" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/getting-started.html#start-a-requirements-file" title="Slides">§</a></h3>
-<p>Create a <tt class="docutils literal"><span class="pre">requirements.txt</span></tt> in the <tt class="docutils literal"><span class="pre">tutorial</span></tt> directory with a
+<p>Create a <code class="docutils literal"><span class="pre">requirements.txt</span></code> in the <code class="docutils literal"><span class="pre">tutorial</span></code> directory with a
 single requirement in it.</p>
 <div class="highlight-python"><div class="highlight"><pre>Django==1.5.1
 </pre></div>
@@ -194,10 +190,10 @@ disk</a>, which makes it easier to decouple and reuse applications
 between projects.</p>
 <span class="admonition-scaffolding"></span><div class="section" id="creating-the-project">
 <h3>Creating the Project<a class="headerlink" href="#creating-the-project" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/getting-started.html#creating-the-project" title="Slides">§</a></h3>
-<p>Django installs a <tt class="docutils literal"><span class="pre">django-admin.py</span></tt> script for handling scaffolding
-tasks. We&#8217;ll use <tt class="docutils literal"><span class="pre">startproject</span></tt> to create the project files. We
+<p>Django installs a <code class="docutils literal"><span class="pre">django-admin.py</span></code> script for handling scaffolding
+tasks. We&#8217;ll use <code class="docutils literal"><span class="pre">startproject</span></code> to create the project files. We
 specify the project name and the directory to start in; we&#8217;re already
-in our isolated environment so we can just say <tt class="docutils literal"><span class="pre">.</span></tt></p>
+in our isolated environment so we can just say <code class="docutils literal"><span class="pre">.</span></code></p>
 <div class="highlight-python"><div class="highlight"><pre>(tutorial)$ django-admin.py startproject addressbook .
 </pre></div>
 </div>
@@ -213,14 +209,14 @@ in our isolated environment so we can just say <tt class="docutils literal"><spa
 <div class="section" id="project-scaffolding">
 <h3>Project Scaffolding<a class="headerlink" href="#project-scaffolding" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/getting-started.html#project-scaffolding" title="Slides">§</a></h3>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">manage.py</span></tt> is a pointer back to <tt class="docutils literal"><span class="pre">django-admin.py</span></tt> with an
+<li><code class="docutils literal"><span class="pre">manage.py</span></code> is a pointer back to <code class="docutils literal"><span class="pre">django-admin.py</span></code> with an
 environment variable set, pointing to your project as the one to
 read settings from and operate on when needed.</li>
-<li><tt class="docutils literal"><span class="pre">settings.py</span></tt> is where you&#8217;ll configure your project. It has a
+<li><code class="docutils literal"><span class="pre">settings.py</span></code> is where you&#8217;ll configure your project. It has a
 few sensible defaults, but no database chosen when you start.</li>
-<li><tt class="docutils literal"><span class="pre">urls.py</span></tt> contains the URL to view mappings: we&#8217;ll talk more about
+<li><code class="docutils literal"><span class="pre">urls.py</span></code> contains the URL to view mappings: we&#8217;ll talk more about
 that shortly.</li>
-<li><tt class="docutils literal"><span class="pre">wsgi.py</span></tt> is a <a class="reference external" href="https://en.wikipedia.org/wiki/Web_Server_Gateway_Interface">WSGI</a> wrapper for your application. This is used
+<li><code class="docutils literal"><span class="pre">wsgi.py</span></code> is a <a class="reference external" href="https://en.wikipedia.org/wiki/Web_Server_Gateway_Interface">WSGI</a> wrapper for your application. This is used
 by Django&#8217;s development servers, and possibly other containers
 like mod_wsgi, uwsgi, etc. in production.</li>
 </ul>
@@ -242,9 +238,9 @@ like mod_wsgi, uwsgi, etc. in production.</li>
 <li>Beginning in Django 1.4, <em>apps</em> are placed alongside <em>project</em>
 packages. This is a great improvement when it comes to
 deployment.</li>
-<li><tt class="docutils literal"><span class="pre">models.py</span></tt> will contain the Django ORM models for your app.</li>
-<li><tt class="docutils literal"><span class="pre">views.py</span></tt> will contain the View code</li>
-<li><tt class="docutils literal"><span class="pre">tests.py</span></tt> will contain the unit and integration tests you
+<li><code class="docutils literal"><span class="pre">models.py</span></code> will contain the Django ORM models for your app.</li>
+<li><code class="docutils literal"><span class="pre">views.py</span></code> will contain the View code</li>
+<li><code class="docutils literal"><span class="pre">tests.py</span></code> will contain the unit and integration tests you
 write.</li>
 </ul>
 <span class="admonition-review"></span></div>
@@ -255,7 +251,7 @@ write.</li>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
@@ -288,17 +284,19 @@ write.</li>
   <h4>Next topic</h4>
   <p class="topless"><a href="models.html"
                         title="next chapter">Using Models</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="../_sources/tutorial/getting-started.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/tutorial/getting-started.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
   <h3>Slides</h3>
   <ul class="this-page-menu">
     <li><a href="../.././slides/tutorial/getting-started.html"
            rel="nofollow">View as slides</a></li>
   </ul>
-<div id="searchbox" style="display: none">
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
       <input type="text" name="q" />
@@ -315,7 +313,7 @@ write.</li>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -324,13 +322,24 @@ write.</li>
         <li class="right" >
           <a href="index.html" title="Effective Django Tutorial"
              >previous</a> |</li>
-        <li><a href="../index.html">Effective Django</a> &raquo;</li>
-          <li><a href="index.html" >Effective Django Tutorial</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">Effective Django</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Effective Django Tutorial</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2012-2013, Nathan Yergler.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
+<script type="text/javascript">
+  (function() {
+    var ga = document.createElement('script');
+    ga.src = ('https:' == document.location.protocol ?
+              'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+  })();
+</script>
+
   </body>
 </html>

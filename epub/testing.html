@@ -5,26 +5,22 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-188298-7']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
+    
     <title>Testing in Django</title>
     
     <link rel="stylesheet" href="_static/epub.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" /> 
-  </head>
-  <body>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-188298-7']);
+  _gaq.push(['_trackPageview']);
+</script>
 
-    <div class="related">
+  </head>
+  <body role="document">
+
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -33,13 +29,13 @@
         <li class="right" >
           <a href="tutorial/authzn.html" title="Handling Authentication &amp; Authorization"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Effective Django</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Effective Django</a> &raquo;</li> 
       </ul>
     </div>
 
     <div class="document">
       <div class="documentwrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="testing-in-django">
 <h1>Testing in Django</h1>
@@ -54,7 +50,7 @@
 <div class="section" id="writing-a-unit-test">
 <h2>Writing a Unit Test</h2>
 <ul class="simple">
-<li>Django bundles <tt class="docutils literal"><span class="pre">unittest2</span></tt> as <tt class="docutils literal"><span class="pre">django.utils.unittest</span></tt></li>
+<li>Django bundles <code class="docutils literal"><span class="pre">unittest2</span></code> as <code class="docutils literal"><span class="pre">django.utils.unittest</span></code></li>
 </ul>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">django.http</span>
 <span class="kn">import</span> <span class="nn">django.utils.unittest</span> <span class="kn">as</span> <span class="nn">unittest2</span>
@@ -93,9 +89,9 @@ the response</li>
 <div class="section" id="request-factory">
 <h2>Request Factory</h2>
 <ul class="simple">
-<li>Django 1.3 introduced <tt class="docutils literal"><span class="pre">RequestFactory</span></tt>, with an API similar to
+<li>Django 1.3 introduced <code class="docutils literal"><span class="pre">RequestFactory</span></code>, with an API similar to
 Test Client</li>
-<li>Easy way to generate <tt class="docutils literal"><span class="pre">Request</span></tt> objects, which can be passed to
+<li>Easy way to generate <code class="docutils literal"><span class="pre">Request</span></code> objects, which can be passed to
 views</li>
 <li>Note that middleware is <strong>not</strong> run on these Requests</li>
 </ul>
@@ -103,13 +99,13 @@ views</li>
 <div class="section" id="running-tests">
 <h2>Running Tests</h2>
 <ul class="simple">
-<li>Django only looks in apps with <tt class="docutils literal"><span class="pre">models.py</span></tt> for tests</li>
+<li>Django only looks in apps with <code class="docutils literal"><span class="pre">models.py</span></code> for tests</li>
 </ul>
 <div class="highlight-python"><div class="highlight"><pre>$ ./manage.py test
 </pre></div>
 </div>
 <ul class="simple">
-<li>Easy to replace the test runner with something like <tt class="docutils literal"><span class="pre">nose</span></tt> if you
+<li>Easy to replace the test runner with something like <code class="docutils literal"><span class="pre">nose</span></code> if you
 so desire</li>
 </ul>
 </div>
@@ -128,9 +124,20 @@ so desire</li>
       <div class="clearer"></div>
     </div>
 
-    <div class="footer">
+
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2012-2013, Nathan Yergler.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
+<script type="text/javascript">
+  (function() {
+    var ga = document.createElement('script');
+    ga.src = ('https:' == document.location.protocol ?
+              'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+  })();
+</script>
+
   </body>
 </html>

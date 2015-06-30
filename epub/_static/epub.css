@@ -4,7 +4,7 @@
  *
  * Sphinx stylesheet -- epub theme.
  *
- * :copyright: Copyright 2007-2014 by the Sphinx team, see AUTHORS.
+ * :copyright: Copyright 2007-2015 by the Sphinx team, see AUTHORS.
  * :license: BSD, see LICENSE for details.
  *
  */
@@ -271,6 +271,13 @@ table.docutils {
     border-collapse: collapse;
 }
 
+table caption span.caption-number {
+    font-style: italic;
+}
+
+table caption span.caption-text {
+}
+
 table.docutils td, table.docutils th {
     padding: 1px 8px 1px 5px;
     border-top: 0;
@@ -299,6 +306,15 @@ table.citation {
 
 table.citation td {
     border-bottom: none;
+}
+
+/* -- figures --------------------------------------------------------------- */
+
+div.figure p.caption span.caption-number {
+    font-style: italic;
+}
+
+div.figure p.caption span.caption-text {
 }
 
 /* -- other body styles ----------------------------------------------------- */
@@ -361,6 +377,10 @@ dl.glossary dt {
 
 .optional {
     font-size: 130%;
+}
+
+.sig-paren {
+    font-size: larger;
 }
 
 .versionmodified {
@@ -429,26 +449,42 @@ table.highlighttable td {
     padding: 0 0.5em 0 0.5em;
 }
 
-tt {
+code {
     font-family: monospace;
 }
 
-tt.descname {
+div.code-block-caption span.caption-number {
+    padding: 0.1em 0.3em;
+    font-style: italic;
+}
+
+div.code-block-caption span.caption-text {
+}
+
+div.literal-block-wrapper {
+    padding: 1em 1em 0;
+}
+
+div.literal-block-wrapper div.highlight {
+    margin: 0;
+}
+
+code.descname {
     background-color: transparent;
     font-weight: bold;
     font-size: 1.2em;
 }
 
-tt.descclassname {
+code.descclassname {
     background-color: transparent;
 }
 
-tt.xref, a tt {
+code.xref, a code {
     background-color: transparent;
     font-weight: bold;
 }
 
-h1 tt, h2 tt, h3 tt, h4 tt, h5 tt, h6 tt {
+h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
     background-color: transparent;
 }
 

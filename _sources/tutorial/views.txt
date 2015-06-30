@@ -386,13 +386,19 @@ A few things to note:
   explicit path, we don't have to worry about a link breaking. ``url``
   in templates is equivalent to ``reverse`` in Python code.
 
-Finally, let's configure the URL by adding the following line to our
+You can configure the URL by adding the following line to our
 ``urls.py`` file::
 
     url(r'^new$', contacts.views.CreateContactView.as_view(),
         name='contacts-new',),
 
-You can go to ``http://localhost:8000/new`` to create new contacts
+Now you can go to ``http://localhost:8000/new`` to create new contacts.
+
+To complete the story, let's add a link to `contact_list.html`.
+
+.. literalinclude:: /src/contacts/templates/contact_list.html
+   :language: html
+
 
 Testing Your Views
 ==================

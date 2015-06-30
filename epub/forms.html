@@ -5,26 +5,22 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-188298-7']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
+    
     <title>Effective Django Forms</title>
     
     <link rel="stylesheet" href="_static/epub.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" /> 
-  </head>
-  <body>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-188298-7']);
+  _gaq.push(['_trackPageview']);
+</script>
 
-    <div class="related">
+  </head>
+  <body role="document">
+
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -33,13 +29,13 @@
         <li class="right" >
           <a href="classbasedviews.html" title="Class Based Views"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Effective Django</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Effective Django</a> &raquo;</li> 
       </ul>
     </div>
 
     <div class="document">
       <div class="documentwrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="effective-django-forms">
 <h1>Effective Django Forms</h1>
@@ -99,9 +95,9 @@ validated:</p>
 <h3>Accessing Fields</h3>
 <p>Two ways to access fields on a Form instance</p>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">form.fields['name']</span></tt> returns the <tt class="docutils literal"><span class="pre">Field</span></tt> object</li>
-<li><tt class="docutils literal"><span class="pre">form['name']</span></tt> returns a <tt class="docutils literal"><span class="pre">BoundField</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">BoundField</span></tt> wraps a field and value for HTML output</li>
+<li><code class="docutils literal"><span class="pre">form.fields['name']</span></code> returns the <code class="docutils literal"><span class="pre">Field</span></code> object</li>
+<li><code class="docutils literal"><span class="pre">form['name']</span></code> returns a <code class="docutils literal"><span class="pre">BoundField</span></code></li>
+<li><code class="docutils literal"><span class="pre">BoundField</span></code> wraps a field and value for HTML output</li>
 </ul>
 </div>
 <div class="section" id="initial-data">
@@ -128,9 +124,9 @@ validated:</p>
 </p>
 <ul class="simple">
 <li>Only bound forms can be validated</li>
-<li>Calling <tt class="docutils literal"><span class="pre">form.is_valid()</span></tt> triggers validation if needed</li>
-<li>Validated, cleaned data is stored in <tt class="docutils literal"><span class="pre">form.cleaned_data</span></tt></li>
-<li>Calling <tt class="docutils literal"><span class="pre">form.full_clean()</span></tt> performs the full cycle</li>
+<li>Calling <code class="docutils literal"><span class="pre">form.is_valid()</span></code> triggers validation if needed</li>
+<li>Validated, cleaned data is stored in <code class="docutils literal"><span class="pre">form.cleaned_data</span></code></li>
+<li>Calling <code class="docutils literal"><span class="pre">form.full_clean()</span></code> performs the full cycle</li>
 </ul>
 </div>
 <div class="section" id="field-validation">
@@ -141,7 +137,7 @@ validated:</p>
 <ul class="simple">
 <li>Three phases for Fields: To Python, Validation, and Cleaning</li>
 <li>If validation raises an Error, cleaning is skipped</li>
-<li>Validators are callables that can raise a <tt class="docutils literal"><span class="pre">ValidationError</span></tt></li>
+<li>Validators are callables that can raise a <code class="docutils literal"><span class="pre">ValidationError</span></code></li>
 <li>Django includes generic ones for some common tasks</li>
 <li>Examples: URL, Min/Max Value, Min/Max Length, URL, Regex, email</li>
 </ul>
@@ -149,14 +145,14 @@ validated:</p>
 <div class="section" id="field-cleaning">
 <h3>Field Cleaning</h3>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">.clean_fieldname()</span></tt> method is called after validators</li>
+<li><code class="docutils literal"><span class="pre">.clean_fieldname()</span></code> method is called after validators</li>
 <li>Input has already been converted to Python objects</li>
-<li>Methods can raise <tt class="docutils literal"><span class="pre">ValidationErrors</span></tt></li>
+<li>Methods can raise <code class="docutils literal"><span class="pre">ValidationErrors</span></code></li>
 <li>Methods <em>must</em> return the cleaned value</li>
 </ul>
 </div>
 <div class="section" id="clean-email">
-<h3><tt class="docutils literal"><span class="pre">.clean_email()</span></tt></h3>
+<h3><code class="docutils literal"><span class="pre">.clean_email()</span></code></h3>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ContactForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span>
         <span class="n">label</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Name&quot;</span><span class="p">),</span>
@@ -181,15 +177,15 @@ validated:</p>
 <div class="section" id="form-validation">
 <h3>Form Validation</h3>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">.clean()</span></tt> performs cross-field validation</li>
+<li><code class="docutils literal"><span class="pre">.clean()</span></code> performs cross-field validation</li>
 <li>Called even if errors were raised by Fields</li>
 <li><em>Must</em> return the cleaned data dictionary</li>
-<li><tt class="docutils literal"><span class="pre">ValidationErrors</span></tt> raised by <tt class="docutils literal"><span class="pre">.clean()</span></tt> will be grouped in
-<tt class="docutils literal"><span class="pre">form.non_field_errors()</span></tt> by default.</li>
+<li><code class="docutils literal"><span class="pre">ValidationErrors</span></code> raised by <code class="docutils literal"><span class="pre">.clean()</span></code> will be grouped in
+<code class="docutils literal"><span class="pre">form.non_field_errors()</span></code> by default.</li>
 </ul>
 </div>
 <div class="section" id="clean-example">
-<h3><tt class="docutils literal"><span class="pre">.clean()</span></tt> example</h3>
+<h3><code class="docutils literal"><span class="pre">.clean()</span></code> example</h3>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ContactForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span>
         <span class="n">label</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Name&quot;</span><span class="p">),</span>
@@ -214,7 +210,7 @@ validated:</p>
 <ul>
 <li><p class="first">Initial data is used as a starting point</p>
 </li>
-<li><p class="first">It does not automatically propagate to <tt class="docutils literal"><span class="pre">cleaned_data</span></tt></p>
+<li><p class="first">It does not automatically propagate to <code class="docutils literal"><span class="pre">cleaned_data</span></code></p>
 </li>
 <li><p class="first">Defaults for non-required fields should be specified when
 accessing the dict:</p>
@@ -242,9 +238,9 @@ accessing the dict:</p>
 <ul>
 <li><p class="first">Forms use initial data to track changed fields</p>
 </li>
-<li><p class="first"><tt class="docutils literal"><span class="pre">form.has_changed()</span></tt></p>
+<li><p class="first"><code class="docutils literal"><span class="pre">form.has_changed()</span></code></p>
 </li>
-<li><p class="first"><tt class="docutils literal"><span class="pre">form.changed_data</span></tt></p>
+<li><p class="first"><code class="docutils literal"><span class="pre">form.changed_data</span></code></p>
 </li>
 <li><p class="first">Fields can render a hidden input with the initial value, as well:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">changed_date</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">DateField</span><span class="p">(</span><span class="n">show_hidden_initial</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
@@ -268,7 +264,7 @@ accessing the dict:</p>
 <div><ul class="simple">
 <li>Initial states</li>
 <li>Field Validation</li>
-<li>Final state of <tt class="docutils literal"><span class="pre">cleaned_data</span></tt></li>
+<li>Final state of <code class="docutils literal"><span class="pre">cleaned_data</span></code></li>
 </ul>
 </div></blockquote>
 </div>
@@ -325,7 +321,7 @@ accessing the dict:</p>
 <h3>Form Output</h3>
 <p>Three primary &#8220;whole-form&#8221; output modes:</p>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">form.as_p()</span></tt>, <tt class="docutils literal"><span class="pre">form.as_ul()</span></tt>, <tt class="docutils literal"><span class="pre">form.as_table()</span></tt></li>
+<li><code class="docutils literal"><span class="pre">form.as_p()</span></code>, <code class="docutils literal"><span class="pre">form.as_ul()</span></code>, <code class="docutils literal"><span class="pre">form.as_table()</span></code></li>
 </ul>
 <div class="highlight-python"><div class="highlight"><pre>&lt;tr&gt;&lt;th&gt;&lt;label for=&quot;id_name&quot;&gt;Name:&lt;/label&gt;&lt;/th&gt;
   &lt;td&gt;&lt;input id=&quot;id_name&quot; type=&quot;text&quot; name=&quot;name&quot; maxlength=&quot;255&quot; /&gt;&lt;/td&gt;&lt;/tr&gt;
@@ -347,10 +343,10 @@ accessing the dict:</p>
 </div>
 <p>Additional rendering properties:</p>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">field.label</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">field.label_tag</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">field.html_name</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">field.help_text</span></tt></li>
+<li><code class="docutils literal"><span class="pre">field.label</span></code></li>
+<li><code class="docutils literal"><span class="pre">field.label_tag</span></code></li>
+<li><code class="docutils literal"><span class="pre">field.html_name</span></code></li>
+<li><code class="docutils literal"><span class="pre">field.help_text</span></code></li>
 </ul>
 </div>
 <div class="section" id="customizing-rendering">
@@ -384,7 +380,7 @@ required states.</p>
 <span class="gr">ValidationError</span>: <span class="n">[u&#39;This field is required.&#39;]</span>
 </pre></div>
 </div>
-<p><tt class="docutils literal"><span class="pre">error_messages</span></tt> lets you customize those messages</p>
+<p><code class="docutils literal"><span class="pre">error_messages</span></code> lets you customize those messages</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span>
 <span class="gp">... </span>  <span class="n">error_messages</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;required&#39;</span><span class="p">:</span> <span class="s">&#39;Please enter your name&#39;</span><span class="p">})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">name</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">)</span>
@@ -397,10 +393,10 @@ required states.</p>
 <div class="section" id="error-class">
 <h3>Error Class</h3>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">ValidationErrors</span></tt> raised are wrapped in a class</li>
+<li><code class="docutils literal"><span class="pre">ValidationErrors</span></code> raised are wrapped in a class</li>
 <li>This class controls HTML formatting</li>
-<li>By default, <tt class="docutils literal"><span class="pre">ErrorList</span></tt> is used: outputs as <tt class="docutils literal"><span class="pre">&lt;ul&gt;</span></tt></li>
-<li>Specify the <tt class="docutils literal"><span class="pre">error_class</span></tt> kwarg when constructing the form to
+<li>By default, <code class="docutils literal"><span class="pre">ErrorList</span></code> is used: outputs as <code class="docutils literal"><span class="pre">&lt;ul&gt;</span></code></li>
+<li>Specify the <code class="docutils literal"><span class="pre">error_class</span></code> kwarg when constructing the form to
 override</li>
 </ul>
 </div>
@@ -423,7 +419,7 @@ override</li>
 </div>
 <div class="section" id="multiple-forms">
 <h3>Multiple Forms</h3>
-<p>Avoid potential name collisions with <tt class="docutils literal"><span class="pre">prefix</span></tt>:</p>
+<p>Avoid potential name collisions with <code class="docutils literal"><span class="pre">prefix</span></code>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">contact_form</span> <span class="o">=</span> <span class="n">ContactForm</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s">&#39;contact&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -451,9 +447,9 @@ override</li>
 <li>Validation includes Model validators by default</li>
 <li>Supports creating and editing instances</li>
 <li>Key differences from Forms:<ul>
-<li>A field for the Primary Key (usually <tt class="docutils literal"><span class="pre">id</span></tt>)</li>
-<li><tt class="docutils literal"><span class="pre">.save()</span></tt> method</li>
-<li><tt class="docutils literal"><span class="pre">.instance</span></tt> property</li>
+<li>A field for the Primary Key (usually <code class="docutils literal"><span class="pre">id</span></code>)</li>
+<li><code class="docutils literal"><span class="pre">.save()</span></code> method</li>
+<li><code class="docutils literal"><span class="pre">.instance</span></code> property</li>
 </ul>
 </li>
 </ul>
@@ -527,7 +523,7 @@ override</li>
 <img src="_images/blockdiag-d54b263c201749693662fc3d8dee6d8866fc424d.png" alt="None" width="640" height="120" />
 </p>
 <ul class="simple">
-<li>Model Forms have an additional method, <tt class="docutils literal"><span class="pre">_post_clean()</span></tt></li>
+<li>Model Forms have an additional method, <code class="docutils literal"><span class="pre">_post_clean()</span></code></li>
 <li>Sets cleaned fields on the Model instance</li>
 <li>Called <em>regardless</em> of whether the form is valid</li>
 </ul>
@@ -584,9 +580,9 @@ override</li>
 </div>
 <p>Factory kwargs:</p>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">can_delete</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">extra</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">max_num</span></tt></li>
+<li><code class="docutils literal"><span class="pre">can_delete</span></code></li>
+<li><code class="docutils literal"><span class="pre">extra</span></code></li>
+<li><code class="docutils literal"><span class="pre">max_num</span></code></li>
 </ul>
 </div>
 <div class="section" id="using-form-sets">
@@ -609,11 +605,11 @@ override</li>
 <div class="section" id="management-form">
 <h3>Management Form</h3>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">formset.management_form</span></tt> provides fields for tracking the member
+<li><code class="docutils literal"><span class="pre">formset.management_form</span></code> provides fields for tracking the member
 forms<ul>
-<li><tt class="docutils literal"><span class="pre">TOTAL_FORMS</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">INITIAL_FORMS</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">MAX_NUM_FORMS</span></tt></li>
+<li><code class="docutils literal"><span class="pre">TOTAL_FORMS</span></code></li>
+<li><code class="docutils literal"><span class="pre">INITIAL_FORMS</span></code></li>
+<li><code class="docutils literal"><span class="pre">MAX_NUM_FORMS</span></code></li>
 </ul>
 </li>
 <li>Management form data <strong>must</strong> be present to validate a Form Set</li>
@@ -626,9 +622,9 @@ forms<ul>
 </p>
 <ul class="simple">
 <li>Performs validation on each member form</li>
-<li>Calls <tt class="docutils literal"><span class="pre">.clean()</span></tt> method on the FormSet</li>
-<li><tt class="docutils literal"><span class="pre">formset.clean()</span></tt> can be overridden to validate across Forms</li>
-<li>Errors raised are collected in <tt class="docutils literal"><span class="pre">formset.non_form_errors()</span></tt></li>
+<li>Calls <code class="docutils literal"><span class="pre">.clean()</span></code> method on the FormSet</li>
+<li><code class="docutils literal"><span class="pre">formset.clean()</span></code> can be overridden to validate across Forms</li>
+<li>Errors raised are collected in <code class="docutils literal"><span class="pre">formset.non_form_errors()</span></code></li>
 </ul>
 </div>
 <div class="section" id="formset-clean">
@@ -653,21 +649,21 @@ forms<ul>
 <div class="section" id="insertion">
 <h3>Insertion</h3>
 <ul class="simple">
-<li>FormSets use the <tt class="docutils literal"><span class="pre">management_form</span></tt> to determine how many forms to
+<li>FormSets use the <code class="docutils literal"><span class="pre">management_form</span></code> to determine how many forms to
 build</li>
 <li>You can add more by creating a new form and incrementing
-<tt class="docutils literal"><span class="pre">TOTAL_FORM_COUNT</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">formset.empty_form</span></tt> provides an empty copy of the form with
-<tt class="docutils literal"><span class="pre">__prefix__</span></tt> as the index</li>
+<code class="docutils literal"><span class="pre">TOTAL_FORM_COUNT</span></code></li>
+<li><code class="docutils literal"><span class="pre">formset.empty_form</span></code> provides an empty copy of the form with
+<code class="docutils literal"><span class="pre">__prefix__</span></code> as the index</li>
 </ul>
 </div>
 <div class="section" id="deletion">
 <h3>Deletion</h3>
 <ul class="simple">
-<li>When deletion is enabled, additional <tt class="docutils literal"><span class="pre">DELETE</span></tt> field is added to
+<li>When deletion is enabled, additional <code class="docutils literal"><span class="pre">DELETE</span></code> field is added to
 each form</li>
 <li>Forms flagged for deletion are available using the
-<tt class="docutils literal"><span class="pre">.deleted_forms</span></tt> property</li>
+<code class="docutils literal"><span class="pre">.deleted_forms</span></code> property</li>
 <li>Deleted forms are <strong>not</strong> validated</li>
 </ul>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">ContactFormSet</span> <span class="o">=</span> <span class="n">formsets</span><span class="o">.</span><span class="n">formset_factory</span><span class="p">(</span>
@@ -679,9 +675,9 @@ each form</li>
 <div class="section" id="ordering-forms">
 <h3>Ordering Forms</h3>
 <ul class="simple">
-<li>When ordering is enabled, additional <tt class="docutils literal"><span class="pre">ORDER</span></tt> field is added to
+<li>When ordering is enabled, additional <code class="docutils literal"><span class="pre">ORDER</span></code> field is added to
 each form</li>
-<li>Forms are available (in order) using the <tt class="docutils literal"><span class="pre">.ordered_forms</span></tt> property</li>
+<li>Forms are available (in order) using the <code class="docutils literal"><span class="pre">.ordered_forms</span></code> property</li>
 </ul>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">ContactFormSet</span> <span class="o">=</span> <span class="n">formsets</span><span class="o">.</span><span class="n">formset_factory</span><span class="p">(</span>
     <span class="n">ContactForm</span><span class="p">,</span>
@@ -695,8 +691,8 @@ each form</li>
 <ul class="simple">
 <li>FormSets can be tested in the same way as Forms</li>
 <li>Helpers to generate test form data:<ul>
-<li><tt class="docutils literal"><span class="pre">flatten_to_dict</span></tt> works with FormSets just like Forms</li>
-<li><tt class="docutils literal"><span class="pre">empty_form_data</span></tt> takes a FormSet and index, returns a dict of data
+<li><code class="docutils literal"><span class="pre">flatten_to_dict</span></code> works with FormSets just like Forms</li>
+<li><code class="docutils literal"><span class="pre">empty_form_data</span></code> takes a FormSet and index, returns a dict of data
 for an empty form:</li>
 </ul>
 </li>
@@ -715,9 +711,9 @@ for an empty form:</li>
 <h3>Model Form Sets</h3>
 <ul class="simple">
 <li>ModelFormSets:FormSets :: ModelForms:Forms</li>
-<li><tt class="docutils literal"><span class="pre">queryset</span></tt> argument specifies initial set of objects</li>
-<li><tt class="docutils literal"><span class="pre">.save()</span></tt> returns the list of saved instances</li>
-<li>If <tt class="docutils literal"><span class="pre">can_delete</span></tt> is <tt class="docutils literal"><span class="pre">True</span></tt>, <tt class="docutils literal"><span class="pre">.save()</span></tt> also deletes the models
+<li><code class="docutils literal"><span class="pre">queryset</span></code> argument specifies initial set of objects</li>
+<li><code class="docutils literal"><span class="pre">.save()</span></code> returns the list of saved instances</li>
+<li>If <code class="docutils literal"><span class="pre">can_delete</span></code> is <code class="docutils literal"><span class="pre">True</span></code>, <code class="docutils literal"><span class="pre">.save()</span></code> also deletes the models
 flagged for deletion</li>
 </ul>
 </div>
@@ -730,7 +726,7 @@ flagged for deletion</li>
 <li>Django&#8217;s i18n/l10n framework supports localized input formats</li>
 <li>For example: 10,00 vs. 10.00</li>
 </ul>
-<p>Enable in <tt class="docutils literal"><span class="pre">settings.py</span></tt>:</p>
+<p>Enable in <code class="docutils literal"><span class="pre">settings.py</span></code>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">USE_L10N</span> <span class="o">=</span> <span class="bp">True</span>
 <span class="n">USE_THOUSAND_SEPARATOR</span> <span class="o">=</span> <span class="bp">True</span> <span class="c"># optional</span>
 </pre></div>
@@ -738,7 +734,7 @@ flagged for deletion</li>
 </div>
 <div class="section" id="localizing-fields-example">
 <h3>Localizing Fields Example</h3>
-<p>And then use the <tt class="docutils literal"><span class="pre">localize</span></tt> kwarg</p>
+<p>And then use the <code class="docutils literal"><span class="pre">localize</span></code> kwarg</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">DateForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="n">pycon_ends</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">DateField</span><span class="p">(</span><span class="n">localize</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
@@ -759,8 +755,8 @@ flagged for deletion</li>
 <h3>Dynamic Forms</h3>
 <ul class="simple">
 <li>Declarative syntax is just sugar</li>
-<li>Forms use a metaclass to populate <tt class="docutils literal"><span class="pre">form.fields</span></tt></li>
-<li>After <tt class="docutils literal"><span class="pre">__init__</span></tt> finishes, you can manipulate <tt class="docutils literal"><span class="pre">form.fields</span></tt>
+<li>Forms use a metaclass to populate <code class="docutils literal"><span class="pre">form.fields</span></code></li>
+<li>After <code class="docutils literal"><span class="pre">__init__</span></code> finishes, you can manipulate <code class="docutils literal"><span class="pre">form.fields</span></code>
 without impacting other instances</li>
 </ul>
 </div>
@@ -813,9 +809,20 @@ or valid for a particular state</li>
       <div class="clearer"></div>
     </div>
 
-    <div class="footer">
+
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2012-2013, Nathan Yergler.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
+<script type="text/javascript">
+  (function() {
+    var ga = document.createElement('script');
+    ga.src = ('https:' == document.location.protocol ?
+              'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+  })();
+</script>
+
   </body>
 </html>

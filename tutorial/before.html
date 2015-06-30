@@ -5,18 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-188298-7']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
+    
     <title>Before You Arrive &mdash; Effective Django</title>
     
     <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
@@ -34,20 +23,27 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="Effective Django" href="../index.html" /> 
+    <link rel="top" title="Effective Django" href="../index.html" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-188298-7']);
+  _gaq.push(['_trackPageview']);
+</script>
+
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
-        <li><a href="../index.html">Effective Django</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">Effective Django</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="before-you-arrive">
 <h1>Before You Arrive<a class="headerlink" href="#before-you-arrive" title="Permalink to this headline">¶</a><a class="headerlink" href=".././slides/tutorial/before.html#before-you-arrive" title="Slides">§</a></h1>
@@ -65,8 +61,8 @@ Python website: <a class="reference external" href="http://python.org/download/r
 installed, that will work fine.</p>
 </li>
 <li><p class="first">Install virtualenv and pip</p>
-<p><tt class="docutils literal"><span class="pre">virtualenv</span></tt> is a tool for managing your Python environments. It
-includes <tt class="docutils literal"><span class="pre">pip</span></tt>, a Python package installer, which we&#8217;ll use to
+<p><code class="docutils literal"><span class="pre">virtualenv</span></code> is a tool for managing your Python environments. It
+includes <code class="docutils literal"><span class="pre">pip</span></code>, a Python package installer, which we&#8217;ll use to
 retrieve dependencies.</p>
 <p>You can download <a class="reference external" href="https://pypi.python.org/pypi/virtualenv">virtualenv from PyPI</a> at
 <a class="reference external" href="https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.9.1.tar.gz">https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.9.1.tar.gz</a></p>
@@ -114,8 +110,8 @@ virtualenv beforehand:</p>
 </pre></div>
 </div>
 <p>This will download Django and install it into the virtualenv. Once
-it&#8217;s installed, you should see a <tt class="docutils literal"><span class="pre">django-admin.py</span></tt> script in the
-<tt class="docutils literal"><span class="pre">bin</span></tt> (Linux, Mac OS X) or <tt class="docutils literal"><span class="pre">Scripts</span></tt> (Windows) directory.</p>
+it&#8217;s installed, you should see a <code class="docutils literal"><span class="pre">django-admin.py</span></code> script in the
+<code class="docutils literal"><span class="pre">bin</span></code> (Linux, Mac OS X) or <code class="docutils literal"><span class="pre">Scripts</span></code> (Windows) directory.</p>
 </li>
 </ol>
 <p>If you have questions, you can email me at <a class="reference external" href="mailto:nathan&#37;&#52;&#48;yergler&#46;net">nathan<span>&#64;</span>yergler<span>&#46;</span>net</a>. If you
@@ -129,19 +125,21 @@ and will update this document with any notes.</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="../_sources/tutorial/before.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/tutorial/before.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
   <h3>Slides</h3>
   <ul class="this-page-menu">
     <li><a href="../.././slides/tutorial/before.html"
            rel="nofollow">View as slides</a></li>
   </ul>
-<div id="searchbox" style="display: none">
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
       <input type="text" name="q" />
@@ -158,15 +156,26 @@ and will update this document with any notes.</p>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
-        <li><a href="../index.html">Effective Django</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">Effective Django</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2012-2013, Nathan Yergler.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
+<script type="text/javascript">
+  (function() {
+    var ga = document.createElement('script');
+    ga.src = ('https:' == document.location.protocol ?
+              'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+  })();
+</script>
+
   </body>
 </html>

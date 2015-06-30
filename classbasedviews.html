@@ -5,18 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-188298-7']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
+    
     <title>Class Based Views &mdash; Effective Django</title>
     
     <link rel="stylesheet" href="_static/nature.css" type="text/css" />
@@ -36,10 +25,17 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Effective Django" href="index.html" />
     <link rel="next" title="Effective Django Forms" href="forms.html" />
-    <link rel="prev" title="Effective Django ORM" href="orm.html" /> 
+    <link rel="prev" title="Effective Django ORM" href="orm.html" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-188298-7']);
+  _gaq.push(['_trackPageview']);
+</script>
+
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -48,14 +44,14 @@
         <li class="right" >
           <a href="orm.html" title="Effective Django ORM"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Effective Django</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Effective Django</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="class-based-views">
 <h1>Class Based Views<a class="headerlink" href="#class-based-views" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/classbasedviews.html#class-based-views" title="Slides">§</a></h1>
@@ -72,7 +68,7 @@
 <div class="section" id="using-class-based-views">
 <h2>Using Class Based Views<a class="headerlink" href="#using-class-based-views" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/classbasedviews.html#using-class-based-views" title="Slides">§</a></h2>
 <ul class="simple">
-<li>Subclass <tt class="docutils literal"><span class="pre">View</span></tt></li>
+<li>Subclass <code class="docutils literal"><span class="pre">View</span></code></li>
 <li>Define a method name that matches the HTTP method you&#8217;re
 implementing</li>
 </ul>
@@ -107,7 +103,7 @@ implementing</li>
 <h3>Configuring URLs<a class="headerlink" href="#configuring-urls" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/classbasedviews.html#configuring-urls" title="Slides">§</a></h3>
 <ul class="simple">
 <li>Django URLConf needs a callable, not a class</li>
-<li><tt class="docutils literal"><span class="pre">View</span></tt> provides as <tt class="docutils literal"><span class="pre">as_view</span></tt> method</li>
+<li><code class="docutils literal"><span class="pre">View</span></code> provides as <code class="docutils literal"><span class="pre">as_view</span></code> method</li>
 </ul>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">patterns</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span>
         <span class="p">(</span><span class="s">r&#39;^index/$&#39;</span><span class="p">,</span> <span class="n">ContactList</span><span class="o">.</span><span class="n">as_view</span><span class="p">()),</span>
@@ -115,10 +111,10 @@ implementing</li>
 </pre></div>
 </div>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">kwargs</span></tt> passed to <tt class="docutils literal"><span class="pre">as_view</span></tt> can override properties on the View
+<li><code class="docutils literal"><span class="pre">kwargs</span></code> passed to <code class="docutils literal"><span class="pre">as_view</span></code> can override properties on the View
 class</li>
-<li>Arguments captured in the URL pattern are available as <tt class="docutils literal"><span class="pre">.args</span></tt> and
-<tt class="docutils literal"><span class="pre">.kwargs</span></tt> inside your class</li>
+<li>Arguments captured in the URL pattern are available as <code class="docutils literal"><span class="pre">.args</span></code> and
+<code class="docutils literal"><span class="pre">.kwargs</span></code> inside your class</li>
 </ul>
 </div>
 </div>
@@ -134,20 +130,20 @@ just the things you need</li>
 <h3>Template Views<a class="headerlink" href="#template-views" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/classbasedviews.html#template-views" title="Slides">§</a></h3>
 <p>TemplateView</p>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">get_context_data()</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">template_name</span></tt>, <tt class="docutils literal"><span class="pre">get_template_names()</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">response_class</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">render_to_response()</span></tt></li>
+<li><code class="docutils literal"><span class="pre">get_context_data()</span></code></li>
+<li><code class="docutils literal"><span class="pre">template_name</span></code>, <code class="docutils literal"><span class="pre">get_template_names()</span></code></li>
+<li><code class="docutils literal"><span class="pre">response_class</span></code></li>
+<li><code class="docutils literal"><span class="pre">render_to_response()</span></code></li>
 </ul>
 </div>
 <div class="section" id="forms-in-views">
 <h3>Forms in Views<a class="headerlink" href="#forms-in-views" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/classbasedviews.html#forms-in-views" title="Slides">§</a></h3>
 <p>ProcessFormView</p>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">form_class</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">get_success_url()</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">form_valid(form)</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">form_invalid(form)</span></tt></li>
+<li><code class="docutils literal"><span class="pre">form_class</span></code></li>
+<li><code class="docutils literal"><span class="pre">get_success_url()</span></code></li>
+<li><code class="docutils literal"><span class="pre">form_valid(form)</span></code></li>
+<li><code class="docutils literal"><span class="pre">form_invalid(form)</span></code></li>
 </ul>
 </div>
 <div class="section" id="editing-views">
@@ -155,15 +151,15 @@ just the things you need</li>
 <p>CreateView, UpdateView</p>
 <ul class="simple">
 <li>Includes Form processing</li>
-<li><tt class="docutils literal"><span class="pre">model</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">get_object()</span></tt></li>
+<li><code class="docutils literal"><span class="pre">model</span></code></li>
+<li><code class="docutils literal"><span class="pre">get_object()</span></code></li>
 </ul>
 </div>
 </div>
 <div class="section" id="http-methods">
 <h2>HTTP Methods<a class="headerlink" href="#http-methods" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/classbasedviews.html#http-methods" title="Slides">§</a></h2>
 <ul>
-<li><p class="first">The <tt class="docutils literal"><span class="pre">http_method_names</span></tt> property defines a list of supported
+<li><p class="first">The <code class="docutils literal"><span class="pre">http_method_names</span></code> property defines a list of supported
 methods</p>
 </li>
 <li><p class="first">In Django 1.5 this is:</p>
@@ -172,11 +168,11 @@ methods</p>
 </pre></div>
 </div>
 </li>
-<li><p class="first">If you want to support something like HTTP <tt class="docutils literal"><span class="pre">PATCH</span></tt>, you need to
+<li><p class="first">If you want to support something like HTTP <code class="docutils literal"><span class="pre">PATCH</span></code>, you need to
 add it to that list in your View subclass</p>
 </li>
 <li><p class="first">Views will look for a class method named for the HTTP method:
-<tt class="docutils literal"><span class="pre">get()</span></tt> is called for <tt class="docutils literal"><span class="pre">GET</span></tt>, etc.</p>
+<code class="docutils literal"><span class="pre">get()</span></code> is called for <code class="docutils literal"><span class="pre">GET</span></code>, etc.</p>
 </li>
 </ul>
 </div>
@@ -184,7 +180,7 @@ add it to that list in your View subclass</p>
 <h2>Writing Composable Views<a class="headerlink" href="#writing-composable-views" title="Permalink to this headline">¶</a><a class="headerlink" href="./slides/classbasedviews.html#writing-composable-views" title="Slides">§</a></h2>
 <ul class="simple">
 <li>Think about the extension points you need</li>
-<li>Call <tt class="docutils literal"><span class="pre">super()</span></tt> in your methods: this allows others to mix your
+<li>Call <code class="docutils literal"><span class="pre">super()</span></code> in your methods: this allows others to mix your
 View with others</li>
 </ul>
 <div class="section" id="example">
@@ -211,8 +207,8 @@ View with others</li>
 </div>
 <ul class="simple">
 <li>No actual view logic</li>
-<li>Subclasses <tt class="docutils literal"><span class="pre">object</span></tt>, not <tt class="docutils literal"><span class="pre">View</span></tt></li>
-<li>Calls <tt class="docutils literal"><span class="pre">super</span></tt> on overridden methods</li>
+<li>Subclasses <code class="docutils literal"><span class="pre">object</span></code>, not <code class="docutils literal"><span class="pre">View</span></code></li>
+<li>Calls <code class="docutils literal"><span class="pre">super</span></code> on overridden methods</li>
 </ul>
 </div>
 </div>
@@ -222,7 +218,7 @@ View with others</li>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
@@ -254,17 +250,19 @@ View with others</li>
   <h4>Next topic</h4>
   <p class="topless"><a href="forms.html"
                         title="next chapter">Effective Django Forms</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/classbasedviews.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/classbasedviews.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
   <h3>Slides</h3>
   <ul class="this-page-menu">
     <li><a href="./slides/classbasedviews.html"
            rel="nofollow">View as slides</a></li>
   </ul>
-<div id="searchbox" style="display: none">
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
@@ -281,7 +279,7 @@ View with others</li>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -290,12 +288,23 @@ View with others</li>
         <li class="right" >
           <a href="orm.html" title="Effective Django ORM"
              >previous</a> |</li>
-        <li><a href="index.html">Effective Django</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Effective Django</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2012-2013, Nathan Yergler.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
+<script type="text/javascript">
+  (function() {
+    var ga = document.createElement('script');
+    ga.src = ('https:' == document.location.protocol ?
+              'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+  })();
+</script>
+
   </body>
 </html>

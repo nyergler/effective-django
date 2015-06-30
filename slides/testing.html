@@ -4,18 +4,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-188298-7']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
+    
     <title>Testing in Django &mdash; Effective Django</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
@@ -24,8 +13,9 @@
     
     <link rel="stylesheet" href="_static/custom.css" type="text/css" />
     
-
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -40,14 +30,23 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/common.js"></script>
+    
     <script type="text/javascript" src="_static/slides.js"></script>
     <script type="text/javascript" src="_static/sync.js"></script>
     <script type="text/javascript" src="_static/controller.js"></script>
     <script type="text/javascript" src="_static/init.js"></script>
     
+    
     <link rel="top" title="Effective Django" href="index.html" />
     <link rel="next" title="Understanding Middleware" href="middleware.html" />
-    <link rel="prev" title="Effective Django Tutorial" href="tutorial/index.html" /> 
+    <link rel="prev" title="Effective Django Tutorial" href="tutorial/index.html" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-188298-7']);
+  _gaq.push(['_trackPageview']);
+</script>
+
   </head>
   <body>
 
@@ -56,23 +55,36 @@
    class='slides layout-regular'>
 
 
-  <article class="slide level-1" id="testing-in-django">
+  
+<article class="slide level-1" id="testing-in-django">
+
 <h1>Testing in Django<a class="headerlink" href="../testing.html#testing-in-django" title="View HTML">§</a></h1>
+
+
+
+
 
 </article>
 <article class="slide level-2" id="testing-django">
+
 <h2>Testing Django<a class="headerlink" href="../testing.html#testing-django" title="View HTML">§</a></h2>
+
 <ul class="simple">
 <li>There are Unit Tests and there are Integration tests</li>
 <li>Unit Tests should not rely on external services</li>
 <li>Unit Tests should be <em>fast</em></li>
 </ul>
 
+
+
+
 </article>
 <article class="slide level-2" id="writing-a-unit-test">
+
 <h2>Writing a Unit Test<a class="headerlink" href="../testing.html#writing-a-unit-test" title="View HTML">§</a></h2>
+
 <ul class="simple">
-<li>Django bundles <tt class="docutils literal"><span class="pre">unittest2</span></tt> as <tt class="docutils literal"><span class="pre">django.utils.unittest</span></tt></li>
+<li>Django bundles <code class="docutils literal"><span class="pre">unittest2</span></code> as <code class="docutils literal"><span class="pre">django.utils.unittest</span></code></li>
 </ul>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">django.http</span>
 <span class="kn">import</span> <span class="nn">django.utils.unittest</span> <span class="kn">as</span> <span class="nn">unittest2</span>
@@ -89,9 +101,14 @@
 </pre></div>
 </div>
 
+
+
+
 </article>
 <article class="slide level-2" id="test-client">
+
 <h2>Test Client<a class="headerlink" href="../testing.html#test-client" title="View HTML">§</a></h2>
+
 <ul class="simple">
 <li>Django TestClient acts like a browser. Sort of.</li>
 <li>Allows you to make a request against your application and inspect
@@ -109,41 +126,58 @@ the response</li>
 </pre></div>
 </div>
 
+
+
+
 </article>
 <article class="slide level-2" id="request-factory">
+
 <h2>Request Factory<a class="headerlink" href="../testing.html#request-factory" title="View HTML">§</a></h2>
+
 <ul class="simple">
-<li>Django 1.3 introduced <tt class="docutils literal"><span class="pre">RequestFactory</span></tt>, with an API similar to
+<li>Django 1.3 introduced <code class="docutils literal"><span class="pre">RequestFactory</span></code>, with an API similar to
 Test Client</li>
-<li>Easy way to generate <tt class="docutils literal"><span class="pre">Request</span></tt> objects, which can be passed to
+<li>Easy way to generate <code class="docutils literal"><span class="pre">Request</span></code> objects, which can be passed to
 views</li>
 <li>Note that middleware is <strong>not</strong> run on these Requests</li>
 </ul>
 
+
+
+
 </article>
 <article class="slide level-2" id="running-tests">
+
 <h2>Running Tests<a class="headerlink" href="../testing.html#running-tests" title="View HTML">§</a></h2>
+
 <ul class="simple">
-<li>Django only looks in apps with <tt class="docutils literal"><span class="pre">models.py</span></tt> for tests</li>
+<li>Django only looks in apps with <code class="docutils literal"><span class="pre">models.py</span></code> for tests</li>
 </ul>
 <div class="highlight-python"><div class="highlight"><pre>$ ./manage.py test
 </pre></div>
 </div>
 <ul class="simple">
-<li>Easy to replace the test runner with something like <tt class="docutils literal"><span class="pre">nose</span></tt> if you
+<li>Easy to replace the test runner with something like <code class="docutils literal"><span class="pre">nose</span></code> if you
 so desire</li>
 </ul>
 
+
+
+
 </article>
 <article class="slide level-2" id="further-reading">
+
 <h2>Further Reading<a class="headerlink" href="../testing.html#further-reading" title="View HTML">§</a></h2>
+
 <ul class="simple">
 <li><a class="reference external" href="https://docs.djangoproject.com/en/1.4/topics/testing/">Django Testing Documentation</a></li>
 <li><a class="reference external" href="http://www.packtpub.com/django-1-1-testing-and-debugging/book">Django 1.1 Testing &amp; Debugging</a></li>
 </ul>
 
-</article>
 
+
+
+</article>
 
 </section>
 
