@@ -31,7 +31,6 @@ extensions = [
     'sphinx.ext.doctest',
     'sphinx.ext.todo',
     'sphinxcontrib.blockdiag',
-    'sphinxcontrib.googleanalytics',
     'hieroglyph',
     'tut.sphinx',
 ]
@@ -290,12 +289,6 @@ texinfo_documents = [
 # -- EPub options
 
 epub_author = 'Nathan Yergler'
-
-# -- Google Analytics -----------------------------------------------------------
-
-googleanalytics_enabled = True
-googleanalytics_id = 'UA-188298-7'
-
 
 # -- DocTest Configuration ------------------------------------------------------
 
