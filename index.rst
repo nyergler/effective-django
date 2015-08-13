@@ -19,7 +19,7 @@
 
 .. _`Video of the tutorial from PyCon`: https://www.youtube.com/watch?v=NfsJDPm0X54
 
-Django is a popular, powerful web framework for Python. It has lots of[
+Django is a popular, powerful web framework for Python. It has lots of
 "batteries" included, and makes it easy to get up and going. But all
 of the power means you can write low quality code that still seems to
 work. *Effective Django* development means building applications that
