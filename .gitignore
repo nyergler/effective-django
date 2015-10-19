@@ -10,3 +10,4 @@
 .Python
 
 *.pyc
+/pip-selfcheck.json
