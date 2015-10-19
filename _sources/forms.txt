@@ -325,7 +325,7 @@ Controlling Form Output
    {{ field.label_tag }}: {{ field }}
    {{ field.errors }}
    {% endfor %}
-   {{ field.non_field_errors }}
+   {{ form.non_field_errors }}
 
 Additional rendering properties:
 

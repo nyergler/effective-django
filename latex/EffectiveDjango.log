@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2015.10.18)  18 OCT 2015 17:54
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2015.10.18)  18 OCT 2015 18:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **EffectiveDjango.tex
 (./EffectiveDjango.tex
 LaTeX2e <2015/01/01> patch level 2
-Babel <3.9m> and hyphenation patterns for 79 languages loaded.
+Babel <3.9m> and hyphenation patterns for 4 languages loaded.
 (./sphinxmanual.cls
 Document Class: sphinxmanual 2009/06/02 Document class (Sphinx manual)
 (/usr/share/texlive/texmf-dist/tex/latex/base/report.cls
@@ -266,6 +266,8 @@ File: babel.def 2015/08/03 3.9m Babel common definitions
 \babel@savecnt=\count88
 \U@D=\dimen103
 )
+\l@british = a dialect from \language\l@english 
+\l@UKenglish = a dialect from \language\l@english 
 \l@canadian = a dialect from \language\l@american 
 \l@australian = a dialect from \language\l@british 
 \l@newzealand = a dialect from \language\l@british 
@@ -1198,12 +1200,12 @@ Package rerunfilecheck Info: File `EffectiveDjango.out' has not changed.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 2825.
  ) 
 Here is how much of TeX's memory you used:
- 9464 strings out of 493087
- 133072 string characters out of 6137028
- 235735 words of memory out of 5000000
- 12546 multiletter control sequences out of 15000+600000
+ 9466 strings out of 494973
+ 133092 string characters out of 6180011
+ 231023 words of memory out of 5000000
+ 12307 multiletter control sequences out of 15000+600000
  70850 words of font info for 83 fonts, out of 8000000 for 9000
- 1142 hyphenation exceptions out of 8191
+ 15 hyphenation exceptions out of 8191
  38i,12n,51p,669b,507s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
 e/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></usr/share/texlive/texmf-dist/
