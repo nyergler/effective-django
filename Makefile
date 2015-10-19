@@ -41,6 +41,8 @@ help:
 
 clean:
 	-rm -rf $(BUILDDIR)/*
+	git --git-dir=$(BUILDDIR)/.git reset --hard $(BUILDBRANCH)
+	git --git-dir=$(BUILDDIR)/.git checkout $(BUILDBRANCH)
 
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/
