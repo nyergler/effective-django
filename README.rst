@@ -17,12 +17,14 @@ formats, you can do so by:
    For Macs, it is recommended you use `MacTeX`_
 
    ::
+   
       $ brew install Caskroom/cask/mactex
 
    If you're building on Ubuntu, you should install the `texlive` and
    `texlive-latex-extra` packages.
 
    ::
+         
       $ sudo apt-get install texlive texlive-latex-extra
 
 #. Check out this repository::
