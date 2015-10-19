@@ -275,7 +275,7 @@ an unordered list, it's not too mysterious what ``as_p`` and
       {{ field.label_tag }}: {{ field }}
       {{ field.errors }}
       {% endfor %}
-      {{ field.non_field_errors }}
+      {{ form.non_field_errors }}
 
    Additional rendering properties:
 
