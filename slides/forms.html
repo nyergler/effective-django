@@ -190,8 +190,7 @@ validated:</p>
 
 <h3>Validating the Form<a class="headerlink" href="../forms.html#validating-the-form" title="View HTML">§</a></h3>
 
-<img alt="_images/blockdiag-f59ab43c77434baadf97d5c3b6e7930f99ed685d.png" src="_images/blockdiag-f59ab43c77434baadf97d5c3b6e7930f99ed685d.png" />
-<ul class="simple">
+<div><img height="120" src="_images/blockdiag-6b527a1f0e3e41f29ee340fb73197a9ab36c5cd7.png" width="448" /></div><ul class="simple">
 <li>Only bound forms can be validated</li>
 <li>Calling <code class="docutils literal"><span class="pre">form.is_valid()</span></code> triggers validation if needed</li>
 <li>Validated, cleaned data is stored in <code class="docutils literal"><span class="pre">form.cleaned_data</span></code></li>
@@ -206,8 +205,7 @@ validated:</p>
 
 <h3>Field Validation<a class="headerlink" href="../forms.html#field-validation" title="View HTML">§</a></h3>
 
-<img alt="_images/blockdiag-f6c1c334347d19c6cb96897afd2d30c7004e057a.png" src="_images/blockdiag-f6c1c334347d19c6cb96897afd2d30c7004e057a.png" />
-<ul class="simple">
+<div><img height="200" src="_images/blockdiag-2e80d332ab3c2eb1255317bfbefa7e0f7d89ecf2.png" width="832" /></div><ul class="simple">
 <li>Three phases for Fields: To Python, Validation, and Cleaning</li>
 <li>If validation raises an Error, cleaning is skipped</li>
 <li>Validators are callables that can raise a <code class="docutils literal"><span class="pre">ValidationError</span></code></li>
@@ -754,8 +752,7 @@ override</li>
 
 <h3>ModelForm.is_valid()<a class="headerlink" href="../forms.html#modelform-is-valid" title="View HTML">§</a></h3>
 
-<img alt="_images/blockdiag-d54b263c201749693662fc3d8dee6d8866fc424d.png" src="_images/blockdiag-d54b263c201749693662fc3d8dee6d8866fc424d.png" />
-<ul class="simple">
+<div><img height="120" src="_images/blockdiag-52466740a7832df455c5ee78913e40f1dbfdfb8a.png" width="640" /></div><ul class="simple">
 <li>Model Forms have an additional method, <code class="docutils literal"><span class="pre">_post_clean()</span></code></li>
 <li>Sets cleaned fields on the Model instance</li>
 <li>Called <em>regardless</em> of whether the form is valid</li>
@@ -892,8 +889,7 @@ forms<ul>
 
 <h3>formset.is_valid()<a class="headerlink" href="../forms.html#formset-is-valid" title="View HTML">§</a></h3>
 
-<img alt="_images/blockdiag-3375c22b0a4a5a86b1acdaf6612cc70f7e6b3670.png" src="_images/blockdiag-3375c22b0a4a5a86b1acdaf6612cc70f7e6b3670.png" />
-<ul class="simple">
+<div><img height="120" src="_images/blockdiag-b74426358eb51d81135e27e9ee8e2768801053fc.png" width="640" /></div><ul class="simple">
 <li>Performs validation on each member form</li>
 <li>Calls <code class="docutils literal"><span class="pre">.clean()</span></code> method on the FormSet</li>
 <li><code class="docutils literal"><span class="pre">formset.clean()</span></code> can be overridden to validate across Forms</li>

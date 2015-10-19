@@ -125,8 +125,7 @@ validated:</p>
 
 <h2>Validating the Form</h2>
 
-<img alt="../_images/blockdiag-f59ab43c77434baadf97d5c3b6e7930f99ed685d.png" src="../_images/blockdiag-f59ab43c77434baadf97d5c3b6e7930f99ed685d.png" />
-<ul class="simple">
+<div><img height="120" src="../_images/blockdiag-6b527a1f0e3e41f29ee340fb73197a9ab36c5cd7.png" width="448" /></div><ul class="simple">
 <li>Only bound forms can be validated</li>
 <li>Calling <code class="docutils literal"><span class="pre">form.is_valid()</span></code> triggers validation if needed</li>
 <li>Validated, cleaned data is stored in <code class="docutils literal"><span class="pre">form.cleaned_data</span></code></li>
@@ -141,8 +140,7 @@ validated:</p>
 
 <h2>Field Validation</h2>
 
-<img alt="../_images/blockdiag-f6c1c334347d19c6cb96897afd2d30c7004e057a.png" src="../_images/blockdiag-f6c1c334347d19c6cb96897afd2d30c7004e057a.png" />
-<ul class="simple">
+<div><img height="200" src="../_images/blockdiag-2e80d332ab3c2eb1255317bfbefa7e0f7d89ecf2.png" width="832" /></div><ul class="simple">
 <li>Three phases for Fields: To Python, Validation, and Cleaning</li>
 <li>If validation raises an Error, cleaning is skipped</li>
 <li>Validators are callables that can raise a <code class="docutils literal"><span class="pre">ValidationError</span></code></li>
@@ -198,7 +196,7 @@ validated:</p>
 {{ field.label_tag }}: {{ field }}
 {{ field.errors }}
 {% endfor %}
-{{ field.non_field_errors }}
+{{ form.non_field_errors }}
 </pre></div>
 </div>
 <p>Additional rendering properties:</p>
