@@ -175,3 +175,5 @@ push:
 	git --git-dir=$(BUILDDIR)/.git push origin gh-pages
 
 all: clean html slides latexpdf epub
+
+publish: all push
