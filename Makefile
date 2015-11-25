@@ -40,7 +40,8 @@ help:
 	@echo "  doctest    to run all doctests embedded in the documentation (if enabled)"
 
 clean:
-	-rm -rf $(BUILDDIR)/*
+	git --git-dir=$(BUILDDIR)/.git co $(BUILDBRANCH)
+	rm -rf $(BUILDDIR)/*
 	git --git-dir=$(BUILDDIR)/.git reset --hard $(BUILDBRANCH)
 	git --git-dir=$(BUILDDIR)/.git checkout $(BUILDBRANCH)
 
