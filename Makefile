@@ -178,3 +178,7 @@ push:
 all: clean html slides latexpdf epub
 
 publish: all push
+
+# Support for flymake-mode's flymake-simple-make-init in Emacs
+check-syntax:
+	$(SPHINXBUILD) -n -N -q -b html $(ALLSPHINXOPTS) $(BUILDDIR)/
