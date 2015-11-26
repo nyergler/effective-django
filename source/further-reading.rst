@@ -1,6 +1,3 @@
-.. slideconf::
-   :theme: single-level
-
 Further Reading
 ===============
 

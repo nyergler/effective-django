@@ -37,7 +37,6 @@ extensions = [
     'sphinx.ext.doctest',
     'sphinx.ext.todo',
     'sphinxcontrib.blockdiag',
-    'hieroglyph',
     'tut.sphinx',
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',

@@ -1,10 +1,6 @@
 .. tut::
    :path: ./src
 
-.. slideconf::
-   :autoslides: False
-   :theme: single-level
-
 ===========================
  Effective Django Tutorial
 ===========================
@@ -50,49 +46,19 @@ strategy as I go.
 The sample code for this tutorial is available in the
 `effective-django-tutorial`_ git repository.
 
-Slides for the tutorial are available at http://effectivedjango.com/slides/tutorial
-
 .. _`effective-django-tutorial`: https://github.com/nyergler/effective-django-tutorial/
 
-.. slide:: Effective Django
-   :level: 1
+.. toctree::
+   :maxdepth: 1
 
-   .. figure:: /_static/building.jpg
-      :class: fill
-
-      CC BY-NC-SA http://www.flickr.com/photos/t_lawrie/278932896/
-
-   http://effectivedjango.com
-
-   Nathan Yergler // nathan@yergler.net // @nyergler
-
-.. slide:: Goals
-   :level: 2
-
-   * Build a small Django application
-   * Build it effectively
-   * Explore some of the new features in Django
-
-.. slide:: Effective?
-   :level: 2
-
-   * Cohesive
-   * Tested
-   * Scalable
-
-.. ifnotslides::
-
-   .. toctree::
-      :maxdepth: 1
-
-      getting-started.rst
-      models.rst
-      views.rst
-      static.rst
-      additional-views.rst
-      forms.rst
-      related.rst
-      authzn.rst
+   getting-started.rst
+   models.rst
+   views.rst
+   static.rst
+   additional-views.rst
+   forms.rst
+   related.rst
+   authzn.rst
 
 "Effective Django" is licensed under the Creative Commons
 `Attribution-ShareAlike 4.0 International License`_.

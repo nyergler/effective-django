@@ -1,20 +1,9 @@
 .. tut::
    :path: /src
 
-.. slideconf::
-   :autoslides: False
-   :theme: single-level
-
 ===============
  Writing Views
 ===============
-
-.. slide:: Writing Views
-   :level: 1
-
-   Handling HTTP Requests from users.
-
-.. rst-class:: include-as-slide, slide-level-2
 
 View Basics
 ===========
@@ -52,7 +41,6 @@ our application.
 .. _`HTTP Request`: https://docs.djangoproject.com/en/1.5/ref/request-response/#httprequest-objects
 .. _`HTTP Response`: https://docs.djangoproject.com/en/1.5/ref/request-response/#httpresponse-objects
 
-.. rst-class:: include-as-slide, slide-level-2
 
 Generic & Class Based Views
 ===========================
@@ -65,17 +53,6 @@ Generic & Class Based Views
   newcomer
 * Luckily the documentation is **much** better with Django 1.5
 
-.. ifnotslides::
-
-   Django 1.3 introduced class based views, which is what we'll be
-   focusing on here. Class based views, or CBVs, can eliminate a lot of
-   boilerplate from your views, especially for things like an edit view
-   where you want to take different action on a ``GET`` vs ``POST``. They
-   give you a lot of power to compose functionality from pieces. The
-   downside is that this power comes with some added complexity.
-
-
-.. rst-class:: include-as-slide, slide-level-2
 
 Class Based Views
 =================
@@ -114,75 +91,6 @@ its first argument, and returns an HTTP Response.
 Listing Contacts
 ================
 
-.. slide:: List Views
-   :level: 2
-
-   ListView_ provides a view of a set of objects.
-
-   ::
-
-     class ContactsList(ListView):
-
-         model = Contact
-         template_name = 'contact_list.html'
-
-         def get_queryset(self):
-             ... # defaults to model.objects.all()
-
-         def get_context_object_name(self):
-             ... # defaults to <model name>_list
-
-         def get_context_data(self, **kwargs):
-             ... # add anything else to the context
-
-         def get_context_data(self, **kwargs):
-             ... # add anything else to the context
-
-.. slide:: Edit Views
-   :level: 2
-
-   CreateView_, UpdateView_, DeleteView_ work on a model instance.
-   ::
-
-     class UpdateContact(UpdateView):
-         model = Contact
-         template_name = 'edit_contact.html'
-
-         def get_object(self):
-             ... # defaults to looking for a pk or slug kwarg, and
-                 # passing that to filter
-
-         def get_context_object_name(self):
-             ... # defaults to <model name>
-         def get_context_data(self, **kwargs):
-             ... # add anything else to the context
-
-         def get_success_url(self):
-             ... # where to redirect to on success
-                 # defaults to self.get_object().get_absolute_url()
-
-.. slide:: Detail Views
-   :level: 2
-
-   DetailView_ provides a view of a single object
-
-   ::
-
-     class ContactView(DetailView):
-
-         model = Contact
-         template_name = 'contact.html'
-
-         def get_object(self):
-             ... # defaults to looking for a pk or slug kwarg, and
-                 # passing that to filter
-
-         def get_context_object_name(self):
-             ... # defaults to <model name>
-
-         def get_context_data(self, **kwargs):
-             ... # add anything else to the context
-
 .. checkpoint:: contact_list_view
 
 We'll start with a view that presents a list of contacts in the
@@ -202,8 +110,6 @@ of power without a lot of code. In this case we set ``model =
 Contact``, which says that this view is going to list *all* the
 Contacts in our database.
 
-
-.. rst-class:: include-as-slide, slide-level-2
 
 Defining URLs
 =============
@@ -257,14 +163,6 @@ occurs. See the `Django urlconf documentation`_ for details.
 
 Creating the Template
 =====================
-
-.. slide:: Django Templates
-   :level: 2
-
-   * Django allows you to specify ``TEMPLATE_DIRS`` to look for templates
-     in
-   * By default it looks for a ``template`` subdirectory in each app
-   * Keeping templates within an app makes creating reusable apps easier
 
 Now that we've defined a URL for our list view, we can try it out.
 Django includes a server suitable for development purposes that you
@@ -403,34 +301,6 @@ To complete the story, let's add a link to `contact_list.html`.
 Testing Your Views
 ==================
 
-.. slide:: Test Client & RequestFactory
-   :level: 2
-
-   * Views transform a Request into a Response, but still have logic
-   * Test ``Client`` and ``RequestFactory`` are tools to help test them
-   * They share a common API, but work slightly differently
-   * Test ``Client`` resolves a URL to the view, returns a Response
-   * ``RequestFactory`` generates a Request which you can pass to the View
-     directly
-
-.. slide:: Test Client vs. RequestFactory
-   :level: 2
-
-   ::
-
-     from django.test.client import Client
-     from django.test.client import RequestFactory
-
-     client = Client()
-     response = client.get('/')
-
-   ::
-
-     factory = RequestFactory()
-     request = factory.get('/')
-
-     response = ListContactView.as_view()(request)
-
 So far our views have been pretty minimal: they leverage Django's
 generic views, and contain very little of our own code or logic. One
 perspective is that this is how it should be: a view takes a request,
@@ -477,15 +347,6 @@ each tool.
 
 Integration Tests
 =================
-
-.. slide:: Live Server Tests
-   :level: 2
-
-   * Django 1.4 added the LiveServerTestCase_
-   * Makes writing integration tests with something like Selenium_
-     easier
-   * By default it spins up the server for you (similar to ``runserver``)
-   * You can also point it to a deployed instance elsewhere
 
 Django 1.4 adds a new ``TestCase`` base class, the
 LiveServerTestCase_. This is very much what it sounds like: a test
@@ -540,10 +401,6 @@ Review
 * RequestFactory_ creates Requests for testing Views
   with
 * LiveServerTestCase_ provides basis for writing integration tests
-
-.. ifslides::
-
-   * Next: :doc:`static`
 
 
 .. _`Generic Views`: https://docs.djangoproject.com/en/1.5/topics/class-based-views/generic-display/

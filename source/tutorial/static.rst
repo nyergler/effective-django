@@ -1,10 +1,6 @@
 .. tut::
    :path: /src
 
-.. slideconf::
-   :autoslides: True
-   :theme: single-level
-
 ===================
 Using Static Assets
 ===================
@@ -172,7 +168,3 @@ Review
 * Templates can extend one another, using ``block`` tags.
 
 .. _`deploying static files`: https://docs.djangoproject.com/en/1.5/howto/static-files/deployment/
-
-.. ifslides::
-
-   * Next: :doc:`additional-views`

@@ -1,7 +1,3 @@
-.. slideconf::
-   :autoslides: True
-   :theme: single-level
-
 ==================
  Effective Django
 ==================
@@ -42,25 +38,6 @@ These documents are available in PDF_ and EPub_ format, as well.
 
 .. _PDF: /latex/EffectiveDjango.pdf
 .. _EPub: /epub/EffectiveDjango.epub
-
-.. slides::
-
-   .. figure:: /_static/building.jpg
-      :class: fill
-
-      CC BY-NC-SA http://www.flickr.com/photos/t_lawrie/278932896/
-
-   http://effectivedjango.com
-
-   Nathan Yergler // nathan@yergler.net // @nyergler
-
-
-   What do you mean, "Effective"?
-   ==============================
-
-   * Testable
-   * Maintainable
-   * Scalable
 
 Contents
 ========

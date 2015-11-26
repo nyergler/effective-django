@@ -1,6 +1,3 @@
-.. slideconf::
-   :theme: single-level
-
 ===================
  Class Based Views
 ===================
@@ -152,9 +149,3 @@ Example
            context['event'] = self.get_event()
 
            return context
-
-.. notslides::
-
-   * No actual view logic
-   * Subclasses ``object``, not ``View``
-   * Calls ``super`` on overridden methods

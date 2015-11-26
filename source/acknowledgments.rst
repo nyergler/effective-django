@@ -1,17 +1,5 @@
-.. slideconf::
-   :theme: single-level
-   :autoslides: False
-
 Acknowledgments
 ===============
-
-.. slide:: Thanks!
-   :level: 2
-
-   nathan@yergler.net
-
-   http://effectivedjango.com/
-   http://github.com/nyergler/effectivedjango
 
 It would have been impossible to put *Effective Django* together with
 lots and lots of help. Thanks to PyCon_ and PyOhio_ for allowing me to

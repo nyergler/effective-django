@@ -1,113 +1,9 @@
 .. tut::
    :path: /src
 
-.. slideconf::
-   :autoslides: False
-   :theme: single-level
-
 =============
  Form Basics
 =============
-
-.. slide:: Django Forms
-   :level: 1
-
-   Validate user input and return Python objects
-
-.. slide:: Defining Forms
-   :level: 2
-
-   Forms are composed of fields, which have a widget.
-
-   .. testcode::
-
-     from django.utils.translation import gettext_lazy as _
-     from django import forms
-
-     class ContactForm(forms.Form):
-
-         name = forms.CharField(label=_("Your Name"),
-             max_length=255,
-             widget=forms.TextInput,
-         )
-
-         email = forms.EmailField(label=_("Email address"))
-
-.. slide:: Instantiating a Form
-   :level: 2
-
-   Unbound forms don't have data associated with them, but they can
-   be rendered::
-
-     form = ContactForm()
-
-   Bound forms have specific data associated, which can be
-   validated::
-
-     form = ContactForm(data=request.POST, files=request.FILES)
-
-.. slide:: Accessing Fields
-   :level: 2
-
-   Two ways to access fields on a Form instance
-
-   - ``form.fields['name']`` returns the ``Field`` object
-   - ``form['name']`` returns a ``BoundField``
-   - ``BoundField`` wraps a field and value for HTML output
-
-.. slide:: Validating the Form
-   :level: 2
-
-   .. blockdiag::
-
-      blockdiag {
-         // Set labels to nodes.
-         A [label = "Field Validation"];
-         C [label = "Form Validation"];
-
-         A -> C;
-      }
-
-   - Only bound forms can be validated
-   - Calling ``form.is_valid()`` triggers validation if needed
-   - Validated, cleaned data is stored in ``form.cleaned_data``
-   - Calling ``form.full_clean()`` performs the full cycle
-
-.. slide:: Field Validation
-   :level: 2
-
-   .. blockdiag::
-
-      blockdiag {
-         // Set labels to nodes.
-         A [label = "for each Field"];
-
-         B [label = "Field.clean"];
-         C [label = "Field.to_python"];
-         D [label = "Field validators"];
-
-         F [label = ".clean_fieldname()"];
-
-         A -> B;
-         B -> C;
-         C -> D;
-
-         A -> F;
-      }
-
-   - Three phases for Fields: To Python, Validation, and Cleaning
-   - If validation raises an Error, cleaning is skipped
-   - Validators are callables that can raise a ``ValidationError``
-   - Django includes generic ones for some common tasks
-   - Examples: URL, Min/Max Value, Min/Max Length, URL, Regex, email
-
-.. slide:: Field Cleaning
-   :level: 2
-
-   - ``.clean_fieldname()`` method is called after validators
-   - Input has already been converted to Python objects
-   - Methods can raise ``ValidationErrors``
-   - Methods *must* return the cleaned value
 
 Up until this point we've been using forms without really needing to
 be aware of it. A `Django Form`_ is responsible for taking some user
@@ -231,22 +127,6 @@ Controlling Form Rendering
 
 .. checkpoint:: custom_form_rendering
 
-.. slide:: Rendering Forms
-   :level: 2
-
-   Three primary "whole-form" output modes:
-
-   - ``form.as_p()``, ``form.as_ul()``, ``form.as_table()``
-
-   ::
-
-     <tr><th><label for="id_name">Name:</label></th>
-       <td><input id="id_name" type="text" name="name" maxlength="255" /></td></tr>
-     <tr><th><label for="id_email">Email:</label></th>
-       <td><input id="id_email" type="text" name="email" maxlength="Email address" /></td></tr>
-     <tr><th><label for="id_confirm_email">Confirm email:</label></th>
-       <td><input id="id_confirm_email" type="text" name="confirm_email" maxlength="Confirm" /></td></tr>
-
 Our templates until now look pretty magical when it comes to forms:
 the extent of our HTML tags has been something like::
 
@@ -265,24 +145,6 @@ Forms have three pre-baked output formats: ``as_ul``, ``as_p``, and
 ``as_table``. If ``as_ul`` outputs the form elements as the items in
 an unordered list, it's not too mysterious what ``as_p`` and
 ``as_table`` do.
-
-.. slide:: Controlling Form Output
-   :level: 2
-
-   ::
-
-      {% for field in form %}
-      {{ field.label_tag }}: {{ field }}
-      {{ field.errors }}
-      {% endfor %}
-      {{ form.non_field_errors }}
-
-   Additional rendering properties:
-
-   - ``field.label``
-   - ``field.label_tag``
-   - ``field.auto_id``
-   - ``field.help_text``
 
 Often, though, you need more control. For those cases, you can take
 full control. First, a form is iterable; try replacing your call to

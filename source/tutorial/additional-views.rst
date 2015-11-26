@@ -2,10 +2,6 @@
    :path: /src
 
 
-.. slideconf::
-   :autoslides: True
-   :theme: single-level
-
 ========================
 Additional Generic Views
 ========================
@@ -169,10 +165,6 @@ And we'll add the link to the contact from the contact list.
 .. literalinclude:: /src/contacts/templates/contact_list.html
    :lines: 7-12
    :language: html
-
-.. ifslides::
-
-   * Next: :doc:`forms`
 
 
 .. _`Generic Views`: https://docs.djangoproject.com/en/1.5/topics/class-based-views/generic-display/

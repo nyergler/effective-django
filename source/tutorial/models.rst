@@ -1,31 +1,14 @@
 .. tut::
    :path: /src
 
-.. slideconf::
-   :autoslides: False
-   :theme: single-level
-
 =============
 Using Models
 =============
-
-.. slide:: Django Models
-   :level: 1
-
-   Storing and manipulating data with the Django ORM.
-
 
 .. checkpoint:: contact_model
 
 Configuring the Database
 ========================
-
-.. slide:: Configuring Databases
-   :level: 2
-
-   .. literalinclude:: /src/addressbook/settings.py
-      :language: python
-      :lines: 12-21
 
 Django includes support out of the box for MySQL, PostgreSQL, SQLite3,
 and Oracle. SQLite3_ is included with Python starting with version
@@ -61,16 +44,6 @@ typically import your settings from ``django.conf``::
 
 Creating a Model
 ================
-
-.. slide:: Defining Models
-   :level: 2
-
-   Models are created in the ``models`` module of a Django app and
-   subclass Model_
-
-   .. literalinclude:: /src/contacts/models.py
-      :language: python
-      :end-before: __str__
 
 Django models map (roughly) to a database table, and provide a place
 to encapsulate business logic. All models subclass the base Model_
@@ -137,29 +110,6 @@ application name and model name. You can override that with the
 Interacting with the Model
 ==========================
 
-.. slide:: Instantiating Models
-   :level: 2
-
-   ::
-
-     nathan = Contact()
-     nathan.first_name = 'Nathan'
-     nathan.last_name = 'Yergler'
-     nathan.save()
-
-   ::
-
-     nathan = Contact.objects.create(
-         first_name='Nathan',
-         last_name='Yergler')
-
-   ::
-
-     nathan = Contact(
-         first_name='Nathan',
-         last_name='Yergler')
-     nathan.save()
-
 Now that the model has been synced to the database we can interact
 with it using the interactive shell.
 
@@ -204,41 +154,8 @@ Finally, there's this ``id`` field that we didn't define. Django adds
 an ``id`` field as the primary key for your model, unless you `specify
 a primary key`_.
 
-
-.. slide:: Model Managers
-   :level: 2
-
-   * A model instance maps to a row
-   * The model Manager_ maps to the table
-   * Every model has a default manager, ``objects``
-   * Operations that deal with more than one instance, or at the
-     "collection" level, usually map to the Manager
-
-.. slide:: Querying with Managers
-   :level: 2
-
-   * The ``filter`` Manager method lets you perform queries::
-
-       Contact.objects.filter(last_name='Yergler')
-
-   * ``filter`` returns a QuerySet_, an iterable over the result.
-   * You can also assert you only expect one::
-
-       Contact.objects.get(first_name='Nathan')
-
-   * If more than one is returned, an Exception will be raised
-   * The full query_ reference is pretty good on this topic.
-
 Writing a Test
 ==============
-
-.. slide:: Testing Models
-   :level: 2
-
-   * Business logic is usually added as methods on a Model.
-   * Important to write unit tests for those methods as you add them.
-   * We'll write an example test for the methods we add.
-
 
 We have one method defined on our model, ``__str__``, and this is a
 good time to start writing tests. The ``__str__`` method of a model
@@ -253,14 +170,6 @@ that file in the contacts app.
    :prepend: from contacts.models import Contact
              ...
    :pyobject: ContactTests
-
-.. slide:: Running the Tests
-   :level: 2
-
-   You can run the tests for your application using ``manage.py``::
-
-     (tutorial)$ python manage.py test
-
 
 You can run the tests for your application using ``manage.py``::
 
@@ -296,8 +205,6 @@ Django's ``TestCase`` (which we are), Django also resets any default
 data after running each TestCase, so that changes in one test won't
 break or influence another.
 
-.. rst-class:: include-as-slide, slide-level-2
-
 Review
 ======
 
@@ -309,9 +216,6 @@ Review
 * Write unit tests for methods you add to the model
 * The ``test`` manage command runs the unit tests
 
-.. ifslides::
-
-   * Next: :doc:`views`
 
 .. _QuerySet: https://docs.djangoproject.com/en/1.5/ref/models/querysets/#django.db.models.query.QuerySet
 .. _query: https://docs.djangoproject.com/en/1.5/topics/db/queries/

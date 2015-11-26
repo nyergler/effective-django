@@ -1,7 +1,3 @@
-.. slideconf::
-   :autoslides: False
-   :theme: single-level
-
 ============
 Introduction
 ============
@@ -76,14 +72,6 @@ have to look inside the black box and gain a deeper
 understanding. After reading *Effective Django* you should have an
 understanding of how Django's pieces fit together, how to use them to
 engineer web applications, and where to look to dig deeper.
-
-.. slide:: Format
-   :level: 2
-
-   * Talk / Demonstrate / Practice
-   * Please ask questions
-   * Two breaks planned
-   * Notes, examples, etc available: http://effectivedjango.com
 
 My goal is to convince you of the importance of these principles, and
 provide examples of how to follow them to build more robust Django
