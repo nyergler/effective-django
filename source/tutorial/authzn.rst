@@ -29,13 +29,13 @@ needs to be included in your project.
 Django enables thes by default when you create a project, as you can
 see in ``addressbook/settings.py``.
 
-.. literalinclude:: /src/addressbook/settings.py
+.. literalinclude:: /projects/addressbook/addressbook/settings.py
    :lines: 118-130
 
 In addition to installing the application, the middleware needs to be
 installed, as well.
 
-.. literalinclude:: /src/addressbook/settings.py
+.. literalinclude:: /projects/addressbook/addressbook/settings.py
    :lines: 96-104
 
 
@@ -55,7 +55,7 @@ provide those for our project.
 For this example we'll just add support for login and logout views in
 our project. First, add the views to ``addressbook/urls.py``.
 
-.. literalinclude:: /src/addressbook/urls.py
+.. literalinclude:: /projects/addressbook/addressbook/urls.py
    :lines: 7-9
 
 Both the login_ and logout_ view have default template names
@@ -69,12 +69,12 @@ our re-usable Contacts application, we'll create a new
 And tell Django to look in that directory for templates by setting
 ``TEMPLATE_DIRS`` in ``addressbook/settings.py``.
 
-.. literalinclude:: /src/addressbook/settings.py
+.. literalinclude:: /projects/addressbook/addressbook/settings.py
    :lines: 111-116
 
 Within that directory, first create ``login.html``.
 
-.. literalinclude:: /src/addressbook/templates/registration/login.html
+.. literalinclude:: /projects/addressbook/addressbook/templates/registration/login.html
    :language: html
 
 The login template inherits from our ``base.html`` template, and shows
@@ -88,7 +88,7 @@ request was triggered by a permission failure.
 
 The logout template, ``logged_out.html``, is simpler.
 
-.. literalinclude:: /src/addressbook/templates/registration/logged_out.html
+.. literalinclude:: /projects/addressbook/addressbook/templates/registration/logged_out.html
    :language: html
 
 All it needs to do is provide a message to let the user know the
@@ -113,7 +113,7 @@ override that, we'll set the ``LOGIN_REDIRECT_URL`` value in
 ``addressbook/settings.py`` so that once a user logs in they'll be
 redirected to the list of contacts.
 
-.. literalinclude:: /src/addressbook/settings.py
+.. literalinclude:: /projects/addressbook/addressbook/settings.py
    :lines: 161
 
 Now that we can log in and log out, it'd be nice to show the logged in
@@ -121,7 +121,7 @@ user in the header and links to login/logout in the header. We'll add
 that to our ``base.html`` template, since we want that to show up
 everywhere.
 
-.. literalinclude:: /src/contacts/templates/base.html
+.. literalinclude:: /projects/addressbook/contacts/templates/base.html
    :language: html
    :lines: 8-17
 
@@ -153,7 +153,7 @@ we'll override and decorate that.
 In ``contacts/views.py`` we'll create a class mixin that ensures the
 user is logged in.
 
-.. literalinclude:: /src/contacts/views.py
+.. literalinclude:: /projects/addressbook/contacts/views.py
    :lines: 1-2, 16-21
 
 This is a *mixin* because it doesn't provide a full implementation of
@@ -165,7 +165,7 @@ Once we have it, we can add it to the class declarations in
 added as the first superclass. For example, ``ListContactView`` will
 look as follows.
 
-.. literalinclude:: /src/contacts/views.py
+.. literalinclude:: /projects/addressbook/contacts/views.py
    :pyobject: ListContactView
 
 Just as ``LOGIN_REDIRECT_URL`` tells Django where to send people
@@ -173,7 +173,7 @@ Just as ``LOGIN_REDIRECT_URL`` tells Django where to send people
 when they *need* to login. However, this can also be a view name, so
 we don't have to bake an explicit URL into the settings.
 
-.. literalinclude:: /src/addressbook/settings.py
+.. literalinclude:: /projects/addressbook/addressbook/settings.py
    :lines: 162
 
 Checking Ownership
@@ -193,7 +193,7 @@ model.
 In ``contacts/models.py``, we add an import and another field to our
 model.
 
-.. literalinclude:: /src/contacts/models.py
+.. literalinclude:: /projects/addressbook/contacts/models.py
    :prepend: from django.contrib.auth.models import User
      ...
    :pyobject: Contact
@@ -211,7 +211,7 @@ For the list of Contacts, we'll want to override the ``get_queryset``
 method, which returns the `Django QuerySet`_ of objects to be
 displayed.
 
-.. literalinclude:: /src/contacts/views.py
+.. literalinclude:: /projects/addressbook/contacts/views.py
    :pyobject: ListContactView
 
 
@@ -219,7 +219,7 @@ The remaining views are responsible for showing only a single object
 -- the Contact (or its addresses). For those we'll create another
 mixin that enforces authorization.
 
-.. literalinclude:: /src/contacts/views.py
+.. literalinclude:: /projects/addressbook/contacts/views.py
    :prepend: from django.core.exceptions import PermissionDenied
              ...
    :pyobject: ContactOwnerMixin
@@ -238,7 +238,7 @@ can't find one with the specified primary key and owner, it raises the
 We'll use the ``ContactOwnerMixin`` in all of our views. For example,
 ``ContactView`` will look as follows:
 
-.. literalinclude:: /src/contacts/views.py
+.. literalinclude:: /projects/addressbook/contacts/views.py
    :pyobject: ContactView
 
 Note that the order of inheritance is important: the superclasses

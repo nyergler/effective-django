@@ -27,7 +27,7 @@ settings`_. You can also add your own settings here, if needed.
 For SQLite we need to set the engine and then give it a name. The
 SQLite backend uses the ``NAME`` as the filename for the database.
 
-.. literalinclude:: /src/addressbook/settings.py
+.. literalinclude:: /projects/addressbook/addressbook/settings.py
    :language: python
    :lines: 12-21
 
@@ -51,7 +51,7 @@ class, and contain field definitions. Let's start by creating a simple
 Contact model for our application in ``contacts/models.py``.
 
 
-.. literalinclude:: /src/contacts/models.py
+.. literalinclude:: /projects/addressbook/contacts/models.py
    :language: python
 
 Django provides a set of fields_ that map to data types and different
@@ -88,7 +88,7 @@ uses. These are listed as strings that map to Python packages. Django
 will import each and looks for a ``models`` module there. Add our
 Contacts app to the project's ``INSTALLED_APPS`` setting:
 
-.. literalinclude:: /src/addressbook/settings.py
+.. literalinclude:: /projects/addressbook/addressbook/settings.py
    :language: python
    :lines: 111-123
 
@@ -165,7 +165,7 @@ understand how we expect it to operate. Django creates a ``tests.py``
 file when it creates the application, so we'll add our first test to
 that file in the contacts app.
 
-.. literalinclude:: /src/contacts/tests.py
+.. literalinclude:: /projects/addressbook/contacts/tests.py
    :language: python
    :prepend: from contacts.models import Contact
              ...

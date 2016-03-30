@@ -37,7 +37,7 @@ form, and override the default used by our views.
 First, in the ``contacts`` app directory, we'll create a new file,
 ``forms.py``.
 
-.. literalinclude:: /src/contacts/forms.py
+.. literalinclude:: /projects/addressbook/contacts/forms.py
    :end-before: def clean
 
 Here we're creating a new ``ModelForm``; we associate the form with
@@ -62,13 +62,13 @@ simplest is to set the ``form_class`` property on the View class.
 We'll add that property to our ``CreateContactView`` and
 ``UpdateContactView`` in ``views.py``.
 
-.. literalinclude:: /src/contacts/views.py
+.. literalinclude:: /projects/addressbook/contacts/views.py
    :prepend: import forms
              ...
    :pyobject: CreateContactView
    :end-before: def get_success_url
 
-.. literalinclude:: /src/contacts/views.py
+.. literalinclude:: /projects/addressbook/contacts/views.py
    :pyobject: UpdateContactView
    :end-before: def get_success_url
 
@@ -98,7 +98,7 @@ case, email addresses.
 
 Form validation takes place in a form's ``clean()`` method.
 
-.. literalinclude:: /src/contacts/forms.py
+.. literalinclude:: /projects/addressbook/contacts/forms.py
    :prepend: class ContactForm(forms.ModelForm):
               ...
    :language: python
@@ -177,7 +177,7 @@ BoundField directly, treating the Form like a dictionary::
 
 Consider the following alternative to ``edit_contact.html``.
 
-.. literalinclude:: /src/contacts/templates/edit_contact_custom.html
+.. literalinclude:: /projects/addressbook/contacts/templates/edit_contact_custom.html
    :language: html
 
 In this example we see a few different things at work:
@@ -227,7 +227,7 @@ install Rebar so we can use the testing utilities.
 Then we can write a unit test that tests two cases: success (email
 addresses match) and failure (they do not).
 
-.. literalinclude:: /src/contacts/tests.py
+.. literalinclude:: /projects/addressbook/contacts/tests.py
    :prepend: from rebar.testing import flatten_to_dict
              from contacts import forms
              ...

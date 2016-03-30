@@ -117,7 +117,7 @@ Start a Requirements File
 Create a ``requirements.txt`` in the ``tutorial`` directory with a
 single requirement in it.
 
-.. literalinclude:: /src/requirements.txt
+.. literalinclude:: /projects/addressbook/requirements.txt
 
 Installing Requirements
 -----------------------

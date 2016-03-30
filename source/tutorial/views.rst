@@ -100,7 +100,7 @@ The basic view implementation is shockingly brief. We can write the
 view in just a few lines in the ``views.py`` file in our ``contacts``
 application.
 
-.. literalinclude:: /src/contacts/views.py
+.. literalinclude:: /projects/addressbook/contacts/views.py
    :language: python
    :end-before: template_name
 
@@ -121,7 +121,7 @@ your Python code. Django looks for the URL configuration, defined as
 Let's add a URL mapping for our contact list view in
 ``addressbook/urls.py``.
 
-.. literalinclude:: /src/addressbook/urls.py
+.. literalinclude:: /projects/addressbook/addressbook/urls.py
    :language: python
 
 
@@ -201,12 +201,12 @@ For our purposes, however, we don't need that extra layer of directory
 structure, so we'll specify the template to use explicitly, using the
 ``template_name`` property. Let's add that one line to ``views.py``.
 
-.. literalinclude:: /src/contacts/views.py
+.. literalinclude:: /projects/addressbook/contacts/views.py
 
 Create a ``templates`` subdirectory in our ``contacts`` application,
 and create ``contact_list.html`` there.
 
-.. literalinclude:: /src/contacts/templates/contact_list.html
+.. literalinclude:: /projects/addressbook/contacts/templates/contact_list.html
    :language: html
 
 Opening the page in the browser, we should see one contact there, the
@@ -224,7 +224,7 @@ contact.
 Just like the list view, we'll use one of Django's generic views. In
 ``views.py``, we can add the new view:
 
-.. literalinclude:: /src/contacts/views.py
+.. literalinclude:: /projects/addressbook/contacts/views.py
    :prepend: from django.core.urlresolvers import reverse
              from django.views.generic import CreateView
              ...
@@ -261,7 +261,7 @@ list.
 The template is slightly more involved than the list template, but not
 much. Our ``edit_contact.html`` will look something like this.
 
-.. literalinclude:: /src/contacts/templates/edit_contact.html
+.. literalinclude:: /projects/addressbook/contacts/templates/edit_contact.html
    :language: html
 
 A few things to note:
@@ -294,7 +294,7 @@ Now you can go to ``http://localhost:8000/new`` to create new contacts.
 
 To complete the story, let's add a link to `contact_list.html`.
 
-.. literalinclude:: /src/contacts/templates/contact_list.html
+.. literalinclude:: /projects/addressbook/contacts/templates/contact_list.html
    :language: html
 
 
@@ -336,7 +336,7 @@ each tool.
 
 .. checkpoint:: view_tests
 
-.. literalinclude:: /src/contacts/tests.py
+.. literalinclude:: /projects/addressbook/contacts/tests.py
    :prepend: from django.test.client import Client
              from django.test.client import RequestFactory
              ...
@@ -372,7 +372,7 @@ We're going to write a couple of tests for our views:
 - and one that actually exercises the add contact form, filling it in
   and submitting it.
 
-.. literalinclude:: /src/contacts/tests.py
+.. literalinclude:: /projects/addressbook/contacts/tests.py
    :prepend: from django.test import LiveServerTestCase
              from selenium.webdriver.firefox.webdriver import WebDriver
              ...

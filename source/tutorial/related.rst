@@ -16,7 +16,7 @@ addresses, for example. A single Contact may have multiple addresses
 associated with them, so we'll store this in a separate table,
 allowing us to have multiple addresses for each Contact.
 
-.. literalinclude:: /src/contacts/models.py
+.. literalinclude:: /projects/addressbook/contacts/models.py
    :pyobject: Address
 
 Django provides three types of fields for relating objects to each
@@ -74,7 +74,7 @@ related objects.
 Let's go ahead and add address display to our contacts. We'll add the
 list of all Addresses to the Contact detail view in ``contact.html``.
 
-.. literalinclude:: /src/contacts/templates/contact.html
+.. literalinclude:: /projects/addressbook/contacts/templates/contact.html
 
 Editing Related Objects
 =======================
@@ -103,13 +103,13 @@ Because formsets are somewhat complex objects, Django provides factory
 functions that create the class for you. We'll add a call to the
 factory to our ``forms.py`` file.
 
-.. literalinclude:: /src/contacts/forms.py
+.. literalinclude:: /projects/addressbook/contacts/forms.py
    :lines: 3-8,40-
 
 When we create the view, we'll need to specify that this is the form
 we want to use, instead of having Django create one for us.
 
-.. literalinclude:: /src/contacts/views.py
+.. literalinclude:: /projects/addressbook/contacts/views.py
    :pyobject: EditContactAddressView
 
 Note that even though we're editing Addresses with this view, we still
@@ -118,12 +118,12 @@ takes the parent object as its starting point.
 
 Once again, this needs to be wired up into the URL configuration.
 
-.. literalinclude:: /src/addressbook/urls.py
+.. literalinclude:: /projects/addressbook/addressbook/urls.py
    :lines: 16-17
 
 And we have a simple template.
 
-.. literalinclude:: /src/contacts/templates/edit_addresses.html
+.. literalinclude:: /projects/addressbook/contacts/templates/edit_addresses.html
    :language: html
 
 There are two new things in this template, both related to the fact

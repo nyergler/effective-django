@@ -48,7 +48,7 @@ within the app. Django will also look in any directories listed in the
 ``STATICFILES_DIRS`` setting. Let's update our project settings to
 specify a static files directory.
 
-.. literalinclude:: /src/addressbook/settings.py
+.. literalinclude:: /projects/addressbook/addressbook/settings.py
    :language: python
    :prepend: import os.path
              ...
@@ -122,7 +122,7 @@ this, we'll create a base template that the others will inherit from.
 Let's create ``base.html`` in the ``templates`` directory of our
 ``contacts`` app.
 
-.. literalinclude:: /src/contacts/templates/base.html
+.. literalinclude:: /projects/addressbook/contacts/templates/base.html
 
 ``base.html`` defines the common structure for our pages, and includes
 a ``block`` tag, which other templates can fill in.
@@ -130,7 +130,7 @@ a ``block`` tag, which other templates can fill in.
 We'll update ``contact_list.html`` to extend from ``base.html`` and
 fill in the ``content`` block.
 
-.. literalinclude:: /src/contacts/templates/contact_list.html
+.. literalinclude:: /projects/addressbook/contacts/templates/contact_list.html
 
 Serving Static Files
 ====================
@@ -147,7 +147,7 @@ For development, however, it's convenient to do it all with one
 process, so there's a helper. We'll update our ``addressbook/urls.py``
 file to include the ``staticfiles_urlpatterns`` helper.
 
-.. literalinclude:: /src/addressbook/urls.py
+.. literalinclude:: /projects/addressbook/addressbook/urls.py
 
 Now we can run the server and see our newly Boostrapped templates in
 action.
