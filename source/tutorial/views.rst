@@ -1,5 +1,5 @@
 .. tut::
-   :path: /src
+   :path: /projects/addressbook
 
 ===============
  Writing Views
