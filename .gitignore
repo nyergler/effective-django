@@ -7,7 +7,9 @@
 /lib/
 /lib64/
 /include/
+/share/
 .Python
+.DS_Store
 
 *.pyc
 /pip-selfcheck.json

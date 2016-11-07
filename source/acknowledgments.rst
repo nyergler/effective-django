@@ -1,6 +1,11 @@
 Acknowledgments
 ===============
 
+These documents are a combination of the notes and examples developed
+for talks prepared for PyCon 2012, PyOhio 2012, and PyCon 2013, and
+for Eventbrite web engineering. I'm still working on fleshing them out
+into a single document, but I hope you find them useful.
+
 It would have been impossible to put *Effective Django* together with
 lots and lots of help. Thanks to PyCon_ and PyOhio_ for allowing me to
 speak about these topics and develop the material. Thanks to
