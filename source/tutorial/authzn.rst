@@ -253,11 +253,11 @@ Review
 
 * XXX
 
-.. _`login_required`: https://docs.djangoproject.com/en/1.5/topics/auth/default/#django.contrib.auth.decorators.login_required
-.. _`a little cumbersome`: https://docs.djangoproject.com/en/1.5/topics/class-based-views/intro/#decorating-class-based-views
-.. _Users: https://docs.djangoproject.com/en/1.6/topics/auth/default/#user-objects
-.. _Groups: https://docs.djangoproject.com/en/1.6/topics/auth/default/#groups
-.. _Permissions: https://docs.djangoproject.com/en/1.6/topics/auth/default/#permissions-and-authorization
-.. _login: https://docs.djangoproject.com/en/1.6/topics/auth/default/#django.contrib.auth.views.login
-.. _logout: https://docs.djangoproject.com/en/1.6/topics/auth/default/#django.contrib.auth.views.login
-.. _`Django QuerySet`: https://docs.djangoproject.com/en/1.6/ref/class-based-views/mixins-multiple-object/#django.views.generic.list.MultipleObjectMixin.get_queryset
+.. _`login_required`: https://docs.djangoproject.com/en/1.10/topics/auth/default/#django.contrib.auth.decorators.login_required
+.. _`a little cumbersome`: https://docs.djangoproject.com/en/1.10/topics/class-based-views/intro/#decorating-class-based-views
+.. _Users: https://docs.djangoproject.com/en/1.10/topics/auth/default/#user-objects
+.. _Groups: https://docs.djangoproject.com/en/1.10/topics/auth/default/#groups
+.. _Permissions: https://docs.djangoproject.com/en/1.10/topics/auth/default/#permissions-and-authorization
+.. _login: https://docs.djangoproject.com/en/1.10/topics/auth/default/#django.contrib.auth.views.login
+.. _logout: https://docs.djangoproject.com/en/1.10/topics/auth/default/#django.contrib.auth.views.login
+.. _`Django QuerySet`: https://docs.djangoproject.com/en/1.10/ref/class-based-views/mixins-multiple-object/#django.views.generic.list.MultipleObjectMixin.get_queryset

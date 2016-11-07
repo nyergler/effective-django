@@ -1,6 +1,7 @@
-Django==1.5.4
-Sphinx~=1.3
-rebar==0.1
+Sphinx~=1.4
 sphinxcontrib-blockdiag~=1.5
 alabaster
 tut
+
+Django~=1.10.0
+rebar
