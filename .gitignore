@@ -13,3 +13,4 @@
 
 *.pyc
 /pip-selfcheck.json
+/pyvenv.cfg
