@@ -4,6 +4,7 @@ Getting Started with Django
 
 .. toctree::
 
+   getting-started.rst
    models.rst
    views.rst
    static.rst
