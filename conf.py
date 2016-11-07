@@ -57,8 +57,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Effective Django'
-copyright = u'2012-2015, Nathan Yergler'
-author = u'Nathan Yergler'
+copyright = u'2012-2016, Nathan R. Yergler'
+author = u'Nathan R. Yergler'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -130,12 +130,13 @@ html_theme = 'alabaster'
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    'logo_name': True,
     'github_user': 'nyergler',
     'github_repo': 'effective-django',
     'github_button': True,
+    'github_banner': True,
     'show_powered_by': False,
     'show_related': True,
+    'fixed_sidebar': True,
 }
 
 # Add any paths that contain custom themes here, relative to this directory.

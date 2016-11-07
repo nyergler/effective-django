@@ -56,17 +56,13 @@ nathan@yergler.net. You can find (and fork) the source on `github
 <http://github.com/nyergler/effective-django>`_.
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
    getting-started.rst
-   models.rst
-   views.rst
-   static.rst
-   additional-views.rst
-   forms.rst
-   related.rst
-   authzn.rst
-   reference/index.rst
+   01_intro/index.rst
+   02_production/index.rst
+   03_advanced/index.rst
+   Reference<reference/index.rst>
    acknowledgments.rst
 
 

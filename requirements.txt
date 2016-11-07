@@ -1,6 +1,6 @@
 Sphinx~=1.4
 sphinxcontrib-blockdiag~=1.5
-alabaster
+alabaster>=0.7.8
 tut
 
 Django~=1.10.0
