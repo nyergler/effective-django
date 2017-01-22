@@ -1,3 +1,6 @@
+.. tut::
+   :path: /projects/addressbook
+
 =========================
 Creating a Django Project
 =========================
@@ -10,62 +13,33 @@ Setting Up Your Environment
 Create a Clean Workspace
 ------------------------
 
-::
+.. tut:exec::
+   :path: /projects
 
-  $ mkdir tutorial
-  $ virtualenv ./tutorial/
-  New python executable in ./tutorial/bin/python
-  Installing setuptools............done.
-  Installing pip...............done.
-  $ source ./tutorial/bin/activate
-  (tutorial)$
-
-.. Alternately, start by cloning the `example repository`_::
-
-..   $ git clone git://github.com/nyergler/effective-django-tutorial.git
-..   $ cd effective-django-tutorial
-..   $ git checkout environment
-..   $ virtualenv .
-..   New python executable in ./bin/python
-..   Installing setuptools............done.
-..   Installing pip...............done.
-..   $ source ./bin/activate
-..   (effective-django-tutorial) $
-
-.. _`example repository`: https://github.com/nyergler/effective-django-tutorial
-
-Start a Requirements File
--------------------------
-
-Create a ``requirements.txt`` in the ``tutorial`` directory with a
-single requirement in it.
-
-.. literalinclude:: /projects/addressbook/requirements.txt
+   $ mkdir tutorial
+   $ virtualenv ./tutorial/
+   $ source ./tutorial/bin/activate
 
 Installing Requirements
 -----------------------
 
-And then we can use pip_ to install the dependencies.
+Most languages provide some mechanism for specifying a set of dependencies and the versions you depend on. There are a few ways to do this with Python. For most of our examples we'll be using *pip_*. Pip manages installation of Python packages, and can read *requirements files*. `Requirements files`_ specify a list of dependencies, one per line, along with an optional version specification.
 
-::
+To begin, create a ``requirements.txt`` file in the ``tutorial`` directory with a single line in it.
 
-  (tutorial)$ pip install -U -r requirements.txt
+.. tut:content:: requirements.txt
+   :path: /projects/tutorial
 
-  Downloading/unpacking Django==1.5.1
-    Downloading Django-1.5.1.tar.gz (8.0MB): 8.0MB downloaded
-    Running setup.py egg_info for package Django
+   Django~=1.10.0
 
-      warning: no previously-included files matching '__pycache__' found under directory '*'
-      warning: no previously-included files matching '*.py[co]' found under directory '*'
-  Installing collected packages: Django
-    Running setup.py install for Django
-      changing mode of build/scripts-2.7/django-admin.py from 644 to 755
+This single requirement specifies that we depend on Django, specifically any version _like_ `1.10.0`. In other words, we'll get bug fix releases (i.e., 1.10.1), but not new versions (i.e., 1.11.0). Specifying the version is critical: without the version it's impossible to know that what we developed with and tested with is actually what we're running with.
 
-      warning: no previously-included files matching '__pycache__' found under directory '*'
-      warning: no previously-included files matching '*.py[co]' found under directory '*'
-      changing mode of /home/nathan/p/edt/bin/django-admin.py to 755
-  Successfully installed Django
-  Cleaning up...
+Once we have the requirements file, we can use pip_ to install the dependencies we specified.
+
+.. tut:exec::
+   :path: /projects/tutorial
+
+   $ ./bin/pip install -U -r requirements.txt
 
 .. _pip: http://www.pip-installer.org/
 

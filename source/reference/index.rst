@@ -4,9 +4,6 @@ Effective Django (legacy)
 
 *This is the legacy effective django documentation, here for reference.*
 
-Contents
-========
-
 .. toctree::
    :maxdepth: 2
 
