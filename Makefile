@@ -207,6 +207,6 @@ push:
 	git --git-dir=$(BUILDDIR)/.git commit -m '$(MESSAGE)'
 	git --git-dir=$(BUILDDIR)/.git push origin gh-pages
 
-all: clean html slides latexpdf epub
+all: clean html latexpdf epub
 
 publish: all push
