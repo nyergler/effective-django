@@ -50,7 +50,7 @@ help:
 	@echo "  coverage   to run coverage check of the documentation (if enabled)"
 
 clean:
-	git --git-dir=$(BUILDDIR)/.git co $(BUILDBRANCH)
+	git --git-dir=$(BUILDDIR)/.git checkout $(BUILDBRANCH)
 	rm -rf $(BUILDDIR)/*
 	git --git-dir=$(BUILDDIR)/.git reset --hard $(BUILDBRANCH)
 	git --git-dir=$(BUILDDIR)/.git checkout $(BUILDBRANCH)
