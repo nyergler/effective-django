@@ -61,7 +61,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Effective Django'
-copyright = u'2012-2016, Nathan R. Yergler'
+copyright = u'2012-2017, Nathan R. Yergler'
 author = u'Nathan R. Yergler'
 
 # The version info for the project you're documenting, acts as replacement for
