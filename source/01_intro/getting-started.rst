@@ -18,7 +18,7 @@ Python uses "virtual environments" (sometimes referred to as ``virtualenvs`` or 
 .. code-block:: console
 
    $ mkdir addresses
-   $ python -m venv addresses
+   $ python3 -m venv addresses
    $ cd addresses
    $ source ./bin/activate
    (addresses) $
@@ -60,6 +60,7 @@ Once we have the requirements file, we can use pip_ to install the dependencies 
 Pip will read each line of your requirements file, fetch the dependency, and then fetch any additionally required dependencies. Because we're working in our virtual environment, we don't need to worry about conflicts.
 
 .. _pip: http://www.pip-installer.org/
+.. _`requirements files`: https://pip.pypa.io/en/stable/reference/pip_install/#requirements-file-format
 
 Beginning a Django Project
 ==========================
@@ -134,12 +135,16 @@ We'll use the manage.py wrapper to create our app, which we'll name ``contacts``
 
   (addresses)$ python3 ./manage.py startapp contacts
 
+.. sidebar:: Project & App Organization
+
+   In versions of Django prior to 1.4, apps were created as sub-directories of the project. You could move them around so long as you made sure your ``PYTHONPATH`` was set correctly, but the default made the two seem tightly coupled. By placing them as peers, it's a little more obvious that apps are potentitally reusable; we'll dive into that later.
+
 Our project's management script (``manage.py``) will create a new directory, ``contacts``, with three nearly empty files:
 
-* ``models.py`` will contain the Django ORM models for your app.
-* ``views.py`` will contain the View code
+* ``models.py`` will contain the database models for your app
+* ``views.py`` will contain the views which respond to HTTP requests
 * ``tests.py`` will contain the unit and integration tests you
-   write.
+   write
 
 Review
 ======

@@ -1,20 +1,13 @@
-.. tut::
-   :path: /projects/addressbook
-
 =============
 Using Models
 =============
 
-.. checkpoint:: contact_model
+In this section you'll learn how to configure Django to connect to a database, as well as the basics of creating Python classes (models) that represent information in the database.
 
 Configuring the Database
 ========================
 
-Django includes support out of the box for MySQL, PostgreSQL, SQLite3,
-and Oracle. SQLite3_ is included with Python starting with version
-2.5, so we'll use it for our project for simplicity. If you were going
-to use MySQL, for example, you'd need to add `mysql-python`_ to your
-``requirements.txt`` file.
+Django includes support out of the box for MySQL, PostgreSQL, SQLite3, and Oracle. SQLite3_ is included with Python, so we'll use it for our project for simplicity. If you were going to use MySQL, for example, you'd need to add `mysql-python`_ to your ``requirements.txt`` file. We'll discuss using databases like MySQL and Postgres in Deploying_.
 
 To enable SQLite as the database, edit the ``DATABASES`` definition in
 ``addressbook/settings.py``. The ``settings.py`` file contains the
@@ -34,13 +27,15 @@ SQLite backend uses the ``NAME`` as the filename for the database.
 Note that the database engine is specified as a string, and not a
 direct reference to the Python object. This is because the settings
 file needs to be easily importable, without triggering any side
-effects. You should avoid adding imports to the settings file.
+effects. **You should avoid adding imports to the settings file.**
 
 You rarely need to import the settings file directly; Django imports
 it for you, and makes it available as ``django.conf.settings``. You
 typically import your settings from ``django.conf``::
 
   from django.conf import settings
+
+By referring to ``django.conf.settings`` your code doesn't need to bake in assumptions about package names, etc: you can write Django _applications_ that can plug into different _projects_ in the future.
 
 Creating a Model
 ================
