@@ -27,7 +27,9 @@ The final command (``source ./bin/activate``) activates the newly created virtua
 
 .. note::
 
-  Windows users...
+  if you're using a Windows computer, the ``venv`` module will create a ``Scripts`` directory instead of ``bin``. To activate the virtual environemnt, run ``.\Scripts\activate.bat`` from the command prompt, or ``.\Scripts\activate.ps1`` from PowerShell.
+
+  For more information see the `virtualenv on Windows documentation`_.
 
 Installing Requirements
 -----------------------
@@ -48,10 +50,13 @@ Once we have the requirements file, we can use pip_ to install the dependencies 
 
    (addresses)$ pip install -U -r requirements.txt
    Collecting Django~=1.11.0 (from -r requirements.txt (line 1))
-     Downloading Django-1.11-py2.py3-none-any.whl (6.8MB)
-       100% |████████████████████████████████| 6.8MB 250kB/s
-   Installing collected packages: Django
-   Successfully installed Django-1.11
+     Downloading Django-1.11-py2.py3-none-any.whl (6.9MB)
+       100% |████████████████████████████████| 6.9MB 185kB/s
+   Collecting pytz (from Django~=1.11.0->-r requirements.txt (line 1))
+     Downloading pytz-2017.2-py2.py3-none-any.whl (484kB)
+       100% |████████████████████████████████| 491kB 2.4MB/s
+   Installing collected packages: pytz, Django
+   Successfully installed Django-1.11 pytz-2017.2
 
 .. note::
 
@@ -97,6 +102,11 @@ in our isolated environment so we can just say ``.``
 .. code-block:: console
 
   (addresses)$ django-admin.py startproject addressbook .
+
+.. note:: Windows
+
+  ``.\Scripts\django-admin.exe startproject addressbook .``
+
 
 Running ``startproject`` creates some new files in our project directory.
 

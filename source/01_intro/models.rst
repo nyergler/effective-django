@@ -9,20 +9,25 @@ Configuring the Database
 
 Django includes support out of the box for MySQL, PostgreSQL, SQLite3, and Oracle. SQLite3_ is included with Python, so we'll use it for our project for simplicity. If you were going to use MySQL, for example, you'd need to add `mysql-python`_ to your ``requirements.txt`` file. We'll discuss using databases like MySQL and Postgres in Deploying_.
 
-To enable SQLite as the database, edit the ``DATABASES`` definition in
-``addressbook/settings.py``. The ``settings.py`` file contains the
+You can find the database configuration in ``addressbook/settings.py``. The ``settings.py`` file contains the
 Django configuration for our project. There are some settings that you
-must specify -- like the ``DATABASES`` configuration -- and others
+must specify -- like the ``DATABASES`` configuration, for example -- and others
 that are optional. Django fills in some defaults when it generates the
 project scaffolding, and the documentation contains a `full list of
 settings`_. You can also add your own settings here, if needed.
 
-For SQLite we need to set the engine and then give it a name. The
-SQLite backend uses the ``NAME`` as the filename for the database.
+Django defaults to SQLite, so we'll just look at the database configuration to make sure we understand it.
 
-.. literalinclude:: /projects/addressbook/addressbook/settings.py
-   :language: python
-   :lines: 12-21
+.. code-block:: python
+
+  DATABASES = {
+      'default': {
+          'ENGINE': 'django.db.backends.sqlite3',
+          'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+      }
+  }
+
+Here we see that the ``default`` database is configured with the SQLite3 engine and will be named ``db.sqlite3`` in the project directory (``BASE_DIR``, defined near the top of ``settings.py``).
 
 Note that the database engine is specified as a string, and not a
 direct reference to the Python object. This is because the settings
@@ -45,61 +50,101 @@ to encapsulate business logic. All models subclass the base Model_
 class, and contain field definitions. Let's start by creating a simple
 Contact model for our application in ``contacts/models.py``.
 
+.. code-block:: python
 
-.. literalinclude:: /projects/addressbook/contacts/models.py
-   :language: python
+  from django.db import models
+
+
+  class Contact(models.Model):
+
+      first_name = models.CharField(
+          max_length=255,
+      )
+      last_name = models.CharField(
+          max_length=255,
+      )
+
+      email = models.EmailField()
+
+      def __str__(self):
+          return ' '.join([
+              self.first_name,
+              self.last_name,
+          ])
 
 Django provides a set of fields_ that map to data types and different
 validation rules. For example, the ``EmailField`` here maps to the
 same column type as the ``CharField``, but adds validation for the
 data.
 
-Once you've created a model, you need to update your database with the
-new tables. Django's ``syncdb`` command looks for models that are
-installed and creates tables for them if needed.
+Once you've created or updated a model, you need to update your database with the changes. Django's ``makemigrations`` command creates new migrations based on your code changes. The ``migrate`` command runs pending migrations.
 
-::
+Before we create the migration for our Contact model, let's run the pending migrations. These are migrations included with the apps Django installs by default.
 
-  (tutorial)$ python ./manage.py syncdb
+.. code-block:: console
 
-  Creating tables ...
-  Creating table auth_permission
-  Creating table auth_group_permissions
-  Creating table auth_group
-  Creating table auth_user_user_permissions
-  Creating table auth_user_groups
-  Creating table auth_user
-  Creating table django_content_type
-  Creating table django_session
-  Creating table django_site
+  (addresses) $ python manage.py migrate
+  Operations to perform:
+    Apply all migrations: admin, auth, contenttypes, sessions
+  Running migrations:
+    Applying contenttypes.0001_initial... OK
+    Applying auth.0001_initial... OK
+    Applying admin.0001_initial... OK
+    Applying admin.0002_logentry_remove_auto_add... OK
+    Applying contenttypes.0002_remove_content_type_name... OK
+    Applying auth.0002_alter_permission_name_max_length... OK
+    Applying auth.0003_alter_user_email_max_length... OK
+    Applying auth.0004_alter_user_username_opts... OK
+    Applying auth.0005_alter_user_last_login_null... OK
+    Applying auth.0006_require_contenttypes_0002... OK
+    Applying auth.0007_alter_validators_add_error_messages... OK
+    Applying auth.0008_alter_user_username_max_length... OK
+    Applying sessions.0001_initial... OK
 
-  ...
 
-Our contact table isn't anywhere to be seen. The reason is that we
-need to tell the Project to use the Application.
+Now we're ready to generate our new migration.
 
-The ``INSTALLED_APPS`` setting lists the applications that the project
-uses. These are listed as strings that map to Python packages. Django
-will import each and looks for a ``models`` module there. Add our
-Contacts app to the project's ``INSTALLED_APPS`` setting:
+.. code-block:: console
 
-.. literalinclude:: /projects/addressbook/addressbook/settings.py
-   :language: python
-   :lines: 111-123
+  (addresses) $ python manage.py makemigrations
+  No changes detected
 
-Then run ``syncdb`` again::
+That's not quite what we expected: we definitely created a new model. Our Contact model isn't detected here because we haven't told the *Project* to use the *Application* yet.
 
-  (tutorial)$ python ./manage.py syncdb
-  Creating tables ...
-  Creating table contacts_contact
-  Installing custom SQL ...
-  Installing indexes ...
-  Installed 0 object(s) from 0 fixture(s)
+The ``INSTALLED_APPS`` setting lists the applications that the project uses. These are listed as strings that map to Python packages. Django will import each and looks for a ``models`` module there. Add our Contacts app to the project's ``INSTALLED_APPS`` setting in ``settings.py``:
 
-Note that Django created a table named ``contacts_contact``: by
-default Django will name your tables using a combination of the
-application name and model name. You can override that with the
-`model Meta`_ options.
+.. code-block:: python
+
+  INSTALLED_APPS = [
+      'django.contrib.admin',
+      'django.contrib.auth',
+      'django.contrib.contenttypes',
+      'django.contrib.sessions',
+      'django.contrib.messages',
+      'django.contrib.staticfiles',
+      'contacts',
+  ]
+
+Then run ``makemigrations`` again.
+
+.. code-block:: console
+
+  (addresses) $ python manage.py makemigrations
+  Migrations for 'contacts':
+    contacts\migrations\0001_initial.py
+      - Create model Contact
+
+Now run ``migrate`` again to actually create the table.
+
+.. code-block:: console
+
+  (addresses) $ python manage.py migrate
+  Operations to perform:
+    Apply all migrations: admin, auth, contacts, contenttypes, sessions
+  Running migrations:
+    Applying contacts.0001_initial... OK
+
+Note that Django created a table named ``contacts_contact`` for the Contacts model: by default Django will name your tables using a combination of the application name and model name. You can override that with the `model Meta`_ options.
 
 
 Interacting with the Model
@@ -108,42 +153,31 @@ Interacting with the Model
 Now that the model has been synced to the database we can interact
 with it using the interactive shell.
 
-::
+.. code-block:: console
 
-  (tutorial)$ python ./manage.py shell
-  Python 2.7.3 (default, Aug  9 2012, 17:23:57)
-  [GCC 4.7.1 20120720 (Red Hat 4.7.1-5)] on linux2
+  (addresses)$ python ./manage.py shell
+  Python 3.6.0 (v3.6.0:41df79263a11, Dec 23 2016, 07:18:10) [MSC v.1900 32 bit (Intel)] on win32
   Type "help", "copyright", "credits" or "license" for more information.
   (InteractiveConsole)
   >>> from contacts.models import Contact
   >>> Contact.objects.all()
-  []
+  <QuerySet []>
   >>> Contact.objects.create(first_name='Nathan', last_name='Yergler')
   <Contact: Nathan Yergler>
   >>> Contact.objects.all()
-  [<Contact: Nathan Yergler>]
+  <QuerySet [<Contact: Nathan Yergler>]>
   >>> nathan = Contact.objects.get(first_name='Nathan')
   >>> nathan
   <Contact: Nathan Yergler>
-  >>> print nathan
+  >>> print(nathan)
   Nathan Yergler
   >>> nathan.id
   1
+  >>>
 
-There are a few new things here. First, the ``manage.py shell``
-command gives us a interactive shell with the Python path set up
-correctly for Django. If you try to run Python and just import your
-application, an Exception will be raised because Django doesn't know
-which ``settings`` to use, and therefore can't map Model instances to
-the database.
+There are a few new things here. First, the ``manage.py shell`` command gives us a interactive shell with Python's path set up correctly for Django. If you try to run Python and just import your application, an Exception will be raised because Django doesn't know which settings  to use, and therefore can't map Model instances to the database.
 
-Second, there's this ``objects`` property on our model class. That's
-the model's Manager_. If a single instance of a Model is analogous to
-a row in the database, the Manager is analogous to the table. The
-default model manager provides querying functionality, and can be
-customized. When we call ``all()`` or ``filter()`` or the Manager, a
-QuerySet is returned. A QuerySet is iterable, and loads data from the
-database as needed.
+Second, there's this ``objects`` property on our model class. That's the model's Manager_. If a single instance of a Model represents a row in the database, the Manager represents the table. The default model manager provides querying functionality, and can be customized. When we call ``all()`` or ``filter()`` or the Manager, a QuerySet_ is returned. A QuerySet is iterable, and loads data from the database as needed.
 
 Finally, there's this ``id`` field that we didn't define. Django adds
 an ``id`` field as the primary key for your model, unless you `specify
@@ -156,46 +190,49 @@ We have one method defined on our model, ``__str__``, and this is a
 good time to start writing tests. The ``__str__`` method of a model
 will get used in quite a few places, and it's entirely conceivable
 it'd be exposed to end users. It's worth writing a test so we
-understand how we expect it to operate. Django creates a ``tests.py``
-file when it creates the application, so we'll add our first test to
-that file in the contacts app.
+understand how we expect it to operate.
 
-.. literalinclude:: /projects/addressbook/contacts/tests.py
-   :language: python
-   :prepend: from contacts.models import Contact
-             ...
-   :pyobject: ContactTests
+Django creates a ``tests.py`` file when it creates the application, so we'll add our first test to that file in the contacts app.
+
+.. code-block:: python
+
+  from django.test import TestCase
+
+  from .models import Contact
+
+  class ContactTests(TestCase):
+      """Contact model tests."""
+
+      def test_str(self):
+
+          contact = Contact(first_name='John', last_name='Smith')
+
+          self.assertEquals(
+              str(contact),
+              'John Smith',
+          )
+
 
 You can run the tests for your application using ``manage.py``::
 
-  (tutorial)$ python manage.py test
-
-If you run this now, you'll see that around 420 tests run. That's
-surprising, since we've only written one. That's because by default
-Django runs the tests for all installed applications. When we added
-the ``contacts`` app to our project, there were several Django apps
-there by default. The extra 419 tests come from those.
-
-If you want to run the tests for a specific app, just specify the app
-name on the command line::
-
-  (tutorial)$ python manage.py test contacts
+  (addresses)$ python manage.py test
   Creating test database for alias 'default'...
-  ..
+  System check identified no issues (0 silenced).
+  .
   ----------------------------------------------------------------------
-  Ran 2 tests in 0.000s
+  Ran 1 test in 0.000s
 
   OK
   Destroying test database for alias 'default'...
-  $
 
-One other interesting thing to note before moving on is the first and
+
+One thing to note before moving on is the first and
 last line of output: "Creating test database" and "Destroying test
 database". Some tests need access to a database, and because we don't
 want to mingle test data with "real" data (for a variety of reasons,
 not the least of which is determinism), Django helpfully creates a
 test database for us before running the tests. Essentially it creates
-a new database, and runs ``syncdb`` on it. If you subclass from
+a new database, and runs ``migrate`` on it. If you subclass from
 Django's ``TestCase`` (which we are), Django also resets any default
 data after running each TestCase, so that changes in one test won't
 break or influence another.
@@ -204,9 +241,9 @@ Review
 ======
 
 * Models define the fields in a table, and can contain business logic.
-* The ``syncdb`` manage command creates the tables in your database from
-  models
-* The model Manager allows you to operate on the collection of
+* The ``makemigrations`` manage command creates migrations based on your Python models
+* The ``migrate`` manage command runs any pending migrations
+* The model Manager_ allows you to operate on the collection of
   instances: querying, creating, etc.
 * Write unit tests for methods you add to the model
 * The ``test`` manage command runs the unit tests
