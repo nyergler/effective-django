@@ -1,33 +1,19 @@
-.. tut::
-   :path: /projects/addressbook
-
 ===============
  Writing Views
 ===============
 
+Django Views are responsible for processing HTTP requests from the browser. Views take an `HTTP Request`_ and return an `HTTP Response`_ to
+the user. In this section you'll learn the basics of Django views and use some of the scaffolding Django provides to list and create Contacts.
+
 View Basics
 ===========
-
-Django Views take an `HTTP Request`_ and return an `HTTP Response`_ to
-the user.
-
-  .. blockdiag::
-
-     blockdiag {
-        // Set labels to nodes.
-        A [label = "User"];
-        C [label = "View"];
-
-        A -> C [label = "Request"];
-        C -> A [label = "Response"];
-     }
 
 Any Python callable can be a view. The only hard and fast requirement
 is that it takes the request object (customarily named ``request``) as
 its first argument. This means that a minimalist view is super
-simple::
+simple.
 
-
+.. code-block:: python
 
   from django.http import HttpResponse
 
@@ -38,30 +24,17 @@ Of course, like most frameworks, Django also allows you to pass
 arguments to the view from the URL. We'll cover this as we build up
 our application.
 
-.. _`HTTP Request`: https://docs.djangoproject.com/en/1.5/ref/request-response/#httprequest-objects
-.. _`HTTP Response`: https://docs.djangoproject.com/en/1.5/ref/request-response/#httpresponse-objects
-
-
-Generic & Class Based Views
-===========================
-
-* `Generic Views`_ have always provided some basic functionality:
-  render a template, redirect, create or edit a model, etc.
-* Django 1.3 introduced `Class Based Views`_ (CBV) for the generic views
-* Provide higher levels of abstraction and composability
-* Also hide a lot of complexity, which can be confusing for the
-  newcomer
-* Luckily the documentation is **much** better with Django 1.5
-
+.. _`HTTP Request`: https://docs.djangoproject.com/en/1.11/ref/request-response/#httprequest-objects
+.. _`HTTP Response`: https://docs.djangoproject.com/en/1.11/ref/request-response/#httpresponse-objects
 
 Class Based Views
 =================
 
-The minimal class based view subclasses View_ and implements methods
-for the HTTP methods it supports. Here's the class-based version of
-the minimalist "Hello, World" view we previously wrote.
+"Class based views" are a way to write views as Python classes rather than functions. This in and of itself isn't that interesting, but Django provides some ready made classes that are easily extended to handle situations with a minmum of code.
 
-::
+The minimal class based view subclasses View_ and implements methods for the HTTP methods it supports. Here's the class-based version of the minimalist "Hello, World" view we previously wrote.
+
+.. code-block:: python
 
   from django.http import HttpResponse
   from django.views.generic import View
@@ -91,25 +64,21 @@ its first argument, and returns an HTTP Response.
 Listing Contacts
 ================
 
-.. checkpoint:: contact_list_view
-
-We'll start with a view that presents a list of contacts in the
-database.
+For our contact manager we'll start with a view that presents a list of contacts in the database.
 
 The basic view implementation is shockingly brief. We can write the
 view in just a few lines in the ``views.py`` file in our ``contacts``
 application.
 
-.. literalinclude:: /projects/addressbook/contacts/views.py
-   :language: python
-   :end-before: template_name
+.. code-block:: python
 
-The ListView_ that we subclass from is itself composed of several
-mixins that provide some behavior, and that composition gives us a lot
-of power without a lot of code. In this case we set ``model =
-Contact``, which says that this view is going to list *all* the
-Contacts in our database.
+  from django.views.generic import ListView
+  from contacts.models import Contact
 
+  class ListContactView(ListView):
+      model = Contact
+
+The ListView_ that we subclass from is itself composed of several mixins that provide some behavior, and that composition gives us a lot of power without a lot of code. In this case we set ``model = Contact``, which says that this view is going to list *all* the Contacts in our database.
 
 Defining URLs
 =============
@@ -118,38 +87,36 @@ The URL configuration tells Django how to match a request's path to
 your Python code. Django looks for the URL configuration, defined as
 ``urlpatterns``, in the ``urls.py`` file in your project.
 
-Let's add a URL mapping for our contact list view in
-``addressbook/urls.py``.
+Let's add a URL mapping for our contact list view in ``addressbook/urls.py``.
 
-.. literalinclude:: /projects/addressbook/addressbook/urls.py
-   :language: python
+.. code-block:: python
+
+  from django.conf.urls import url
+  from django.contrib import admin
+  from contacts.views import ListContactView
 
 
-* Use of the ``url()`` function is not strictly required, but I like
-  it: when you start adding more information to the URL pattern, it
-  lets you use named parameters, making everything more clear.
-* The first parameter is a regular expression. Note the trailing
-  ``$``; why might that be important?
-* The second parameter is the view callable. It can either be the
-  actual callable (imported manually), or a string describing it. If
-  it's a string, Django will import the module (up to the final dot),
-  and then calls the final segment when a request matches.
-* Note that when we're using a class based view, we *must* use the
-  real object here, and not the string notation. That's because we
-  have to call the class method ``as_view()``, which returns a wrapper
-  around our class that Django's URL dispatch can call.
-* Giving a URL pattern a name allows you to do a reverse lookup
-* The URL name is useful when linking from one View to another, or
-  redirecting, as it allows you to manage your URL structure in one
-  place
+  urlpatterns = [
+      url(r'^admin/', admin.site.urls),
+      url(r'^$', ListContactView.as_view(),
+          name='contacts-list',),
+  ]
 
-While the ``urlpatterns`` name **must** be defined, Django also allows
-you to define a few other values in the URL configuration for
-exceptional cases. These include ``handler403``, ``handler404``, and
+The ``admin.site.urls`` URL was included for us by Django. We'll talk more about what that does in the `next section`_.
+
+``urlpatterns`` is a list of _routes_ that map a URL to a view. Let's go through the parameters we used one by one.
+
+The first parameter is a `regular expression`_; any request whose URL matches the regular expression will be routed to the view. We want to show the contact list at the root of our application, so we specify ``^$``. (Why might the trailing ``$`` be important here?)
+
+The second parameter, ``ListContactView.as_view()``, specifies the view to call when the URL matches the regular expression. This can either be the actual callable that you've important (as we did here), or a string specifying the full Python package path to the view. Note that for class based views we *must* import the object and use it here. That's because we have to call the class method ``as_view()``; this method returns a function that handles instantiating our class and invoking with the request.
+
+The third argument, ``name='contacts-list'``, specifies the "name" for this route. As we'll see later, this is useful when we link from one view to another, or need to redirect; it allows us to use ``contacts-list`` instead of specifying the actual URL, so it's much easier to move things around later.
+
+While the ``urlpatterns`` name **must** be defined in ``urls.py``, Django also allows you to define a few other values in the URL configuration for exceptional cases. These include ``handler403``, ``handler404``, and
 ``handler500``, which tell Django what view to use when an HTTP error
 occurs. See the `Django urlconf documentation`_ for details.
 
-.. _`Django urlconf documentation`: https://docs.djangoproject.com/en/1.5/ref/urls/#handler403
+.. _`Django urlconf documentation`: https://docs.djangoproject.com/en/1.11/ref/urls/
 
 .. admonition:: URL Configuration Import Errors
 
@@ -180,7 +147,7 @@ If you visit the ``http://localhost:8000/`` in your browser, though,
 you'll see an error: ``TemplateDoesNotExist``.
 
 .. image::
-   /_static/tutorial/TemplateDoesNotExist.png
+   /_static/01/template_not_found.PNG
 
 Most of Django's generic views (such as ``ListView`` which we're
 using) have a predefined template name that they expect to find. We
@@ -188,34 +155,67 @@ can see in this error message that this view was expecting to find
 ``contact_list.html``, which is derived from the model name. Let's go
 and create that.
 
-By default Django will look for templates in applications, as well as
-in directories you specify in ``settings.TEMPLATE_DIRS``. The generic
-views expect that the templates will be found in a directory named
-after the application (in this case ``contacts``), and the filename
-will contain the model name (in this case ``contact_list.html``). This
-works very well when you're distributing a reusable application: the
-consumer can create templates that override the defaults, and they're
-clearly stored in a directory associated with the application.
+By default Django will look for templates in applications. You can also specify additional directories to look in by adding them to the ``DIRS`` setting of the template engine.
+
+.. code-block:: python
+
+  TEMPLATES = [
+      {
+          'BACKEND': 'django.template.backends.django.DjangoTemplates',
+          'DIRS': [],
+          'APP_DIRS': True,
+          'OPTIONS': {
+              'context_processors': [
+                  'django.template.context_processors.debug',
+                  'django.template.context_processors.request',
+                  'django.contrib.auth.context_processors.auth',
+                  'django.contrib.messages.context_processors.messages',
+              ],
+          },
+      },
+  ]
+
+The generic views also expect that the templates will be found in a sub-directory named after the application; in this case ``contacts``. This approach works well when you're distributing a reusable application: the consumer can create templates which override any defaults you ship, and they're clearly stored in a directory associated with the application.
 
 For our purposes, however, we don't need that extra layer of directory
 structure, so we'll specify the template to use explicitly, using the
 ``template_name`` property. Let's add that one line to ``views.py``.
 
-.. literalinclude:: /projects/addressbook/contacts/views.py
+.. code-block:: python
+
+  from django.views.generic import ListView
+  from contacts.models import Contact
+
+  class ListContactView(ListView):
+      model = Contact
+      template_name = 'contact_list.html'
+
 
 Create a ``templates`` subdirectory in our ``contacts`` application,
 and create ``contact_list.html`` there.
 
-.. literalinclude:: /projects/addressbook/contacts/templates/contact_list.html
-   :language: html
+.. code-block:: django
+
+  <html>
+  <body>
+    <h1>Contacts</h1>
+
+    <ul>
+      {% for contact in object_list %}
+      <li class="contact">
+        <a href="{{ contact.get_absolute_url }}">{{ contact }}</a>
+        (<a href="{% url "contacts-edit" pk=contact.id %}">edit</a>)
+      </li>
+      {% endfor %}
+    </ul>
+  </body>
+  </html>
 
 Opening the page in the browser, we should see one contact there, the
 one we added earlier through the interactive shell.
 
 Creating Contacts
 =================
-
-.. checkpoint:: create_contact_view
 
 Adding information to the database through the interactive shell is
 going to get old fast, so let's create a view for adding a new
