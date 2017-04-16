@@ -59,29 +59,29 @@ unpack Bootstrap into it.
 
 .. code-block:: console
 
-(addresses) $ ~/p/effdj-projects/addresses$ mkdir addressbook/static
-(addresses) $ ~/p/effdj-projects/addresses$ cd addressbook/static/
-(addresses) $ ~/p/effdj-projects/addresses/addressbook/static$ unzip ~/downloads/bootstrap-3.3.7-dist.zip
-Archive:  ~/downloads/bootstrap-3.3.7-dist.zip
-   creating: bootstrap-3.3.7-dist/css/
-  inflating: bootstrap-3.3.7-dist/css/bootstrap-theme.css
-  inflating: bootstrap-3.3.7-dist/css/bootstrap-theme.css.map
-  inflating: bootstrap-3.3.7-dist/css/bootstrap-theme.min.css
-  inflating: bootstrap-3.3.7-dist/css/bootstrap-theme.min.css.map
-  inflating: bootstrap-3.3.7-dist/css/bootstrap.css
-  inflating: bootstrap-3.3.7-dist/css/bootstrap.css.map
-  inflating: bootstrap-3.3.7-dist/css/bootstrap.min.css
-  inflating: bootstrap-3.3.7-dist/css/bootstrap.min.css.map
-   creating: bootstrap-3.3.7-dist/fonts/
-  inflating: bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.eot
-  inflating: bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.svg
-  inflating: bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.ttf
-  inflating: bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.woff
-  inflating: bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.woff2
-   creating: bootstrap-3.3.7-dist/js/
-  inflating: bootstrap-3.3.7-dist/js/bootstrap.js
-  inflating: bootstrap-3.3.7-dist/js/bootstrap.min.js
-  inflating: bootstrap-3.3.7-dist/js/npm.js
+  (addresses) $ ~/p/effdj-projects/addresses$ mkdir addressbook/static
+  (addresses) $ ~/p/effdj-projects/addresses$ cd addressbook/static/
+  (addresses) $ ~/p/effdj-projects/addresses/addressbook/static$ unzip ~/downloads/bootstrap-3.3.7-dist.zip
+  Archive:  ~/downloads/bootstrap-3.3.7-dist.zip
+     creating: bootstrap-3.3.7-dist/css/
+    inflating: bootstrap-3.3.7-dist/css/bootstrap-theme.css
+    inflating: bootstrap-3.3.7-dist/css/bootstrap-theme.css.map
+    inflating: bootstrap-3.3.7-dist/css/bootstrap-theme.min.css
+    inflating: bootstrap-3.3.7-dist/css/bootstrap-theme.min.css.map
+    inflating: bootstrap-3.3.7-dist/css/bootstrap.css
+    inflating: bootstrap-3.3.7-dist/css/bootstrap.css.map
+    inflating: bootstrap-3.3.7-dist/css/bootstrap.min.css
+    inflating: bootstrap-3.3.7-dist/css/bootstrap.min.css.map
+     creating: bootstrap-3.3.7-dist/fonts/
+    inflating: bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.eot
+    inflating: bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.svg
+    inflating: bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.ttf
+    inflating: bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.woff
+    inflating: bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.woff2
+     creating: bootstrap-3.3.7-dist/js/
+    inflating: bootstrap-3.3.7-dist/js/bootstrap.js
+    inflating: bootstrap-3.3.7-dist/js/bootstrap.min.js
+    inflating: bootstrap-3.3.7-dist/js/npm.js
 
 Referring to Static Files in Templates
 ======================================
