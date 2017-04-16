@@ -373,74 +373,130 @@ As you can see the tests are almost identical: they both get a response and make
 Integration Tests
 =================
 
-Django 1.4 adds a new ``TestCase`` base class, the
-LiveServerTestCase_. This is very much what it sounds like: a test
-case that runs against a live server. By default Django will start the
-development server for you when it runs these tests, but they can also
-be run against another server.
+Django 1.4 added a new ``TestCase`` base class, the LiveServerTestCase_. This is very much what it sounds like: a test case that runs against a live server. By default Django will start the development server for you when it runs these tests, but they can also be run against another server.
 
-Selenium_ is a tool for writing tests that drive a web browser, and
-that's what we'll use for our integration tests. By using Selenium,
-you're able to automate different browers (Chrome, Firefox, etc), and
-interact with your full application much as the user would. Before
-writing tests to use it, we'll need to install the Python implementation.
+Selenium_ is a tool for writing tests that drive a web browser, and that's what we'll use for our integration tests. By using Selenium, you're able to automate different browers (Chrome, Firefox, etc), and interact with your full application much as the user would. Before writing tests to use it, we'll need to install the Python implementation.
 
-::
+.. code-block:: console
 
-  (tutorial)$ pip install selenium
+  (addresses) $ pip install selenium
+  Collecting selenium
+    Downloading selenium-3.3.3-py2.py3-none-any.whl (931kB)
+      100% |████████████████████████████████| 931kB 1.1MB/s
+  Installing collected packages: selenium
+  Successfully installed selenium-3.3.3
 
-We're going to write a couple of tests for our views:
+We're going to write three tests for our views:
 
 - one that creates a Contact and makes sure it's listed
-- one that makes sure our "add contact" link is visible and linked on
-  the list page
-- and one that actually exercises the add contact form, filling it in
-  and submitting it.
+- one that makes sure our "add contact" link is visible and linked on the list page
+- and one that actually exercises the add contact form, filling it in and submitting it.
 
-.. literalinclude:: /projects/addressbook/contacts/tests.py
-   :prepend: from django.test import LiveServerTestCase
-             from selenium.webdriver.firefox.webdriver import WebDriver
-             ...
-   :pyobject: ContactListIntegrationTests
+The tests we're writing use `Selenium Webdriver`_. Webdriver starts a browser for us and sends it the interactions we specify, returning the results. In these tests we're using the Firefox webdriver, but webdrivers exist for Chrome, Internet Explorer, and PhantomJS (which is useful if you need to run these tests in a headless environment).
 
-Note that Selenium allows us to find elements in the page, inspect
-their state, click them, and send keystrokes. In short, it's like
-we're controlling the browser. In fact, if you run the tests now,
-you'll see a browser open when the tests run.
+.. todo:: W3C Webdriver
+
+.. _`Selenium Webdriver`: http://www.seleniumhq.org/projects/webdriver/
+
+.. code-block:: python
+
+  from django.test import LiveServerTestCase
+  from selenium.webdriver.firefox.webdriver import WebDriver
+
+
+  class ContactListIntegrationTests(LiveServerTestCase):
+
+      @classmethod
+      def setUpClass(cls):
+          super(ContactListIntegrationTests, cls).setUpClass()
+          cls.selenium = WebDriver()
+
+      @classmethod
+      def tearDownClass(cls):
+          cls.selenium.quit()
+          super(ContactListIntegrationTests, cls).tearDownClass()
+
+      def test_contact_listed(self):
+
+          # create a test contact
+          Contact.objects.create(first_name='foo', last_name='bar')
+
+          # make sure it's listed as <first> <last> on the list
+          self.selenium.get('%s%s' % (self.live_server_url, '/'))
+          self.assertTrue(
+              self.selenium.find_elements_by_css_selector('.contact')[0]
+              .text.startswith('foo bar'),
+          )
+
+      def test_add_contact_linked(self):
+
+          # fetch our root page
+          self.selenium.get('%s%s' % (self.live_server_url, '/'))
+
+          # make sure the "add contact" link exists
+          self.assert_(
+              self.selenium.find_element_by_link_text('add contact')
+          )
+
+      def test_add_contact(self):
+
+          self.selenium.get('%s%s' % (self.live_server_url, '/'))
+          self.selenium.find_element_by_link_text('add contact').click()
+
+          self.selenium.find_element_by_id('id_first_name').send_keys('test')
+          self.selenium.find_element_by_id('id_last_name').send_keys('contact')
+          self.selenium.find_element_by_id('id_email').send_keys(
+              'test@example.com')
+          self.selenium.find_element_by_id('id_confirm_email').send_keys(
+              'test@example.com')
+
+          self.selenium.find_element_by_id("save_contact").click()
+
+          self.assertTrue(
+              self.selenium.find_elements_by_css_selector('.contact')[0].text
+              .startswith('test contact'),
+          )
+
+.. todo:: Missing geckodriver
+
+  If you attempt to run these tests and receive an error message saying geckodriver is missing, you'll need to `download it<https://github.com/mozilla/geckodriver/releases>`_ and ensure it's on the PATH.
 
 In our example we're using CSS Selectors to locate elements in the
 DOM, but you can also use Xpath. For many people it's a matter of
-preference, but I've found that using CSS Selectors is often less
+preference, but I've found that CSS Selectors are slightly less
 brittle: if I change the markup, I'm likely to leave classes on
 important elements in place, even if their relative position in the
 DOM changes.
 
+.. todo::
+
+  If you run these tests you'll notice that they take longer to run than the unit tests we wrote previously. Include recommendations on split runs.
+
 Review
 ======
 
-* Views take an HttpRequest_ and turn it into an HttpResponse_
-* Generic class-based views introduced with Django 1.3
-* These let you create reusable, composable views
-* URLs are defined in ``urls.py`` in your project
-* Naming URLs lets you calculate the URL to a view
+* Views take a Request and return a Response
+* Django's class-based views allow you to create simple views with very little effort.
+* URLs are defined in the ``urls.py`` file in your _project_.
+* Naming URLs allows you to generate the URL for a view.
 * RequestFactory_ creates Requests for testing Views
   with
 * LiveServerTestCase_ provides basis for writing integration tests
 
 
-.. _`Generic Views`: https://docs.djangoproject.com/en/1.5/topics/class-based-views/generic-display/
-.. _`Class Based Views`: https://docs.djangoproject.com/en/1.5/topics/class-based-views/
-.. _View: https://docs.djangoproject.com/en/1.5/ref/class-based-views/base/#view
-.. _ListView: https://docs.djangoproject.com/en/1.5/ref/class-based-views/generic-display/#listview
-.. _UpdateView: https://docs.djangoproject.com/en/1.5/ref/class-based-views/generic-editing/#updateview
-.. _CreateView: https://docs.djangoproject.com/en/1.5/ref/class-based-views/generic-editing/#createview
-.. _DeleteView: https://docs.djangoproject.com/en/1.5/ref/class-based-views/generic-editing/#deleteview
-.. _DetailView: https://docs.djangoproject.com/en/1.5/ref/class-based-views/generic-display/#detailview
-.. _`context processors`: https://docs.djangoproject.com/en/1.5/ref/templates/api/#subclassing-context-requestcontext
-.. _`Django Form`: https://docs.djangoproject.com/en/1.5/topics/forms/
-.. _HttpRequest: https://docs.djangoproject.com/en/1.5/ref/request-response/#httprequest-objects
-.. _HttpResponse: https://docs.djangoproject.com/en/1.5/ref/request-response/#httpresponse-objects
-.. _Client: https://docs.djangoproject.com/en/1.5/topics/testing/overview/#module-django.test.client
-.. _RequestFactory: https://docs.djangoproject.com/en/1.5/topics/testing/advanced/#django.test.client.RequestFactory
-.. _LiveServerTestCase: https://docs.djangoproject.com/en/1.5/topics/testing/overview/#liveservertestcase
+.. _`Generic Views`: https://docs.djangoproject.com/en/1.11/topics/class-based-views/generic-display/
+.. _`Class Based Views`: https://docs.djangoproject.com/en/1.11/topics/class-based-views/
+.. _View: https://docs.djangoproject.com/en/1.11/ref/class-based-views/base/#view
+.. _ListView: https://docs.djangoproject.com/en/1.11/ref/class-based-views/generic-display/#listview
+.. _UpdateView: https://docs.djangoproject.com/en/1.11/ref/class-based-views/generic-editing/#updateview
+.. _CreateView: https://docs.djangoproject.com/en/1.11/ref/class-based-views/generic-editing/#createview
+.. _DeleteView: https://docs.djangoproject.com/en/1.11/ref/class-based-views/generic-editing/#deleteview
+.. _DetailView: https://docs.djangoproject.com/en/1.11/ref/class-based-views/generic-display/#detailview
+.. _`context processors`: https://docs.djangoproject.com/en/1.11/ref/templates/api/#subclassing-context-requestcontext
+.. _`Django Form`: https://docs.djangoproject.com/en/1.11/topics/forms/
+.. _HttpRequest: https://docs.djangoproject.com/en/1.11/ref/request-response/#httprequest-objects
+.. _HttpResponse: https://docs.djangoproject.com/en/1.11/ref/request-response/#httpresponse-objects
+.. _Client: https://docs.djangoproject.com/en/1.11/topics/testing/overview/#module-django.test.client
+.. _RequestFactory: https://docs.djangoproject.com/en/1.11/topics/testing/advanced/#django.test.client.RequestFactory
+.. _LiveServerTestCase: https://docs.djangoproject.com/en/1.11/topics/testing/tools/#liveservertestcase
 .. _Selenium: http://seleniumhq.org/
