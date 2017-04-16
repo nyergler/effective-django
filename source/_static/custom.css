@@ -1,14 +1,5 @@
-@import url('https://fonts.googleapis.com/css?family=Inconsolata|Roboto|Rosario');
+@import url('https://fonts.googleapis.com/css?family=Inconsolata|Rosario');
 
-body {
-    font-family: 'Roboto', sans-serif;
-}
-
-div.body h1, div.body h2, div.body h3, div.body h4, div.body h5, div.body h6,
 h1.logo {
     font-family: 'Rosario', sans-serif;
-}
-
-code, .code, pre {
-    font-family: 'Inconsolata', monospace;
 }

@@ -17,14 +17,14 @@ formats, you can do so by:
    For Macs, it is recommended you use `MacTeX`_
 
    ::
-   
+
       $ brew install Caskroom/cask/mactex
 
    If you're building on Ubuntu, you should install the `texlive` and
    `texlive-latex-extra` packages.
 
    ::
-         
+
       $ sudo apt-get install texlive texlive-latex-extra
 
 #. Check out this repository::
@@ -43,13 +43,9 @@ formats, you can do so by:
 
 #. Run ``make``::
 
-     $ make all
-
-   The output will be in the ``_build`` sub-directory.
-
-   To only build HTML, specify the target explicitly::
-
      $ make html
+
+   The output will be in the ``build/html`` sub-directory.
 
 Run ``make`` without any parameters for a list of possible targets.
 
