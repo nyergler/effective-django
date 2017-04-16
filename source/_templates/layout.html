@@ -1,0 +1,36 @@
+{% extends "!layout.html" %}
+
+{% block content %}
+  {%- block sidebar1 %} {# possible location for sidebar #} {% endblock %}
+
+    <div class="document">
+  {%- block document %}
+      <div class="documentwrapper">
+      {%- if render_sidebar %}
+        <div class="bodywrapper">
+      {%- endif %}
+          <div class="body" role="main">
+            {% block body %}
+
+            {% endblock %}
+
+            {% block page_footer %}
+              {% if next %}
+              <div class="page_footer">
+              <h4>Next</h4>
+                <a href="{{ next.link|e }}">{{ next.title }}</a>
+              </div>
+              {% endif %}
+            {% endblock %}
+          </div>
+      {%- if render_sidebar %}
+        </div>
+      {%- endif %}
+      </div>
+  {%- endblock %}
+
+  {%- block sidebar2 %}{{ sidebar() }}{% endblock %}
+      <div class="clearer"></div>
+  </div>
+
+{% endblock %}
