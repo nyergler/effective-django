@@ -33,7 +33,6 @@ nathan@yergler.net. You can find (and fork) the source on `github
 .. toctree::
    :maxdepth: 2
 
-   environment.rst
    01_intro/index.rst
    02_production/index.rst
    03_advanced/index.rst

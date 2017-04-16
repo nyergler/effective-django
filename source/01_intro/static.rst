@@ -1,11 +1,6 @@
-.. tut::
-   :path: /projects/addressbook
-
 ===================
 Using Static Assets
 ===================
-
-.. checkpoint:: static_files
 
 Now that we have a basic application where we can add contacts and
 list them, it's reasonable to think about how we'd make this look more
@@ -43,42 +38,50 @@ specific assembly of apps they are. That is, are they reusable for
 anyone using your app, or are they specific to your particular
 deployment?
 
-App specific static files are stored in the ``static`` subdirectory
-within the app. Django will also look in any directories listed in the
-``STATICFILES_DIRS`` setting. Let's update our project settings to
-specify a static files directory.
+App static files are stored in the ``static`` subdirectory within the app. Django will also look in any directories listed in the ``STATICFILES_DIRS`` setting. Let's update our project settings to specify a static files directory.
 
-.. literalinclude:: /projects/addressbook/addressbook/settings.py
-   :language: python
-   :prepend: import os.path
-             ...
-   :lines: 67-77
+.. code-block:: python
+
+  STATIC_URL = '/static/'
+  STATICFILES_DIRS = [
+      os.path.join(BASE_DIR, "static"),
+  ]
 
 Note that we use ``os.path`` to construct the absolute path. This
-ensures Django can locate the files unambiguously.
+ensures Django can locate the files unambiguously and that we don't need to worry about where we've checked out our code.
+
+The `STATIC_URL setting`_ tells Django what the root URL for your static files is. By default it's set to ``/static/``.
+
+.. _`STATIC_URL setting`: https://docs.djangoproject.com/en/1.11/ref/settings/#std:setting-STATIC_URL
 
 Let's go ahead and create the static directory in our project and
 unpack Bootstrap into it.
 
-::
+.. code-block:: console
 
-   (tutorial)$ mkdir addressbook/static
-   (tutorial)$ cd addressbook/static
-   (tutorial)$ unzip ~/Downloads/bootstrap.zip
-   Archive:  /Users/nathan/Downloads/bootstrap.zip
-     creating: bootstrap/
-     creating: bootstrap/css/
-    inflating: bootstrap/css/bootstrap-responsive.css
-    inflating: bootstrap/css/bootstrap-responsive.min.css
-    inflating: bootstrap/css/bootstrap.css
-    inflating: bootstrap/css/bootstrap.min.css
-     creating: bootstrap/img/
-    inflating: bootstrap/img/glyphicons-halflings-white.png
-    inflating: bootstrap/img/glyphicons-halflings.png
-     creating: bootstrap/js/
-    inflating: bootstrap/js/bootstrap.js
-    inflating: bootstrap/js/bootstrap.min.js
-
+(addresses) $ ~/p/effdj-projects/addresses$ mkdir addressbook/static
+(addresses) $ ~/p/effdj-projects/addresses$ cd addressbook/static/
+(addresses) $ ~/p/effdj-projects/addresses/addressbook/static$ unzip ~/downloads/bootstrap-3.3.7-dist.zip
+Archive:  ~/downloads/bootstrap-3.3.7-dist.zip
+   creating: bootstrap-3.3.7-dist/css/
+  inflating: bootstrap-3.3.7-dist/css/bootstrap-theme.css
+  inflating: bootstrap-3.3.7-dist/css/bootstrap-theme.css.map
+  inflating: bootstrap-3.3.7-dist/css/bootstrap-theme.min.css
+  inflating: bootstrap-3.3.7-dist/css/bootstrap-theme.min.css.map
+  inflating: bootstrap-3.3.7-dist/css/bootstrap.css
+  inflating: bootstrap-3.3.7-dist/css/bootstrap.css.map
+  inflating: bootstrap-3.3.7-dist/css/bootstrap.min.css
+  inflating: bootstrap-3.3.7-dist/css/bootstrap.min.css.map
+   creating: bootstrap-3.3.7-dist/fonts/
+  inflating: bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.eot
+  inflating: bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.svg
+  inflating: bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.ttf
+  inflating: bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.woff
+  inflating: bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.woff2
+   creating: bootstrap-3.3.7-dist/js/
+  inflating: bootstrap-3.3.7-dist/js/bootstrap.js
+  inflating: bootstrap-3.3.7-dist/js/bootstrap.min.js
+  inflating: bootstrap-3.3.7-dist/js/npm.js
 
 Referring to Static Files in Templates
 ======================================
@@ -87,7 +90,7 @@ The Django staticfiles app includes a `template tag`_ that make it
 easy to refer to static files within your templates. You load template
 tag libraries using the ``load`` tag.
 
-.. _`template tag`: https://docs.djangoproject.com/en/1.5/ref/templates/builtins/
+.. _`template tag`: https://docs.djangoproject.com/en/1.11/ref/templates/builtins/
 
 ::
 
@@ -98,17 +101,11 @@ using the ``static`` tag.
 
 ::
 
-  <link href="{% static 'bootstrap/css/bootstrap.min.css' %}"
+  <link href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.min.css' %}"
         rel="stylesheet" media="screen">
 
-Note that the path we specify is *relative* to the static files
-directory. Django is going to join this path with the ``STATIC_URL``
-setting to generate the actual URL to use.
+Note that the path we specify is *relative* to the static files directory. Django will join this path with the ``STATIC_URL`` setting to generate the actual URL to use.
 
-The `STATIC_URL setting`_ tells Django what the root URL for your
-static files is. By default it's set to ``/static/``.
-
-.. _`STATIC_URL setting`: https://docs.djangoproject.com/en/1.5/ref/settings/#std:setting-STATIC_URL
 
 Simple Template Inclusion
 =========================
@@ -122,7 +119,23 @@ this, we'll create a base template that the others will inherit from.
 Let's create ``base.html`` in the ``templates`` directory of our
 ``contacts`` app.
 
-.. literalinclude:: /projects/addressbook/contacts/templates/base.html
+.. code-block:: django
+
+  {% load staticfiles %}
+  <html>
+    <head>
+      <link href="{% static 'bootstrap-3.3.7/css/bootstrap.min.css' %}"
+            rel="stylesheet" media="screen">
+    </head>
+
+    <body>
+      {% block content %}
+      {% endblock %}
+
+      <script src="{% static 'bootstrap-3.3.7/js/bootstrap.min.js' %}"></script>
+    </body>
+  </html>
+
 
 ``base.html`` defines the common structure for our pages, and includes
 a ``block`` tag, which other templates can fill in.
@@ -130,27 +143,38 @@ a ``block`` tag, which other templates can fill in.
 We'll update ``contact_list.html`` to extend from ``base.html`` and
 fill in the ``content`` block.
 
-.. literalinclude:: /projects/addressbook/contacts/templates/contact_list.html
+.. code-block:: django
+
+  {% extends "base.html" %}
+
+  {% block content %}
+  <h1>Contacts</h1>
+
+  <ul>
+    {% for contact in object_list %}
+      <li class="contact">{{ contact }}</li>
+    {% endfor %}
+  </ul>
+
+  <a href="{% url "contacts-new" %}">add contact</a>
+  {% endblock %}
+
+Note that the ``block`` tag is used to both _define_ the block, as well as placee content into it. Django matches blocks based on their name (``content`` in this case); if a block is omitted in a template, the content from the "parent" template will be used instead.
+
 
 Serving Static Files
 ====================
 
 We've told Django where we store our static files, and we've told it
 what URL structure to use, but we haven't actually connected the two
-together. Django doesn't serve static files by default, and for good
-reason: using an application server to serve static resources is going
-to be ineffecient, at best. The Django documentation on `deploying
-static files`_ does a good job of walking through the options for
-getting your static files onto your CDN or static file server.
+together. For the purposes of debugging, we actually don't have to do anything: when you run the Django server in debug mode (``DEBUG=True`` in ``settings.py``), Django will automatically add the correct URLs for serving static files.
 
-For development, however, it's convenient to do it all with one
-process, so there's a helper. We'll update our ``addressbook/urls.py``
-file to include the ``staticfiles_urlpatterns`` helper.
-
-.. literalinclude:: /projects/addressbook/addressbook/urls.py
+This is not suitable for production, however, as the Django server is written with serving the application in mind, not static files. The Django documentation on `deploying static files`_ does a good job of walking through the options for getting your static files onto your CDN or static file server, and we'll cover more of that in the section on Deploying_.
 
 Now we can run the server and see our newly Boostrapped templates in
 action.
+
+.. TODO:: Replace image here
 
 .. image::
    /_static/tutorial/boostrapped.png
@@ -167,4 +191,4 @@ Review
   to need them.
 * Templates can extend one another, using ``block`` tags.
 
-.. _`deploying static files`: https://docs.djangoproject.com/en/1.5/howto/static-files/deployment/
+.. _`deploying static files`: https://docs.djangoproject.com/en/1.11/howto/static-files/deployment/

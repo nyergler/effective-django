@@ -139,7 +139,7 @@ can use to easily test your project::
   Validating models...
 
   0 errors found
-  Django version 1.4.3, using settings 'addressbook.settings'
+  Django version 1.11.0, using settings 'addressbook.settings'
   Development server is running at http://127.0.0.1:8000/
   Quit the server with CONTROL-C.
 
@@ -202,10 +202,7 @@ and create ``contact_list.html`` there.
 
     <ul>
       {% for contact in object_list %}
-      <li class="contact">
-        <a href="{{ contact.get_absolute_url }}">{{ contact }}</a>
-        (<a href="{% url "contacts-edit" pk=contact.id %}">edit</a>)
-      </li>
+        <li class="contact">{{ contact }}</li>
       {% endfor %}
     </ul>
   </body>
