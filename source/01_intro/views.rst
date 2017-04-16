@@ -314,20 +314,9 @@ To complete the story, let's add a link to add contacts from our contact list. A
 Testing Your Views
 ==================
 
-So far our views have been pretty minimal: they leverage Django's
-generic views, and contain very little of our own code or logic. One
-perspective is that this is how it should be: a view takes a request,
-and returns a response, delegating the issue of validating input to
-forms, and business logic to model methods. This is a perspective that
-I subscribe to. The less logic contained in views, the better.
+So far our views have been pretty minimal: they leverage Django's generic views, and contain very little of our own code or logic. One perspective is that this is how it should be: a view takes a request, and returns a response, delegating the issue of validating input to forms, and business logic to model methods (TK: `service layer`_). This is a perspective that I subscribe to: the less logic contained in views, the better.
 
-However, there is code in views that should be tested, either by unit
-tests or integration tests. The distinction is important: unit tests
-are focused on testing a single unit of functionality. When you're
-writing a unit test, the assumption is that everything else has its
-own tests and is working properly. Integration tests attempt to test
-the system from end to end, so you can ensure that the points of
-integration are functioning properly. Most systems have both.
+However, there is code in views that should be tested, either by unit tests or integration tests. The distinction is important: unit tests are focused on testing a single piece of functionality, usually only a single function or method. When you're writing a unit test, the assumption is that everything else has its own tests and is working properly. Integration tests attempt to test the system from end to end, so you can ensure that the points of integration are functioning properly. Most systems have both.
 
 Django has two tools that are helpful for writing unit tests for
 views: the Test Client_ and the RequestFactory_. They have similar
@@ -342,21 +331,44 @@ to retrieve and any parameters or form data. But it doesn't actually
 resolve that URL: it just returns the Request object. You can then
 manually pass it to your view and test the result.
 
-In practice, RequestFactory tests are usually somewhat faster than the
-TestClient. This isn't a big deal when you have five tests, but it is
-when you have 500 or 5,000. Let's look at the same test written with
-each tool.
+In practice, RequestFactory tests are usually somewhat faster than the TestClient. This isn't a big deal when you have five tests, but it is when you have 500 or 5,000. Let's look at the same test written with each tool.
 
-.. checkpoint:: view_tests
+.. code-block:: python
 
-.. literalinclude:: /projects/addressbook/contacts/tests.py
-   :prepend: from django.test.client import Client
-             from django.test.client import RequestFactory
-             ...
-             from contacts.views import ListContactView
-             ...
-   :pyobject: ContactListViewTests
+  from django.test.client import Client
+  from django.test.client import RequestFactory
 
+  from contacts.views import ListContactView
+
+  class ContactListViewTests(TestCase):
+      """Contact list view tests."""
+
+      def test_contacts_in_the_context(self):
+
+          client = Client()
+          response = client.get('/')
+
+          self.assertEquals(list(response.context['object_list']), [])
+
+          Contact.objects.create(first_name='foo', last_name='bar')
+          response = client.get('/')
+          self.assertEquals(response.context['object_list'].count(), 1)
+
+      def test_contacts_in_the_context_request_factory(self):
+
+          factory = RequestFactory()
+          request = factory.get('/')
+
+          response = ListContactView.as_view()(request)
+
+          self.assertEquals(list(response.context_data['object_list']), [])
+
+          Contact.objects.create(first_name='foo', last_name='bar')
+          response = ListContactView.as_view()(request)
+          self.assertEquals(response.context_data['object_list'].count(), 1)
+
+
+As you can see the tests are almost identical: they both get a response and make assertions about the context. The primary difference is that the Request Factory test manually instantiates the ``ListContactView``.
 
 Integration Tests
 =================
