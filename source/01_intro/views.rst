@@ -217,28 +217,28 @@ one we added earlier through the interactive shell.
 Creating Contacts
 =================
 
-Adding information to the database through the interactive shell is
-going to get old fast, so let's create a view for adding a new
-contact.
+With our contact list view we can see the contact we `created through the interactive shell`_, but adding all our data through that interface is going to get old fast. Next we'll create a view for adding new contacts to the database.
 
 Just like the list view, we'll use one of Django's generic views. In
 ``views.py``, we can add the new view:
 
-.. literalinclude:: /projects/addressbook/contacts/views.py
-   :prepend: from django.core.urlresolvers import reverse
-             from django.views.generic import CreateView
-             ...
-   :pyobject: CreateContactView
+.. code-block:: python
 
-Most generic views that do form processing have the concept of the
-"success URL": where to redirect the user when the form is
-successfully submitted. The form processing views all adhere to the
-practice of POST-redirect-GET for submitting changes, so that
-refreshing the final page won't result in form re-submission. You can
-either define this as a class property, or override the
-``get_success_url()`` method, as we're doing here. In this case we're
-using the ``reverse`` function to calculate the URL of the contact
-list.
+  from django.views.generic import CreateView
+  from django.core.urlresolvers import reverse
+
+
+  class CreateContactView(CreateView):
+      model = Contact
+      template_name = 'edit_contact.html'
+
+      def get_success_url(self):
+          return reverse('contacts-list')
+
+
+Most generic views that handle user input have the concept of the "success URL": where to send the user when the data is successfully processed.  The form processing views all adhere to the practice of POST-redirect-GET for submitting changes, so that refreshing the final page won't result in form re-submission.
+
+You can either define this as a class property, or override the ``get_success_url()`` method, as we're doing here. In this case we're using the ``reverse`` function to calculate the URL of the contact list.
 
 .. sidebar:: Context Variables in Class Based Views
 
@@ -261,41 +261,54 @@ list.
 The template is slightly more involved than the list template, but not
 much. Our ``edit_contact.html`` will look something like this.
 
-.. literalinclude:: /projects/addressbook/contacts/templates/edit_contact.html
-   :language: html
+.. code-block:: django
 
-A few things to note:
+  <html>
+  <body>
+    <h1>Add Contact</h1>
 
-- The ``form`` in the context is the `Django Form`_ for our model.
-  Since we didn't specify one, Django made one for us. How thoughtful.
-- If we just write ``{{ form }}`` we'll get table rows; adding
-  ``.as_ul`` formats the inputs for an unordered list. Try ``.as_p``
-  instead to see what you get.
-- When we output the form, it only includes our fields, not the
-  surrounding ``<form>`` tag or the submit button, so we have to add
-  those.
-- The ``{% csrf_token %}`` tag inserts a hidden input that Django uses
-  to verify that the request came from your project, and isn't a
-  forged cross-site request. Try omitting it: you can still access the
-  page, but when you go to submit the form, you'll get an error.
-- We're using the ``url`` template tag to generate the link back to
-  the contact list. Note that ``contacts-list`` is the name of our
-  view from the URL configuration. By using ``url`` instead of an
-  explicit path, we don't have to worry about a link breaking. ``url``
-  in templates is equivalent to ``reverse`` in Python code.
+    <form action="{{ action }}" method="POST">
+      {% csrf_token %}
+      <ul>
+        {{ form.as_ul }}
+      </ul>
+      <input id="save_contact" type="submit" value="Save" />
+    </form>
 
-You can configure the URL by adding the following line to our
-``urls.py`` file::
+    <a href="{% url "contacts-list" %}">back to list</a>
+  </body>
+  </html>
 
-    url(r'^new$', contacts.views.CreateContactView.as_view(),
+There are a few things in this template that we haven't seen before. First, the ``form`` variable is the `Django Form`_ for our model. Since we didn't specify one, Django created one on the fly for us; how thoughtful. We wrote ``{{ form.as_ul }}`` to output the model fields as a list; if we had just used ``{{ form }}``, Django would have formatted the fields in a ``<table>``; try replacing ``.as_ul`` with ``.as_p`` and see what happens.
+
+.. sidebar:: Calling Methods in Django TEMPLATES
+
+  TK: No ``()`` required.
+
+The Form object only includes the fields we specify in our model, so we have to manually add the surrounding ``<form>`` tag and submit button.
+
+We also add ``{% csrf_token %}`` within the form. This tag inserts a hidden input that Django uses to verify the request came from your project, and isn't a forged cross-site request. (Try omitting it and creating a contact to see what happens without.) We'll talk more about this later when we talk about `security`_ and `cross-site request forgery`_.
+
+Finally, we're using the ``url`` template tag to create a link back to our contact list. Note that ``contacts-list`` is the name of our view from the URL configuration. By using ``url`` insetad of an explicit path, we don't have to worry about a link breaking if we move things around. ``url`` is the template equivalent to the ``reverse`` function we used in our view's ``get_success_url()`` earlier.
+
+You can configure the URL by adding the following line to our ``urls.py`` file.
+
+.. code-block:: python
+
+  from contacts.views import CreateContactView
+
+  ...
+
+    url(r'^new$', CreateContactView.as_view(),
         name='contacts-new',),
 
 Now you can go to ``http://localhost:8000/new`` to create new contacts.
 
-To complete the story, let's add a link to `contact_list.html`.
+To complete the story, let's add a link to add contacts from our contact list. Add the following HTML to the ``contact_list.html`` template to show that link.
 
-.. literalinclude:: /projects/addressbook/contacts/templates/contact_list.html
-   :language: html
+.. code-block:: django
+
+  <a href="{% url "contacts-new" %}">Add a contact</a>
 
 
 Testing Your Views

@@ -11,7 +11,7 @@ In this section you'll learn about Django's core components and how they work to
 * how to deploy to Heroku and XXX
 
 .. toctree::
-  :depth: 2
+  :maxdepth: 2
 
   getting-started.rst
   models.rst
