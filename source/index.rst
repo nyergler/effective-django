@@ -2,7 +2,7 @@
  Effective Django
 ==================
 
-.. note:: "Beta" Material
+.. note:: 
 
   You're viewing the *PREVIEW* of an update to Effective Django.
 
