@@ -9,10 +9,12 @@ if "%SPHINXBUILD%" == "" (
 )
 set SOURCEDIR=source
 set BUILDDIR=build
+set BUILDBRANCH=gh-pages
 set SPHINXOPTS=-c .
 set SPHINXPROJ=EffectiveDjango
 
 if "%1" == "" goto help
+if "%1" == "push" goto push
 
 %SPHINXBUILD% >NUL 2>NUL
 if errorlevel 9009 (
@@ -28,6 +30,15 @@ if errorlevel 9009 (
 )
 
 %SPHINXBUILD% -M %1 %SOURCEDIR% %BUILDDIR% %SPHINXOPTS%
+goto end
+
+:push
+for /f %%i in ('git --git-dir=$(BUILDDIR)\..\.git\modules\build log -1 --pretty=format:"%s (%h)"') do set MESSAGE=%%i
+git --git-dir=$(BUILDDIR)\..\.git\modules\build checkout %BUILDBRANCH%
+git --git-dir=$(BUILDDIR)\..\.git\modules\build add .
+git --git-dir=$(BUILDDIR)\..\.git\modules\build commit -m '%MESSAGE%'
+# git --git-dir=$(BUILDDIR)\..\.git\modules\build push origin %BUILDBRANCH%
+
 goto end
 
 :help
