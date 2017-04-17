@@ -1,3 +1,6 @@
+.. tut::
+   :path: /projects/addressbook
+
 =========================
 Creating a Django Project
 =========================
@@ -6,6 +9,8 @@ We'll start exploring Django by looking at how to create a new project and the w
 
 Setting Up Your Environment
 ===========================
+
+.. tut:checkpoint:: environment
 
 It's important when starting a new project to create a space for it that won't be influenced by anything else you're working on. I often have multiple projects underway that may be using different versions of the same dependencies, which would be incredibly confusing if they weren't isolated from one another.
 
@@ -38,9 +43,7 @@ Most languages provide some mechanism for specifying a set of dependencies and t
 
 To begin, create a ``requirements.txt`` file in the ``addresses`` directory with a single line in it.
 
-.. code-block:: python
-
-   Django ~= 1.11.0
+.. tut:literalinclude:: /projects/addressbook/requirements.txt
 
 This single requirement specifies that we depend on Django, specifically any version _like_ `1.11.0`. In other words, we'll get bug fix releases (i.e., 1.11.1, 1.11.2, etc), but not new, potentially incompatible versions (i.e., 1.12.0). Specifying the version is critical: without the version it's impossible to know that what we developed with and tested with is actually what we're running with.
 

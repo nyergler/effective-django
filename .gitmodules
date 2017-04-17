@@ -2,9 +2,6 @@
 	path = build
 	url = git@github.com:nyergler/effective-django-update.git
 	branch = gh-pages
-[submodule "source/src"]
-	path = source/src
-	url = git@github.com:nyergler/effective-django-tutorial.git
 [submodule "source/projects/addressbook"]
 	path = source/projects/addressbook
 	url = git@github.com:nyergler/effective-django-tutorial.git

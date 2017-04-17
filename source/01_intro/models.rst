@@ -1,6 +1,11 @@
+.. tut::
+   :path: /projects/addressbook
+
 =============
 Using Models
 =============
+
+.. tut:checkpoint:: contact_model
 
 In this section you'll learn how to configure Django to connect to a database, as well as the basics of creating Python classes (models) that represent information in the database.
 
@@ -18,14 +23,9 @@ settings`_. You can also add your own settings here, if needed.
 
 Django defaults to SQLite, so we'll just look at the database configuration to make sure we understand it.
 
-.. code-block:: python
-
-  DATABASES = {
-      'default': {
-          'ENGINE': 'django.db.backends.sqlite3',
-          'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-      }
-  }
+.. tut:literalinclude:: /projects/addressbook/addressbook/settings.py
+   :language: python
+   :lines: 77-82
 
 Here we see that the ``default`` database is configured with the SQLite3 engine and will be named ``db.sqlite3`` in the project directory (``BASE_DIR``, defined near the top of ``settings.py``).
 
@@ -113,17 +113,7 @@ That's not quite what we expected: we definitely created a new model. Our Contac
 
 The ``INSTALLED_APPS`` setting lists the applications that the project uses. These are listed as strings that map to Python packages. Django will import each and looks for a ``models`` module there. Add our Contacts app to the project's ``INSTALLED_APPS`` setting in ``settings.py``:
 
-.. code-block:: python
-
-  INSTALLED_APPS = [
-      'django.contrib.admin',
-      'django.contrib.auth',
-      'django.contrib.contenttypes',
-      'django.contrib.sessions',
-      'django.contrib.messages',
-      'django.contrib.staticfiles',
-      'contacts',
-  ]
+.. tut:diff:: /projects/addressbook/addressbook/settings.py
 
 Then run ``makemigrations`` again.
 
@@ -194,24 +184,7 @@ understand how we expect it to operate.
 
 Django creates a ``tests.py`` file when it creates the application, so we'll add our first test to that file in the contacts app.
 
-.. code-block:: python
-
-  from django.test import TestCase
-
-  from .models import Contact
-
-  class ContactTests(TestCase):
-      """Contact model tests."""
-
-      def test_str(self):
-
-          contact = Contact(first_name='John', last_name='Smith')
-
-          self.assertEquals(
-              str(contact),
-              'John Smith',
-          )
-
+.. tut:literalinclude:: /projects/addressbook/contacts/tests.py
 
 You can run the tests for your application using ``manage.py``::
 
@@ -249,13 +222,13 @@ Review
 * The ``test`` manage command runs the unit tests
 
 
-.. _QuerySet: https://docs.djangoproject.com/en/1.5/ref/models/querysets/#django.db.models.query.QuerySet
-.. _query: https://docs.djangoproject.com/en/1.5/topics/db/queries/
+.. _QuerySet: https://docs.djangoproject.com/en/1.11/ref/models/querysets/#django.db.models.query.QuerySet
+.. _query: https://docs.djangoproject.com/en/1.11/topics/db/queries/
 .. _SQLite3: http://docs.python.org/2/library/sqlite3.html
 .. _mysql-python: https://pypi.python.org/pypi/MySQL-python
 .. _`full list of settings`: https://docs.djangoproject.com/en/1.5/ref/settings/
-.. _Model: https://docs.djangoproject.com/en/1.5/ref/models/instances/#django.db.models.Model
-.. _Manager: https://docs.djangoproject.com/en/1.5/topics/db/managers/
-.. _`specify a primary key`: https://docs.djangoproject.com/en/1.5/topics/db/models/#automatic-primary-key-fields
-.. _fields: https://docs.djangoproject.com/en/1.5/ref/models/fields/
-.. _`model Meta`: https://docs.djangoproject.com/en/1.5/ref/models/options/
+.. _Model: https://docs.djangoproject.com/en/1.11/ref/models/instances/#django.db.models.Model
+.. _Manager: https://docs.djangoproject.com/en/1.11/topics/db/managers/
+.. _`specify a primary key`: https://docs.djangoproject.com/en/1.11/topics/db/models/#automatic-primary-key-fields
+.. _fields: https://docs.djangoproject.com/en/1.11/ref/models/fields/
+.. _`model Meta`: https://docs.djangoproject.com/en/1.11/ref/models/options/

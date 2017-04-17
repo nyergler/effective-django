@@ -33,7 +33,7 @@ We'll update the contact list to include an edit link next to each
 contact.
 
 .. literalinclude:: /projects/addressbook/contacts/templates/contact_list.html
-   :language: html
+   :language: django
 
 Note the use of ``pk=contact.id`` in the ``{% url %}`` tag to specify
 the arguments to fill into the URL pattern.
@@ -66,7 +66,7 @@ change the title based on whether or not we've previously saved.
 
 .. literalinclude:: /projects/addressbook/contacts/templates/edit_contact.html
    :lines: 5-11
-   :language: html
+   :language: django
 
 You may wonder where the ``contact`` value in the contact comes from:
 the class based views that wrap a single object (those that take
@@ -111,7 +111,7 @@ And create the template, ``delete_contact.html``, in our ``templates``
 directory.
 
 .. literalinclude:: /projects/addressbook/contacts/templates/delete_contact.html
-   :language: html
+   :language: django
 
 Of course we need to add this to the URL definitions:
 
@@ -164,7 +164,7 @@ And we'll add the link to the contact from the contact list.
 
 .. literalinclude:: /projects/addressbook/contacts/templates/contact_list.html
    :lines: 7-12
-   :language: html
+   :language: django
 
 
 .. _`Generic Views`: https://docs.djangoproject.com/en/1.5/topics/class-based-views/generic-display/

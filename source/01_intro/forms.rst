@@ -178,7 +178,7 @@ BoundField directly, treating the Form like a dictionary::
 Consider the following alternative to ``edit_contact.html``.
 
 .. literalinclude:: /projects/addressbook/contacts/templates/edit_contact_custom.html
-   :language: html
+   :language: django
 
 In this example we see a few different things at work:
 

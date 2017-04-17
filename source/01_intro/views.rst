@@ -1,3 +1,7 @@
+.. tut::
+  :path: /projects/addressbook
+  :href: https://github.com/nyergler/effective-django-tutorial/blob/{checkpoint}/{path}
+
 ===============
  Writing Views
 ===============
@@ -64,11 +68,15 @@ its first argument, and returns an HTTP Response.
 Listing Contacts
 ================
 
+.. checkpoint:: contact_list_view
+
 For our contact manager we'll start with a view that presents a list of contacts in the database.
 
 The basic view implementation is shockingly brief. We can write the
 view in just a few lines in the ``views.py`` file in our ``contacts``
 application.
+
+.. tut:literalinclude:: /projects/addressbook/contacts/views.py
 
 .. code-block:: python
 
@@ -89,18 +97,7 @@ your Python code. Django looks for the URL configuration, defined as
 
 Let's add a URL mapping for our contact list view in ``addressbook/urls.py``.
 
-.. code-block:: python
-
-  from django.conf.urls import url
-  from django.contrib import admin
-  from contacts.views import ListContactView
-
-
-  urlpatterns = [
-      url(r'^admin/', admin.site.urls),
-      url(r'^$', ListContactView.as_view(),
-          name='contacts-list',),
-  ]
+.. tut:literalinclude:: /projects/addressbook/addressbook/urls.py
 
 The ``admin.site.urls`` URL was included for us by Django. We'll talk more about what that does in the `next section`_.
 
@@ -181,32 +178,13 @@ For our purposes, however, we don't need that extra layer of directory
 structure, so we'll specify the template to use explicitly, using the
 ``template_name`` property. Let's add that one line to ``views.py``.
 
-.. code-block:: python
-
-  from django.views.generic import ListView
-  from contacts.models import Contact
-
-  class ListContactView(ListView):
-      model = Contact
-      template_name = 'contact_list.html'
-
+.. tut:literalinclude:: /projects/addressbook/contacts/views.py
 
 Create a ``templates`` subdirectory in our ``contacts`` application,
 and create ``contact_list.html`` there.
 
-.. code-block:: django
-
-  <html>
-  <body>
-    <h1>Contacts</h1>
-
-    <ul>
-      {% for contact in object_list %}
-        <li class="contact">{{ contact }}</li>
-      {% endfor %}
-    </ul>
-  </body>
-  </html>
+.. literalinclude:: /projects/addressbook/contacts/templates/contact_list.html
+    :language: django
 
 Opening the page in the browser, we should see one contact there, the
 one we added earlier through the interactive shell.
@@ -214,10 +192,14 @@ one we added earlier through the interactive shell.
 Creating Contacts
 =================
 
+.. tut:checkpoint:: create_contact_view
+
 With our contact list view we can see the contact we `created through the interactive shell`_, but adding all our data through that interface is going to get old fast. Next we'll create a view for adding new contacts to the database.
 
 Just like the list view, we'll use one of Django's generic views. In
 ``views.py``, we can add the new view:
+
+.. tut:literalinclude:: /projects/addressbook/contacts/views.py
 
 .. code-block:: python
 
@@ -258,6 +240,9 @@ You can either define this as a class property, or override the ``get_success_ur
 The template is slightly more involved than the list template, but not
 much. Our ``edit_contact.html`` will look something like this.
 
+.. literalinclude:: /projects/addressbook/contacts/templates/edit_contact.html
+  :language: django
+
 .. code-block:: django
 
   <html>
@@ -290,14 +275,17 @@ Finally, we're using the ``url`` template tag to create a link back to our conta
 
 You can configure the URL by adding the following line to our ``urls.py`` file.
 
-.. code-block:: python
+.. tut:diff:: /projects/addressbook/addressbook/urls.py
 
-  from contacts.views import CreateContactView
 
-  ...
-
-    url(r'^new$', CreateContactView.as_view(),
-        name='contacts-new',),
+.. .. code-block:: python
+..
+..   from contacts.views import CreateContactView
+..
+..   ...
+..
+..     url(r'^new$', CreateContactView.as_view(),
+..         name='contacts-new',),
 
 Now you can go to ``http://localhost:8000/new`` to create new contacts.
 
@@ -456,7 +444,7 @@ The tests we're writing use `Selenium Webdriver`_. Webdriver starts a browser fo
 
 .. todo:: Missing geckodriver
 
-  If you attempt to run these tests and receive an error message saying geckodriver is missing, you'll need to `download it<https://github.com/mozilla/geckodriver/releases>`_ and ensure it's on the PATH.
+  If you attempt to run these tests and receive an error message saying geckodriver is missing, you'll need to `download it <https://github.com/mozilla/geckodriver/releases>`_ and ensure it's on the PATH.
 
 In our example we're using CSS Selectors to locate elements in the
 DOM, but you can also use Xpath. For many people it's a matter of

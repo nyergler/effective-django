@@ -124,7 +124,7 @@ Once again, this needs to be wired up into the URL configuration.
 And we have a simple template.
 
 .. literalinclude:: /projects/addressbook/contacts/templates/edit_addresses.html
-   :language: html
+   :language: django
 
 There are two new things in this template, both related to the fact
 we're using a formset instead of a form. First, there's a reference to

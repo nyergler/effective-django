@@ -1,6 +1,11 @@
+.. tut::
+  :path: /projects/addressbook
+  
 ===================
 Using Static Assets
 ===================
+
+.. checkpoint:: static_files
 
 Now that we have a basic application where we can add contacts and
 list them, it's reasonable to think about how we'd make this look more

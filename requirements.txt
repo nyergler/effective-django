@@ -1,2 +1,4 @@
-Sphinx~=1.5
+Sphinx~=1.5.0
 sphinxcontrib-blockdiag~=1.5
+
+git+https://github.com/nyergler/tut.git#literate-tut

@@ -3,3 +3,8 @@
 h1.logo {
     font-family: 'Rosario', sans-serif;
 }
+
+.literal-diff-wrapper .code-block-caption {
+    text-align: right;
+    padding-right: 0px;
+}
