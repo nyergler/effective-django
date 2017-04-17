@@ -2,7 +2,7 @@
  Effective Django
 ==================
 
-.. note:: 
+.. note::
 
   You're viewing the *PREVIEW* of an update to Effective Django.
 
@@ -24,7 +24,8 @@ Finally, we want to write *scalable* code. That doesn't just mean it scales in t
 My goal is to convince you of the importance of these principles, and provide examples of how to follow them to build more robust Django applications. In this book we'll walk through building three different applications, moving from the basics of Django to building for production to advanced topics like single page applications. By building these applications you'll learn Django inside and out.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
+   :includehidden:
 
    01_intro/index.rst
    02_production/index.rst
