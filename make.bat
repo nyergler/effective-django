@@ -39,7 +39,7 @@ goto end
 goto end
 
 :push
-for /f "tokens=*" %%i in ('git --git-dir=%BUILDDIR%\..\.git\modules\build log -1 --') do set MESSAGE=%%i
+for /f "tokens=*" %%i in ('git log -1 --') do set MESSAGE=%%i
 echo.%MESSAGE%
 
 git --git-dir=%BUILDDIR%\..\.git\modules\build checkout %BUILDBRANCH%
