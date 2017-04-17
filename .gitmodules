@@ -1,6 +1,6 @@
 [submodule "build"]
 	path = build
-	url = git@github.com:nyergler/effective-django.git
+	url = git@github.com:nyergler/effective-django-update.git
 	branch = gh-pages
 [submodule "source/src"]
 	path = source/src
