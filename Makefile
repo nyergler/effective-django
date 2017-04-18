@@ -21,7 +21,7 @@ MESSAGE = $(shell git log -1 --pretty=format:"%s (%h)")
 push:
 	git --git-dir=$(BUILDDIR)/../.git/modules/build checkout $(BUILDBRANCH)
 	git --git-dir=$(BUILDDIR)/../.git/modules/build add .
-	git --git-dir=$(BUILDDIR)/../.git/modules/build commit -m '$(MESSAGE)'
+	git --git-dir=$(BUILDDIR)/../.git/modules/build commit -m "$(MESSAGE)"
 	git --git-dir=$(BUILDDIR)/../.git/modules/build push origin gh-pages
 
 .PHONY: help html Makefile
