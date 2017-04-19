@@ -183,7 +183,7 @@ structure, so we'll specify the template to use explicitly, using the
 Create a ``templates`` subdirectory in our ``contacts`` application,
 and create ``contact_list.html`` there.
 
-.. literalinclude:: /projects/addressbook/contacts/templates/contact_list.html
+.. tut:literalinclude:: /projects/addressbook/contacts/templates/contact_list.html
     :language: django
 
 Opening the page in the browser, we should see one contact there, the
@@ -199,21 +199,7 @@ With our contact list view we can see the contact we `created through the intera
 Just like the list view, we'll use one of Django's generic views. In
 ``views.py``, we can add the new view:
 
-.. tut:literalinclude:: /projects/addressbook/contacts/views.py
-
-.. code-block:: python
-
-  from django.views.generic import CreateView
-  from django.core.urlresolvers import reverse
-
-
-  class CreateContactView(CreateView):
-      model = Contact
-      template_name = 'edit_contact.html'
-
-      def get_success_url(self):
-          return reverse('contacts-list')
-
+.. tut:diff:: /projects/addressbook/contacts/views.py
 
 Most generic views that handle user input have the concept of the "success URL": where to send the user when the data is successfully processed.  The form processing views all adhere to the practice of POST-redirect-GET for submitting changes, so that refreshing the final page won't result in form re-submission.
 
@@ -240,26 +226,8 @@ You can either define this as a class property, or override the ``get_success_ur
 The template is slightly more involved than the list template, but not
 much. Our ``edit_contact.html`` will look something like this.
 
-.. literalinclude:: /projects/addressbook/contacts/templates/edit_contact.html
+.. tut:literalinclude:: /projects/addressbook/contacts/templates/edit_contact.html
   :language: django
-
-.. code-block:: django
-
-  <html>
-  <body>
-    <h1>Add Contact</h1>
-
-    <form action="{{ action }}" method="POST">
-      {% csrf_token %}
-      <ul>
-        {{ form.as_ul }}
-      </ul>
-      <input id="save_contact" type="submit" value="Save" />
-    </form>
-
-    <a href="{% url "contacts-list" %}">back to list</a>
-  </body>
-  </html>
 
 There are a few things in this template that we haven't seen before. First, the ``form`` variable is the `Django Form`_ for our model. Since we didn't specify one, Django created one on the fly for us; how thoughtful. We wrote ``{{ form.as_ul }}`` to output the model fields as a list; if we had just used ``{{ form }}``, Django would have formatted the fields in a ``<table>``; try replacing ``.as_ul`` with ``.as_p`` and see what happens.
 
@@ -277,16 +245,6 @@ You can configure the URL by adding the following line to our ``urls.py`` file.
 
 .. tut:diff:: /projects/addressbook/addressbook/urls.py
 
-
-.. .. code-block:: python
-..
-..   from contacts.views import CreateContactView
-..
-..   ...
-..
-..     url(r'^new$', CreateContactView.as_view(),
-..         name='contacts-new',),
-
 Now you can go to ``http://localhost:8000/new`` to create new contacts.
 
 To complete the story, let's add a link to add contacts from our contact list. Add the following HTML to the ``contact_list.html`` template to show that link.
@@ -298,6 +256,8 @@ To complete the story, let's add a link to add contacts from our contact list. A
 
 Testing Your Views
 ==================
+
+.. tut:checkpoint:: view_tests
 
 So far our views have been pretty minimal: they leverage Django's generic views, and contain very little of our own code or logic. One perspective is that this is how it should be: a view takes a request, and returns a response, delegating the issue of validating input to forms, and business logic to model methods (TK: `service layer`_). This is a perspective that I subscribe to: the less logic contained in views, the better.
 
@@ -317,6 +277,8 @@ resolve that URL: it just returns the Request object. You can then
 manually pass it to your view and test the result.
 
 In practice, RequestFactory tests are usually somewhat faster than the TestClient. This isn't a big deal when you have five tests, but it is when you have 500 or 5,000. Let's look at the same test written with each tool.
+
+.. tut:diff:: /projects/addressbook/contacts/tests.py
 
 .. code-block:: python
 
@@ -358,6 +320,8 @@ As you can see the tests are almost identical: they both get a response and make
 Integration Tests
 =================
 
+.. tut:checkpoint:: view_integration_tests
+
 Django 1.4 added a new ``TestCase`` base class, the LiveServerTestCase_. This is very much what it sounds like: a test case that runs against a live server. By default Django will start the development server for you when it runs these tests, but they can also be run against another server.
 
 Selenium_ is a tool for writing tests that drive a web browser, and that's what we'll use for our integration tests. By using Selenium, you're able to automate different browers (Chrome, Firefox, etc), and interact with your full application much as the user would. Before writing tests to use it, we'll need to install the Python implementation.
@@ -383,64 +347,7 @@ The tests we're writing use `Selenium Webdriver`_. Webdriver starts a browser fo
 
 .. _`Selenium Webdriver`: http://www.seleniumhq.org/projects/webdriver/
 
-.. code-block:: python
-
-  from django.test import LiveServerTestCase
-  from selenium.webdriver.firefox.webdriver import WebDriver
-
-
-  class ContactListIntegrationTests(LiveServerTestCase):
-
-      @classmethod
-      def setUpClass(cls):
-          super(ContactListIntegrationTests, cls).setUpClass()
-          cls.selenium = WebDriver()
-
-      @classmethod
-      def tearDownClass(cls):
-          cls.selenium.quit()
-          super(ContactListIntegrationTests, cls).tearDownClass()
-
-      def test_contact_listed(self):
-
-          # create a test contact
-          Contact.objects.create(first_name='foo', last_name='bar')
-
-          # make sure it's listed as <first> <last> on the list
-          self.selenium.get('%s%s' % (self.live_server_url, '/'))
-          self.assertTrue(
-              self.selenium.find_elements_by_css_selector('.contact')[0]
-              .text.startswith('foo bar'),
-          )
-
-      def test_add_contact_linked(self):
-
-          # fetch our root page
-          self.selenium.get('%s%s' % (self.live_server_url, '/'))
-
-          # make sure the "add contact" link exists
-          self.assert_(
-              self.selenium.find_element_by_link_text('add contact')
-          )
-
-      def test_add_contact(self):
-
-          self.selenium.get('%s%s' % (self.live_server_url, '/'))
-          self.selenium.find_element_by_link_text('add contact').click()
-
-          self.selenium.find_element_by_id('id_first_name').send_keys('test')
-          self.selenium.find_element_by_id('id_last_name').send_keys('contact')
-          self.selenium.find_element_by_id('id_email').send_keys(
-              'test@example.com')
-          self.selenium.find_element_by_id('id_confirm_email').send_keys(
-              'test@example.com')
-
-          self.selenium.find_element_by_id("save_contact").click()
-
-          self.assertTrue(
-              self.selenium.find_elements_by_css_selector('.contact')[0].text
-              .startswith('test contact'),
-          )
+.. tut:diff:: /projects/addressbook/contacts/tests.py
 
 .. todo:: Missing geckodriver
 

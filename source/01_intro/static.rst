@@ -1,6 +1,7 @@
 .. tut::
   :path: /projects/addressbook
-  
+  :href: https://github.com/nyergler/effective-django-tutorial/blob/{checkpoint}/{path}
+
 ===================
 Using Static Assets
 ===================
@@ -124,23 +125,8 @@ this, we'll create a base template that the others will inherit from.
 Let's create ``base.html`` in the ``templates`` directory of our
 ``contacts`` app.
 
-.. code-block:: django
-
-  {% load staticfiles %}
-  <html>
-    <head>
-      <link href="{% static 'bootstrap-3.3.7/css/bootstrap.min.css' %}"
-            rel="stylesheet" media="screen">
-    </head>
-
-    <body>
-      {% block content %}
-      {% endblock %}
-
-      <script src="{% static 'bootstrap-3.3.7/js/bootstrap.min.js' %}"></script>
-    </body>
-  </html>
-
+.. tut:literalinclude:: /projects/addressbook/contacts/templates/base.html
+  :language: django
 
 ``base.html`` defines the common structure for our pages, and includes
 a ``block`` tag, which other templates can fill in.
@@ -148,21 +134,8 @@ a ``block`` tag, which other templates can fill in.
 We'll update ``contact_list.html`` to extend from ``base.html`` and
 fill in the ``content`` block.
 
-.. code-block:: django
-
-  {% extends "base.html" %}
-
-  {% block content %}
-  <h1>Contacts</h1>
-
-  <ul>
-    {% for contact in object_list %}
-      <li class="contact">{{ contact }}</li>
-    {% endfor %}
-  </ul>
-
-  <a href="{% url "contacts-new" %}">add contact</a>
-  {% endblock %}
+.. tut:literalinclude:: /projects/addressbook/contacts/templates/contact_list.html
+  :language: django
 
 Note that the ``block`` tag is used to both _define_ the block, as well as placee content into it. Django matches blocks based on their name (``content`` in this case); if a block is omitted in a template, the content from the "parent" template will be used instead.
 

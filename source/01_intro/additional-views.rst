@@ -1,5 +1,6 @@
 .. tut::
    :path: /projects/addressbook
+   :href: https://github.com/nyergler/effective-django-tutorial/blob/{checkpoint}/{path}
 
 
 ========================
@@ -15,6 +16,8 @@ In addition to creating Contacts, we'll of course want to edit them.
 As with the List and Create views, Django has a generic view we can
 use as a starting point.
 
+.. tut:diff:: /projects/addressbook/contacts/views.py
+
 .. literalinclude:: /projects/addressbook/contacts/views.py
    :prepend: from django.views.generic import UpdateView
              ...
@@ -26,13 +29,12 @@ use as a starting point.
 * we need to either: provide a pk/slug, or override get_object().
 * we'll provide pk in the URL
 
-.. literalinclude:: /projects/addressbook/addressbook/urls.py
-   :lines: 12-13
+.. tut:diff:: /projects/addressbook/addressbook/urls.py
 
 We'll update the contact list to include an edit link next to each
 contact.
 
-.. literalinclude:: /projects/addressbook/contacts/templates/contact_list.html
+.. tut:literalinclude:: /projects/addressbook/contacts/templates/contact_list.html
    :language: django
 
 Note the use of ``pk=contact.id`` in the ``{% url %}`` tag to specify
@@ -45,7 +47,7 @@ the existing record, it creates a new one. Sad face.
 If we look at the source of the edit HTML, we can easily see the
 reason: the form targets ``/new``, not our edit URL. To fix this --
 and still allow re-using the template -- we're going to add some
-information to the template context.
+information to the `template context`_.
 
 The template context is the information available to a template when
 it's rendered. This is a combination of information you provide in
@@ -55,10 +57,10 @@ current locale. In order to use the same template for add and edit,
 we'll add information about where the form should redirect to the
 context.
 
-.. literalinclude:: /projects/addressbook/contacts/views.py
+.. tut:literalinclude:: /projects/addressbook/contacts/views.py
    :pyobject: CreateContactView
 
-.. literalinclude:: /projects/addressbook/contacts/views.py
+.. tut:literalinclude:: /projects/addressbook/contacts/views.py
    :pyobject: UpdateContactView
 
 We also update the template to use that value for the action and
@@ -68,13 +70,13 @@ change the title based on whether or not we've previously saved.
    :lines: 5-11
    :language: django
 
-You may wonder where the ``contact`` value in the contact comes from:
-the class based views that wrap a single object (those that take
+You may wonder where the ``contact`` value in the contact comes from.
+The class based views that wrap a single object (those that take
 a primary key or slug) expose that to the context in two different
 ways: as a variable named ``object``, and as a variable named after
 the model class. The latter often makes your templates easier to read
-and understand later. You can customize this name by overriding
-``get_context_object_name`` on your view.
+and understand later. (You can customize this name by overriding
+``get_context_object_name`` on your view.)
 
 .. sidebar:: Made a Change? Run the Tests.
 
@@ -102,25 +104,21 @@ redirects to the success URL.
 
 We add the view definition to ``views.py``:
 
-.. literalinclude:: /projects/addressbook/contacts/views.py
-   :prepend: from django.views.generic import DeleteView
-             ...
-   :pyobject: DeleteContactView
+.. tut:diff:: /projects/addressbook/contacts/views.py
 
 And create the template, ``delete_contact.html``, in our ``templates``
 directory.
 
-.. literalinclude:: /projects/addressbook/contacts/templates/delete_contact.html
+.. tut:literalinclude:: /projects/addressbook/contacts/templates/delete_contact.html
    :language: django
 
 Of course we need to add this to the URL definitions:
 
-.. literalinclude:: /projects/addressbook/addressbook/urls.py
-   :lines: 14-15
+.. tut:diff:: /projects/addressbook/addressbook/urls.py
 
 And we'll add the link to delete to the edit page.
 
-.. literalinclude:: /projects/addressbook/contacts/templates/edit_contact.html
+.. tut:literalinclude:: /projects/addressbook/contacts/templates/edit_contact.html
    :lines: 19-21
 
 Detail View
@@ -138,22 +136,28 @@ of it as the single serving ``ListView``.
              ...
    :pyobject: ContactView
 
+.. tut:diff:: /projects/addressbook/contacts/views.py
+
 Again, the template is pretty straight forward; we create
 ``contact.html`` in the ``templates`` directory.
 
-.. literalinclude:: /projects/addressbook/contacts/templates/contact.html
+.. tut:literalinclude:: /projects/addressbook/contacts/templates/contact.html
    :language: html
 
 And add the URL mapping:
 
-.. literalinclude:: /projects/addressbook/addressbook/urls.py
+.. tut:literalinclude:: /projects/addressbook/addressbook/urls.py
    :lines: 10-11
+
+.. tut:diff:: /projects/addressbook/addressbook/urls.py
 
 We're also going to add a method to our Contact model,
 ``get_absolute_url``. ``get_absolute_url`` is a Django convention for
 obtaining the URL of a single model instance. In this case it's just
 going to be a call to ``reverse``, but by providing this method, our
 model will play nicely with other parts of Django.
+
+.. tut:diff:: /projects/addressbook/contacts/models.py
 
 .. literalinclude:: /projects/addressbook/contacts/models.py
    :prepend: class Contact(models.Model):
@@ -162,7 +166,7 @@ model will play nicely with other parts of Django.
 
 And we'll add the link to the contact from the contact list.
 
-.. literalinclude:: /projects/addressbook/contacts/templates/contact_list.html
+.. tut:literalinclude:: /projects/addressbook/contacts/templates/contact_list.html
    :lines: 7-12
    :language: django
 
