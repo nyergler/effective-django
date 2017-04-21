@@ -256,9 +256,9 @@ Review
 * Forms are unit testable; Rebar has some utilities to help with
   testing large forms.
 
-.. _`Django Form`: https://docs.djangoproject.com/en/1.5/topics/forms/
-.. _`Generic Views`: https://docs.djangoproject.com/en/1.5/topics/class-based-views/
-.. _ModelForms: https://docs.djangoproject.com/en/1.5/topics/forms/modelforms
-.. _`unbound form`: https://docs.djangoproject.com/en/1.5/ref/forms/api/#ref-forms-api-bound-unbound
-.. _`BoundField`: https://docs.djangoproject.com/en/1.5/ref/forms/api/#django.forms.BoundField
-.. _`how errors are displayed`: https://docs.djangoproject.com/en/1.5/ref/forms/api/#how-errors-are-displayed
+.. _`Django Form`: https://docs.djangoproject.com/en/1.11/topics/forms/
+.. _`Generic Views`: https://docs.djangoproject.com/en/1.11/topics/class-based-views/
+.. _ModelForms: https://docs.djangoproject.com/en/1.11/topics/forms/modelforms
+.. _`unbound form`: https://docs.djangoproject.com/en/1.11/ref/forms/api/#ref-forms-api-bound-unbound
+.. _`BoundField`: https://docs.djangoproject.com/en/1.11/ref/forms/api/#django.forms.BoundField
+.. _`how errors are displayed`: https://docs.djangoproject.com/en/1.11/ref/forms/api/#how-errors-are-displayed

@@ -226,7 +226,7 @@ Review
 .. _query: https://docs.djangoproject.com/en/1.11/topics/db/queries/
 .. _SQLite3: http://docs.python.org/2/library/sqlite3.html
 .. _mysql-python: https://pypi.python.org/pypi/MySQL-python
-.. _`full list of settings`: https://docs.djangoproject.com/en/1.5/ref/settings/
+.. _`full list of settings`: https://docs.djangoproject.com/en/1.11/ref/settings/
 .. _Model: https://docs.djangoproject.com/en/1.11/ref/models/instances/#django.db.models.Model
 .. _Manager: https://docs.djangoproject.com/en/1.11/topics/db/managers/
 .. _`specify a primary key`: https://docs.djangoproject.com/en/1.11/topics/db/models/#automatic-primary-key-fields

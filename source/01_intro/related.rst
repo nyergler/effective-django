@@ -140,5 +140,5 @@ you're iterating over the individual forms in it. These individual
 forms are just "normal" ``ModelForm`` instances for each Address, so
 you can apply the same output techniques you would normally use.
 
-.. _FormSet: https://docs.djangoproject.com/en/1.5/topics/forms/formsets/
-.. _`Inline FormSet`: https://docs.djangoproject.com/en/1.5/topics/forms/modelforms/#inline-formsets
+.. _FormSet: https://docs.djangoproject.com/en/1.11/topics/forms/formsets/
+.. _`Inline FormSet`: https://docs.djangoproject.com/en/1.11/topics/forms/modelforms/#inline-formsets

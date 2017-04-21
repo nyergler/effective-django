@@ -171,19 +171,19 @@ And we'll add the link to the contact from the contact list.
    :language: django
 
 
-.. _`Generic Views`: https://docs.djangoproject.com/en/1.5/topics/class-based-views/generic-display/
-.. _`Class Based Views`: https://docs.djangoproject.com/en/1.5/topics/class-based-views/
-.. _View: https://docs.djangoproject.com/en/1.5/ref/class-based-views/base/#view
-.. _ListView: https://docs.djangoproject.com/en/1.5/ref/class-based-views/generic-display/#listview
-.. _UpdateView: https://docs.djangoproject.com/en/1.5/ref/class-based-views/generic-editing/#updateview
-.. _CreateView: https://docs.djangoproject.com/en/1.5/ref/class-based-views/generic-editing/#createview
-.. _DeleteView: https://docs.djangoproject.com/en/1.5/ref/class-based-views/generic-editing/#deleteview
-.. _DetailView: https://docs.djangoproject.com/en/1.5/ref/class-based-views/generic-display/#detailview
-.. _`context processors`: https://docs.djangoproject.com/en/1.5/ref/templates/api/#subclassing-context-requestcontext
-.. _`Django Form`: https://docs.djangoproject.com/en/1.5/topics/forms/
-.. _HttpRequest: https://docs.djangoproject.com/en/1.5/ref/request-response/#httprequest-objects
-.. _HttpResponse: https://docs.djangoproject.com/en/1.5/ref/request-response/#httpresponse-objects
-.. _Client: https://docs.djangoproject.com/en/1.5/topics/testing/overview/#module-django.test.client
-.. _RequestFactory: https://docs.djangoproject.com/en/1.5/topics/testing/advanced/#django.test.client.RequestFactory
-.. _LiveServerTestCase: https://docs.djangoproject.com/en/1.5/topics/testing/overview/#liveservertestcase
+.. _`Generic Views`: https://docs.djangoproject.com/en/1.11/topics/class-based-views/generic-display/
+.. _`Class Based Views`: https://docs.djangoproject.com/en/1.11/topics/class-based-views/
+.. _View: https://docs.djangoproject.com/en/1.11/ref/class-based-views/base/#view
+.. _ListView: https://docs.djangoproject.com/en/1.11/ref/class-based-views/generic-display/#listview
+.. _UpdateView: https://docs.djangoproject.com/en/1.11/ref/class-based-views/generic-editing/#updateview
+.. _CreateView: https://docs.djangoproject.com/en/1.11/ref/class-based-views/generic-editing/#createview
+.. _DeleteView: https://docs.djangoproject.com/en/1.11/ref/class-based-views/generic-editing/#deleteview
+.. _DetailView: https://docs.djangoproject.com/en/1.11/ref/class-based-views/generic-display/#detailview
+.. _`context processors`: https://docs.djangoproject.com/en/1.11/ref/templates/api/#subclassing-context-requestcontext
+.. _`Django Form`: https://docs.djangoproject.com/en/1.11/topics/forms/
+.. _HttpRequest: https://docs.djangoproject.com/en/1.11/ref/request-response/#httprequest-objects
+.. _HttpResponse: https://docs.djangoproject.com/en/1.11/ref/request-response/#httpresponse-objects
+.. _Client: https://docs.djangoproject.com/en/1.11/topics/testing/overview/#module-django.test.client
+.. _RequestFactory: https://docs.djangoproject.com/en/1.11/topics/testing/advanced/#django.test.client.RequestFactory
+.. _LiveServerTestCase: https://docs.djangoproject.com/en/1.11/topics/testing/overview/#liveservertestcase
 .. _Selenium: http://seleniumhq.org/
