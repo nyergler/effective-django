@@ -41,4 +41,4 @@ These documents are available in PDF_ and EPub_ format, as well.
 
 
 "Effective Django" is licensed under the Creative Commons
-`Attribution-ShareAlike 4.0 International License <http://creativecommons.org/licenses/by-sa/4.0/>`_.
+`Attribution-ShareAlike 4.0 International License <https://creativecommons.org/licenses/by-sa/4.0/>`_.

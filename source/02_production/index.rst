@@ -21,7 +21,7 @@ There's a lot to cover, so let's jump in.
   social-auth.rst
   models.rst
   user-uploads.rst
-  db-indexes.rst
+  db-index.rst
   l10n.rst
   logging.rst
   review.rst

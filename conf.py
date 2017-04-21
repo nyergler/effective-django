@@ -79,6 +79,7 @@ language = None
 # This patterns also effect to html_static_path and html_extra_path
 exclude_patterns = [
     '**/lib',
+    'projects',
 ]
 
 # The name of the Pygments (syntax highlighting) style to use.

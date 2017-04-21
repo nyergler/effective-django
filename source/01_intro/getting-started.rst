@@ -67,7 +67,7 @@ Once we have the requirements file, we can use pip_ to install the dependencies 
 
 Pip will read each line of your requirements file, fetch the dependency, and then fetch any additionally required dependencies. Because we're working in our virtual environment, we don't need to worry about conflicts.
 
-.. _pip: http://www.pip-installer.org/
+.. _pip: https://pip.pypa.io/en/stable/
 .. _`requirements files`: https://pip.pypa.io/en/stable/reference/pip_install/#requirements-file-format
 
 Beginning a Django Project

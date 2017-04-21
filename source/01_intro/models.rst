@@ -224,7 +224,7 @@ Review
 
 .. _QuerySet: https://docs.djangoproject.com/en/1.11/ref/models/querysets/#django.db.models.query.QuerySet
 .. _query: https://docs.djangoproject.com/en/1.11/topics/db/queries/
-.. _SQLite3: http://docs.python.org/2/library/sqlite3.html
+.. _SQLite3: https://docs.python.org/2/library/sqlite3.html
 .. _mysql-python: https://pypi.python.org/pypi/MySQL-python
 .. _`full list of settings`: https://docs.djangoproject.com/en/1.11/ref/settings/
 .. _Model: https://docs.djangoproject.com/en/1.11/ref/models/instances/#django.db.models.Model

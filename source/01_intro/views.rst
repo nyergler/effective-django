@@ -388,7 +388,7 @@ Review
 .. _`Django Form`: https://docs.djangoproject.com/en/1.11/topics/forms/
 .. _HttpRequest: https://docs.djangoproject.com/en/1.11/ref/request-response/#httprequest-objects
 .. _HttpResponse: https://docs.djangoproject.com/en/1.11/ref/request-response/#httpresponse-objects
-.. _Client: https://docs.djangoproject.com/en/1.11/topics/testing/overview/#module-django.test.client
-.. _RequestFactory: https://docs.djangoproject.com/en/1.11/topics/testing/advanced/#django.test.client.RequestFactory
+.. _Client: https://docs.djangoproject.com/en/1.11/topics/testing/tools/#the-test-client
+.. _RequestFactory: https://docs.djangoproject.com/en/1.11/topics/testing/advanced/#the-request-factory
 .. _LiveServerTestCase: https://docs.djangoproject.com/en/1.11/topics/testing/tools/#liveservertestcase
-.. _Selenium: http://seleniumhq.org/
+.. _Selenium: http://www.seleniumhq.org/
