@@ -110,7 +110,7 @@ html_theme_options = {
     'show_powered_by': False,
     'show_related': False,
     'fixed_sidebar': False,
-    'gratipay_user': 'nyergler',
+    'gratipay_user': 'effectivedjango',
 }
 
 html_title = project
