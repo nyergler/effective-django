@@ -1,5 +1,6 @@
 .. tut::
    :path: /projects/addressbook
+   :href: https://github.com/nyergler/effective-django-tutorial/blob/{checkpoint}/{path}
 
 =============
  Form Basics
@@ -28,7 +29,7 @@ taking user input and transforming it into an instance of a Model.
 Adding Fields to the Form
 -------------------------
 
-.. checkpoint:: confirm_contact_email
+.. tut:checkpoint:: confirm_contact_email
 
 So what if we want to add a field to our form? Say, we want to require
 confirmation of the email address. In that case we can create a new
@@ -37,7 +38,7 @@ form, and override the default used by our views.
 First, in the ``contacts`` app directory, we'll create a new file,
 ``forms.py``.
 
-.. literalinclude:: /projects/addressbook/contacts/forms.py
+.. tut:literalinclude:: /projects/addressbook/contacts/forms.py
    :end-before: def clean
 
 Here we're creating a new ``ModelForm``; we associate the form with
@@ -79,6 +80,8 @@ add some custom validation to the Form.
 
 Customizing Validation
 ----------------------
+
+.. .. tut:checkpoint:: form_validation
 
 Forms have two different phases of validation: field and form. All the
 fields are validated and converted to Python objects (if possible)
