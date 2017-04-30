@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% set title = _('Welcome') %}
+{% block body %}
+  <h1>{{ _('Welcome') }}</h1>
+
+
+  <p><a href="https://www.djangoproject.com/">Django</a> is a powerful web framework built using Python. It has lots of "batteries" included and an active community that make it easy to get up and going. It's been my experience that the difference between "good" and "bad" code isn't how fast you move: a big portion is how much experience you have to draw on when making choices about tradeoffs. If you want to use Django <b>effectively</b>, that experience helps a lot.</p>
+
+  <p>Using Django effectively means writing code that not only works, but is maintainable and can grow and evolve as your requirements do. It means using Django in a way that emphasizes writing code that's cohesive, testable, and scalable.</p>
+
+
+  <p>Working through Effective Django will help you build that experience. In this book we'll build three different applications, moving from the basics of Django to building a multi-user, production ready application, to exploring how you can use Django to power APIs, single page applications, and other more exotic integrations.</p>
+
+  <ul class="sections">
+    <li>
+      <a href="{{ pathto("01_intro/index") }}">Getting Started with Django</a>
+      Master Django's vocabulary and explore the major components.
+    </li>
+    <li>
+      <a href="{{ pathto("02_production/index") }}">Building for Production</a>
+      Build a multi-user, production ready web application.
+    </li>
+    <li>
+      <a href="{{ pathto("03_advanced/index") }}">Advanced Django</a>
+      Use Django to build REST APIs that power Single Page Applications
+    </li>
+  </ul>
+
+  <p><b>Effective Django</b> is available as a <a href="./latex/EffectiveDjango.pdf">PDF</a> and <a href="./epub/EffectiveDjango.epub">EPub</a>, as well.</p>
+
+{% endblock %}

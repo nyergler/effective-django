@@ -8,3 +8,23 @@ h1.logo {
     text-align: right;
     padding-right: 0px;
 }
+
+.sections {
+  display: flex;
+}
+
+.sections > li {
+  display: block;
+  flex: 1;
+  margin: 1em;
+  font-size: small;
+}
+
+.sections > li > a {
+  font-size: large;
+  font-weight: bold;
+  display: block;
+  text-decoration: none;
+  line-height: 1.2em;
+  padding-bottom: .5em;
+}

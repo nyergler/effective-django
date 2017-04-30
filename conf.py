@@ -51,7 +51,7 @@ templates_path = ['source/_templates']
 source_suffix = '.rst'
 
 # The master toctree document.
-master_doc = 'index'
+master_doc = 'contents'
 
 # General information about the project.
 project = 'Effective Django'
@@ -121,18 +121,26 @@ html_show_sphinx = False
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['source/_static']
 
+html_additional_pages = {'index': 'index.html'}
 html_extra_path = [
     '.nojekyll',
     'CNAME',
 ]
 
 html_sidebars = {
+    'index': [
+        'about.html',
+        'searchbox.html',
+        'donate.html',
+        'license.html',
+    ],
     '**': [
         'about.html',
         'navigation.html',
         'searchbox.html',
         'relations.html',
         'donate.html',
+        'license.html',
     ]
 }
 
