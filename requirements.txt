@@ -1,4 +1,4 @@
-Django==1.5.4
+Django==1.11.29
 Sphinx~=1.3
 rebar==0.1
 sphinxcontrib-blockdiag~=1.5
